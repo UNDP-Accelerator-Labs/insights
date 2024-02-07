@@ -5,7 +5,7 @@ set -e
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/../" &> /dev/null
 
 IMAGE_TAG="${IMAGE_TAG:-$(make -s name)}"
-IMAGE_NAME="blogscraper:${IMAGE_TAG}"
+IMAGE_NAME="insights:${IMAGE_TAG}"
 CONFIG_PATH="${CONFIG_PATH:-${DOCKER_CONFIG}}"
 PORT="${PORT:-8080}"
 
