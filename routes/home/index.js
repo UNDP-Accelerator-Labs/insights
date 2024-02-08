@@ -1,8 +1,10 @@
-const { pagemetadata, getdata } = require("../page");
-const { DB } = include("db");
+const { pagemetadata } = require("../page");
+const { blogapi_url, page_content_limit } = include("/config");
+const axios = require("axios");
 
 module.exports = async (req, res) => {
-  const { page_content_limit, page } = req.query;
+  let { page } = req.query;
+  if (!page && isNaN(page)) page = 1;
   const _kwarq = {
     page,
     pagecount: page_content_limit,
@@ -11,9 +13,20 @@ module.exports = async (req, res) => {
     res,
   };
   const metadata = pagemetadata(_kwarq);
-  const data = await getdata(DB.blog, req, res);
+  const headers = {
+    "Content-Type": "application/json",
+    "token-authorization": process.env.APP_SECRET,
+  };
+  const url = `${blogapi_url}${page_content_limit}/${page}`;
 
-  const [stats, searchResults, filters] = data || [null, null, null];
+  const data = await axios
+    .get(url, {
+      headers: headers,
+    })
+    .catch(() => null);
+
+  const [stats, searchResults, filters] =
+    data?.data && Array.isArray(data.data) ? data.data : [null, null, null];
 
   res.render(
     "home/",

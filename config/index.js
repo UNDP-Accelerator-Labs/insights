@@ -12,6 +12,8 @@ const {
   app_suite_url,
   acclab_suites,
   sso_app_url,
+  blogapi_url,
+  page_content_limit
 } = require("./apps");
 
 exports.config = config;
@@ -28,3 +30,5 @@ exports.app_base_host = app_base_host;
 exports.app_suite_url = app_suite_url;
 exports.acclab_suites = acclab_suites;
 exports.sso_app_url = sso_app_url;
+exports.blogapi_url = blogapi_url;
+exports.page_content_limit = page_content_limit
