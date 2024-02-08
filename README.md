@@ -1,6 +1,7 @@
-# UNDP Website Scraper
+# Accelerator Lab Insights Hub
 
-This is an application written in Node.js that scrapes the UNDP website for published articles related to predefined keywords. The application utilizes two Postgres databases: one to save extracted articles and another to check the ISO3 code of countries and whether there is a UNDP Accelerator lab in each country. The application is deployed as web app expose via API. The blog scrapper runs every Sunday, 12AM.
+Discover curated blogs and articles fostering collaboration, innovation, and continuous learning across the Accelerator Lab networks with the UNDP Insights Hub. 
+
 
 ## Prerequisites
 
@@ -12,7 +13,7 @@ Before setting up the code locally, ensure you have the following prerequisites 
 
 To set up the application locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/UNDP-Accelerator-Labs/blog-scraper.git`
+1. Clone the repository: `git clone https://github.com/UNDP-Accelerator-Labs/insights.git`
 2. Install dependencies: Run `npm install` or `yarn install` in the project root directory.
 
 4. Create `.env` file: Create a `.env` file in the project root directory and add the following environment variables:
@@ -21,18 +22,18 @@ To set up the application locally, follow these steps:
     DB_HOST=''
     DB_NAME=''
     DB_PASS=''
-    DB_PORT='5432'
-    production=false
+    DB_PORT=''
+    production=
 
-    L_DB_USER='postgres'
-    L_DB_HOST='localhost'
+    L_DB_USER=''
+    L_DB_HOST=''
     L_DB_NAME=''
     L_DB_PASS=''
 
     LOGIN_DB_NAME=''
-    LOGIN_DB_PORT='5432'
-    LOGIN_DB_HOST='localhost'
-    LOGIN_DB_USERNAME='postgres'
+    LOGIN_DB_PORT=''
+    LOGIN_DB_HOST=''
+    LOGIN_DB_USERNAME=''
     LOGIN_DB_PASSWORD=''
 
     NODE_ENV='local'
@@ -42,16 +43,7 @@ To set up the application locally, follow these steps:
     APP_SECRET=''
     ```
 5. Start the application: Run `npm start` to start the application.
-6. Update blog records: To update the blog with null records, you can access the endpoint via `/update-null-blogs`.
-7. Update ISO3 codes: To update the ISO3 codes of records, you can access the endpoint via `/update-iso3-codes`.
-8. Extract articles for missing URLs: To extract articles of countries that do not have records in the Blog DB, you can access the endpoint via `/update-missing-countries`.
-9. Update search keywords or taxonomy: Edit the `searchTerm.js` file to update the search keywords or taxonomy.
-10. You can also intiate the blog scrapper via an endpoint `/initialize`.
-11. Get deployed current version using the endpoint `/version`
-12. Update all records with type document using the endpoint `/update-document-records`
 
-## Configuration
-You can edit the configuration file `config/config.js` to update the html classname, attributes and css selector required for adequate scraping of required website. The base url of the website to be scrapped is also configurable from this file.
 
 ## Create docker image locally
 
