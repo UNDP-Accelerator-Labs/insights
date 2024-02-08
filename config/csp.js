@@ -12,4 +12,5 @@ exports.csp_links = [
     'https://code.jquery.com',
     'https://cdnjs.cloudflare.com',
     'https://design.undp.org',
+    'https://blog-api-scrapper.azurewebsites.net/',
   ];
