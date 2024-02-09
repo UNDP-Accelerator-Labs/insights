@@ -14,7 +14,6 @@
         <div class="content-card <%= (blog.article_type === 'publications') ? 'card-emphasize' : 'card' %>">
           <a href="<%= blog.url %>" target="_blank">
             <h6 class="" tabindex="0" data-viewport="false"><%- blog.article_type %></h6>
-
             <small class="content-caption"><%= blog.date ?? '' %></small>
             <div class="content-caption">
               <h5 class="" tabindex="0" data-viewport="false">
