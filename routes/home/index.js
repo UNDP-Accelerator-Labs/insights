@@ -32,8 +32,16 @@ module.exports = async (req, res) => {
     "home/",
     Object.assign(metadata, {
       stats: stats?.stats,
+      f_total_record: formatNumberToK(stats?.stats[0]?.totalblogs || 0),
       countries: filters?.countries,
       articletype: filters?.articleType,
     })
   );
 };
+
+
+function formatNumberToK(number) {
+  if (number < 1000) return number; 
+  const formattedNumber = Math.floor(number / 1000); 
+  return formattedNumber + 'K+';
+}

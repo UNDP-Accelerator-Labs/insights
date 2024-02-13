@@ -1,6 +1,7 @@
 <% 
     // CREATE ALIASES 
     const totalblogs = locals?.stats[0]?.totalblogs || 0;
+    const f_total_record = locals?.f_total_record || 0;
     const countries = locals?.stats[1]?.distinct_country_count || 0;
     const articles = locals?.stats[1]?.distinct_article_type_count || 0;
 %>
@@ -17,7 +18,7 @@
                 data-viewport="false"
                 style="white-space: nowrap; display: inline-block; font-size: 110px;"
               >
-                3K+
+                <%= f_total_record %>
               </h2>
             </div>
           </div>
@@ -89,7 +90,7 @@
                 data-viewport="false"
                 style="white-space: nowrap; display: inline-block; font-size: 110px;"
               >
-                5+
+                4
               </h2>
             </div>
           </div>
