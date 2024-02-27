@@ -4,21 +4,21 @@ exports.app_suite = 'acclab_platform';
 exports.app_suite_secret = process.env.APP_SUITE_SECRET || 'secret';
 
 exports.app_storage = 'https://acclabplatforms.blob.core.windows.net/';
-exports.own_app_url = 'https://blogs.sdg-innovation-commons.org/';
+exports.own_app_url = 'http://localhost:4000/';
 
 const base_host = 'sdg-innovation-commons.org';
 exports.app_base_host = base_host;
 exports.app_suite_url = `https://www.${base_host}/`;
 exports.sso_app_url = 'https://login.sdg-innovation-commons.org' 
 
-exports.blogapi_url = 'https://blog-api-scrapper.azurewebsites.net/blogs/'
+exports.blogapi_url = 'http://localhost:4000/blogs/'
 exports.page_content_limit = 15;
 
 exports.acclab_suites = [
-    {
-        title: 'SDG Innovation Commons',
-        url: 'https://sdg-innovation-commons.org'
-    },
+    // {
+    //     title: 'SDG Innovation Commons',
+    //     url: 'https://sdg-innovation-commons.org'
+    // },
     {
         title: 'Solution mapping',
         url: 'https://solutions.sdg-innovation-commons.org'

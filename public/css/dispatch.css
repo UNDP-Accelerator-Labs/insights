@@ -5157,7 +5157,7 @@ $c-light-3: #F0F0F0;*/
   }
   header {
     display: block;
-    pointer-events: none;
+    pointer-events: all;
   }
   header.folded {
     /* LEFT COlUMN IN MAP VIEW */
@@ -6575,7 +6575,7 @@ $c-light-3: #F0F0F0;*/
   header {
     display: block;
     flex: 1 1;
-    pointer-events: none;
+    pointer-events: all;
   }
   header.folded {
     /* LEFT COlUMN IN MAP VIEW */
@@ -8115,7 +8115,7 @@ $c-light-3: #F0F0F0;*/
   header {
     display: block;
     flex: 1 1;
-    pointer-events: none;
+    pointer-events: all;
   }
   header.folded {
     /* LEFT COlUMN IN MAP VIEW */

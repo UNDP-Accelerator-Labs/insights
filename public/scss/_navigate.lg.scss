@@ -689,7 +689,7 @@ nav.tabs.fill-screen {
 
 header {
   display: block;
-  pointer-events: none;
+  pointer-events: all;
 
   &.folded {
     /* LEFT COlUMN IN MAP VIEW */
