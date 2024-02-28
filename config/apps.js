@@ -11,7 +11,7 @@ exports.app_base_host = base_host;
 exports.app_suite_url = `https://www.${base_host}/`;
 exports.sso_app_url = 'https://login.sdg-innovation-commons.org' 
 
-exports.blogapi_url = 'http://localhost:4000/blogs/'
+exports.blogapi_url = 'https://blog-api-scrapper.azurewebsites.net/blogs/'
 exports.page_content_limit = 15;
 
 exports.acclab_suites = [
