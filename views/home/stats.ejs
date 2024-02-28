@@ -1,9 +1,9 @@
 <% 
     // CREATE ALIASES 
-    const totalblogs = locals?.stats[0]?.totalblogs || 0;
+    const totalblogs = locals?.stats?.[0]?.totalblogs || 0;
     const f_total_record = locals?.f_total_record || 0;
-    const countries = locals?.stats[1]?.distinct_country_count || 0;
-    const articles = locals?.stats[1]?.distinct_article_type_count || 0;
+    const countries = locals?.stats?.[1]?.distinct_country_count || 0;
+    const articles = locals?.stats?.[1]?.distinct_article_type_count || 0;
 %>
 <div class="grid-x stats-grid">
     <div class="cell medium-3 delay-2 inviewport" data-viewport="true">
