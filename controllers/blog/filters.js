@@ -4,7 +4,7 @@ const {
   languageGroup,
   extractGeoQuery,
 } = require("./query");
-const { DB } = require("../../db");
+const { DB } = include("db/");
 
 exports.main = async (kwargs) => {
   const conn = kwargs.connection ? kwargs.connection : DB.conn;
