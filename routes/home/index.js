@@ -1,10 +1,19 @@
 const { pagemetadata } = require("../page");
-const { blogapi_url, page_content_limit } = include("/config");
-const axios = require("axios");
+const { page_content_limit } = include("/config");
+const stats_r = include("controllers/blog/stats");
+const { DB } = include("db/");
 
 module.exports = async (req, res) => {
   let { page } = req.query;
   if (!page && isNaN(page)) page = 1;
+
+  const statistics = await stats_r.main({
+    connection: DB.blog,
+    req,
+    res,
+    page,
+  });
+
   const _kwarq = {
     page,
     pagecount: page_content_limit,
@@ -13,35 +22,21 @@ module.exports = async (req, res) => {
     res,
   };
   const metadata = pagemetadata(_kwarq);
-  const headers = {
-    "Content-Type": "application/json",
-    "token-authorization": process.env.APP_SECRET,
-  };
-  const url = `${blogapi_url}${page_content_limit}/${page}`;
 
-  const data = await axios
-    .get(url, {
-      headers: headers,
-    })
-    .catch(() => null);
-
-  const [stats, searchResults, filters] =
-    data?.data && Array.isArray(data.data) ? data.data : [null, null, null];
+  const [counts] = statistics?.stats || [null, null];
 
   res.render(
     "home/",
     Object.assign(metadata, {
-      stats: stats?.stats,
-      f_total_record: formatNumberToK(stats?.stats[0]?.totalblogs || 0),
-      countries: filters?.countries,
-      articletype: filters?.articleType,
+      f_total_record: formatNumberToK(counts?.total_records || 0),
+      countries: counts?.distinct_country_count || 0,
+      articletype: counts?.distinct_article_type_count || 0,
     })
   );
 };
 
-
 function formatNumberToK(number) {
-  if (number < 1000) return number; 
-  const formattedNumber = Math.floor(number / 1000); 
-  return formattedNumber + 'K+';
+  if (number < 1000) return number;
+  const formattedNumber = Math.floor(number / 1000);
+  return formattedNumber + "K+";
 }

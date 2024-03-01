@@ -1,9 +1,10 @@
-const { pagemetadata, constructQueryString } = require("../page");
-const { blogapi_url, page_content_limit } = include("/config");
-const axios = require("axios");
+const { pagemetadata } = require("../page");
+const { page_content_limit } = include("/config");
+const { browse_data } = include("controllers/");
+const { DB } = include("db/");
 
 module.exports = async (req, res) => {
-  let { page, search, country, type } = req.query;
+  let { page } = req.query;
   if (!page && isNaN(page)) page = 1;
   const _kwarq = {
     page,
@@ -13,22 +14,10 @@ module.exports = async (req, res) => {
     res,
   };
   const metadata = pagemetadata(_kwarq);
-  const headers = {
-    "Content-Type": "application/json",
-    "token-authorization": process.env.APP_SECRET,
-  };
-
-  const queryString = constructQueryString({ search, country, type });
-  const url = `${blogapi_url}${page_content_limit}/${page}?${queryString}`;
-
-  const data = await axios
-    .get(url, {
-      headers: headers,
-    })
-    .catch(() => null);
+  const data = await browse_data(DB.blog, req, res);
 
   const [stats, searchResults, filters] =
-    data?.data && Array.isArray(data.data) ? data.data : [null, null, null];
+    data && Array.isArray(data) ? data : [null, null, null];
   const results = searchResults?.searchResults || [];
   const total_pages = results[0]?.total_pages || 0;
   const current_page = results[0]?.current_page || 1;
@@ -45,6 +34,7 @@ module.exports = async (req, res) => {
       countries: filters?.countries,
       articletype: filters?.articleType,
       geodata: filters?.geoData,
+      language: filters?.language
     })
   );
 };
