@@ -20,6 +20,12 @@ function updateSearchQuery() {
     .selectAll('input[name="article_type"]:checked')
     .nodes()
     .map((node) => node.value);
+
+  const selectedLanguages = d3
+  .selectAll('input[name="language"]:checked')
+  .nodes()
+  .map((node) => node.value);
+
   const page = d3.select("#current_page").node().value;
 
   const queryParamsArray = [];
@@ -42,6 +48,13 @@ function updateSearchQuery() {
 
   if (page) {
     queryParamsArray.push(`page=${page}`);
+  }
+
+  if(selectedLanguages.length > 0){
+    const languageParams = selectedLanguages
+      .map((language) => encodeURIComponent(language))
+      .join("&language=");
+    queryParamsArray.push(`language=${languageParams}`);
   }
 
   const searchQuery = queryParamsArray.join("&");

@@ -9,6 +9,12 @@
         ...item,
         label: item.article_type ? item.article_type.toUpperCase() : null
       })) || [];
+    const language = locals?.language?.sort((a, b) => a?.language?.localeCompare(b?.language))
+    .map(item => ({
+      ...item,
+      label: item.language ? item.language.toUpperCase() : null
+    })) || [];
+
     const geodata = locals?.geodata 
     const results = locals?.results 
 
@@ -32,7 +38,40 @@
             <img src="https://design.undp.org/static/media/times.cd26ac2e.svg" alt="search close" />
         </button>
       </div>
+      
+      <!-- Language filter -->
       <div class="select-wrapper">
+        <div class="multi-select" data-multi-select="">
+          <button aria-label="Region" aria-expanded="false" data-id="filter0">
+            Language
+          </button>
+          <ul
+            data-type="language"
+            role="listbox"
+            aria-multiselectable="true"
+            aria-hidden="true"
+            aria-modal="true"
+          >
+            <% for (let i = 0; i < language.length; i++) { %>
+            <li role="option">
+              <div class="form-check">
+                <label for="<%= language[i]?.language %>"
+                  ><%= language[i]?.label %> (<%=
+                  language[i]?.recordcount || 0 %>)</label
+                >
+                <input
+                  type="checkbox"
+                  id="<%= language[i]?.language %>"
+                  name="language"
+                  value="<%= language[i]?.language %>"
+                />
+              </div>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+
+        <!-- Region Filter -->
         <div class="multi-select" data-multi-select="">
           <button aria-label="Region" aria-expanded="false" data-id="filter1">
             Region
@@ -62,6 +101,8 @@
             <% } %>
           </ul>
         </div>
+
+        <!-- Document Filter -->
         <div class="multi-select" data-multi-select="">
           <button aria-label="Region" aria-expanded="false" data-id="filter2">
             Document
