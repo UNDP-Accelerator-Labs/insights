@@ -3,7 +3,7 @@ const searchBlogs = include("controllers/blog/searchBlogs");
 const filter = include("controllers/blog/filters");
 
 exports.browse_data = async (conn, req, res) => {
-  let { page_content_limit, page, language } = req.params;
+  let { page_content_limit, page, language } = req.query;
   page = page ?? 1;
   page_content_limit = page_content_limit ?? 15;
 

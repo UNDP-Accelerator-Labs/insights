@@ -56,7 +56,7 @@ exports.searchBlogQuery = (
   language
 ) => {
   let whereClause = theWhereClause(country, type, language);
-  let values = [page_content_limit, (page - 1) * page_content_limit, page];
+  let values = [page_content_limit, (page - 1) * page_content_limit, +page];
 
   let searchTextCondition = searchTextConditionFn(searchText);
   let textColumn = "COALESCE(content, all_html_content)";
