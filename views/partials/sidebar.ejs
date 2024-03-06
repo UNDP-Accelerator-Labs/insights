@@ -3,16 +3,20 @@
     const menulist = locals.metadata.site.acclab_suites 
     const title = locals.metadata.site.title 
     const stats = locals?.stats 
-    const countries = locals?.countries?.sort((a, b) => a?.country?.localeCompare(b?.country)) || [];
+    const countries = locals?.countries
+    ?.sort((a, b) => a?.name.localeCompare(b?.name)) || [];
+    const bureau = locals?.bureau
+    ?.sort((a, b) => a?.bureau.localeCompare(b?.bureau)) || [];
+
     const articletype = locals?.articletype?.sort((a, b) => a?.article_type.localeCompare(b?.article_type))
     .map(item => ({
         ...item,
         label: item.article_type ? item.article_type.toUpperCase() : null
       })) || [];
-    const language = locals?.language?.sort((a, b) => a?.language?.localeCompare(b?.language))
+    const language = locals?.language?.sort((a, b) => a?.lang?.localeCompare(b?.lang))
     .map(item => ({
       ...item,
-      label: item.language ? item.language.toUpperCase() : null
+      label: item.lang ? item.lang.toUpperCase() : null
     })) || [];
 
     const geodata = locals?.geodata 
@@ -42,7 +46,7 @@
       <!-- Language filter -->
       <div class="select-wrapper">
         <div class="multi-select" data-multi-select="">
-          <button aria-label="Region" aria-expanded="false" data-id="filter0">
+          <button aria-label="language" aria-expanded="false" data-id="filter0">
             Language
           </button>
           <ul
@@ -55,15 +59,15 @@
             <% for (let i = 0; i < language.length; i++) { %>
             <li role="option">
               <div class="form-check">
-                <label for="<%= language[i]?.language %>"
+                <label for="<%= language[i]?.lang %>"
                   ><%= language[i]?.label %> (<%=
                   language[i]?.recordcount || 0 %>)</label
                 >
                 <input
                   type="checkbox"
-                  id="<%= language[i]?.language %>"
+                  id="<%= language[i]?.lang %>"
                   name="language"
-                  value="<%= language[i]?.language %>"
+                  value="<%= language[i]?.iso_lang %>"
                 />
               </div>
             </li>
@@ -71,9 +75,9 @@
           </ul>
         </div>
 
-        <!-- Region Filter -->
+        <!-- Country Filter -->
         <div class="multi-select" data-multi-select="">
-          <button aria-label="Region" aria-expanded="false" data-id="filter1">
+          <button aria-label="Region" aria-expanded="false" data-id="filter11">
             Region
           </button>
           <ul
@@ -83,18 +87,49 @@
             aria-hidden="true"
             aria-modal="true"
           >
+            <% for (let i = 0; i < bureau.length; i++) { %>
+            <li role="option">
+              <div class="form-check">
+                <label for="<%= bureau[i]?.bureau %>"
+                  ><%= bureau[i]?.bureau %> (<%=
+                  bureau[i]?.recordcount || 0 %>)</label
+                >
+                <input
+                  type="checkbox"
+                  id="<%= bureau[i]?.bureau %>"
+                  name="bureau"
+                  value="<%= bureau[i]?.bureau %>"
+                />
+              </div>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+
+        <!-- Country Filter -->
+        <div class="multi-select" data-multi-select="">
+          <button aria-label="Country" aria-expanded="false" data-id="filter1">
+            Country
+          </button>
+          <ul
+            data-type="country"
+            role="listbox"
+            aria-multiselectable="true"
+            aria-hidden="true"
+            aria-modal="true"
+          >
             <% for (let i = 0; i < countries.length; i++) { %>
             <li role="option">
               <div class="form-check">
-                <label for="<%= countries[i]?.country %>"
-                  ><%= countries[i]?.country || countries[i]?.iso3 %> (<%=
+                <label for="<%= countries[i]?.iso3 %>"
+                  ><%= countries[i]?.name %> (<%=
                   countries[i]?.recordcount || 0 %>)</label
                 >
                 <input
                   type="checkbox"
                   id="<%= countries[i]?.iso3 %>"
                   name="country"
-                  value="<%= countries[i]?.country %>"
+                  value="<%= countries[i]?.iso3 %>"
                 />
               </div>
             </li>

@@ -26,6 +26,11 @@ function updateSearchQuery() {
   .nodes()
   .map((node) => node.value);
 
+  const selectedBureau = d3
+  .selectAll('input[name="bureau"]:checked')
+  .nodes()
+  .map((node) => node.value);
+
   const page = d3.select("#current_page").node().value;
 
   const queryParamsArray = [];
@@ -55,6 +60,13 @@ function updateSearchQuery() {
       .map((language) => encodeURIComponent(language))
       .join("&language=");
     queryParamsArray.push(`language=${languageParams}`);
+  }
+
+  if(selectedBureau.length > 0){
+    const bureauParams = selectedBureau
+      .map((bureau) => encodeURIComponent(bureau))
+      .join("&bureau=");
+    queryParamsArray.push(`bureau=${bureauParams}`);
   }
 
   const searchQuery = queryParamsArray.join("&");

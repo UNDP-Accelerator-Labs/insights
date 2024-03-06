@@ -1,18 +1,18 @@
 const { sqlregex } = include("middleware/search");
 
-const theWhereClause = (country, type, language) => {
+const theWhereClause = (country, type, language, iso3) => {
   let whereClause = "";
 
   if (country) {
-    if (Array.isArray(country) && country.length > 0) {
-      whereClause += ` AND country IN ('${country.join("','")}')`;
+    if (Array.isArray(country) && country.length ) {
+      whereClause += ` AND iso3 IN ('${country.join("','")}')`;
     } else if (typeof country === "string") {
-      whereClause += ` AND country = '${country}'`;
+      whereClause += ` AND iso3 = '${country}'`;
     }
   }
 
   if (type) {
-    if (Array.isArray(type) && type.length > 0) {
+    if (Array.isArray(type) && type.length ) {
       whereClause += ` AND article_type IN ('${type.join("','")}')`;
     } else if (typeof type === "string") {
       whereClause += ` AND article_type = '${type}'`;
@@ -20,13 +20,19 @@ const theWhereClause = (country, type, language) => {
   }
 
   if (language) {
-    if (Array.isArray(language) && language.length > 0) {
+    if (Array.isArray(language) && language.length) {
       whereClause += ` AND language IN ('${language.join("','")}')`;
     } else if (typeof language === "string") {
       whereClause += ` AND language = '${language}'`;
     }
   }
 
+  if(iso3 && iso3.length && Array.isArray(iso3)){
+    whereClause += ` AND iso3 IN ('${iso3.join("','")}')`;
+  }
+
+  whereClause += ` AND article_type != 'toolkit' AND relevance > 1`;
+  
   return whereClause;
 };
 
@@ -53,9 +59,10 @@ exports.searchBlogQuery = (
   country,
   type,
   page_content_limit,
-  language
+  language,
+  iso3
 ) => {
-  let whereClause = theWhereClause(country, type, language);
+  let whereClause = theWhereClause(country, type, language, iso3);
   let values = [page_content_limit, (page - 1) * page_content_limit, +page];
 
   let searchTextCondition = searchTextConditionFn(searchText);
@@ -67,7 +74,7 @@ exports.searchBlogQuery = (
         SELECT id, url, country, article_type, title, posted_date, posted_date_str, parsed_date, language, created_at,
           regexp_replace(${textColumn}, E'\\n', ' ', 'g') AS content
         FROM articles
-        WHERE has_lab IS TRUE
+        WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
         ORDER BY 
@@ -81,7 +88,7 @@ exports.searchBlogQuery = (
       total_count AS (
         SELECT COUNT(*) AS total_records
         FROM articles
-        WHERE has_lab IS TRUE
+        WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
       )
@@ -93,15 +100,15 @@ exports.searchBlogQuery = (
   };
 };
 
-exports.articleGroup = (searchText, country, type, language) => {
-  let whereClause = theWhereClause(country, type, language);
+exports.articleGroup = (searchText, country, type, language, iso3) => {
+  let whereClause = theWhereClause(country, type, language, iso3);
   let searchTextCondition = searchTextConditionFn(searchText);
 
   return {
     text: `
       SELECT article_type, COUNT(*) AS recordCount
       FROM articles
-      WHERE has_lab IS TRUE
+      WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
       GROUP BY article_type;
@@ -109,40 +116,41 @@ exports.articleGroup = (searchText, country, type, language) => {
   };
 };
 
-exports.languageGroup = (searchText, country, type, language) => {
-  let whereClause = theWhereClause(country, type, language);
+exports.languageGroup = (searchText, country, type, language, iso3) => {
+  let whereClause = theWhereClause(country, type, language, iso3);
   let searchTextCondition = searchTextConditionFn(searchText);
 
   return {
     text: `
-      SELECT language, COUNT(*) AS recordCount
-      FROM articles
-      WHERE has_lab IS TRUE
-        ${searchTextCondition}
-        ${whereClause}
-      GROUP BY language;
+    SELECT articles.language AS iso_lang, iso_languages.Name AS lang, COUNT(*) AS recordCount
+    FROM articles
+    JOIN iso_languages ON articles.language = iso_languages.Set1
+    WHERE TRUE
+    ${searchTextCondition}
+    ${whereClause}
+    GROUP BY articles.language, iso_languages.Name;   
     `,
   };
 };
 
-exports.countryGroup = (searchText, country, type, language) => {
-  let whereClause = theWhereClause(country, type, language);
+exports.countryGroup = (searchText, country, type, language, iso3) => {
+  let whereClause = theWhereClause(country, type, language, iso3);
   let searchTextCondition = searchTextConditionFn(searchText);
 
   return {
     text: `
-      SELECT country, iso3, COUNT(*) AS recordCount
+      SELECT iso3, COUNT(*) AS recordCount
       FROM articles
-      WHERE has_lab IS TRUE
+      WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
-      GROUP BY country, iso3;
+      GROUP BY iso3;
     `,
   };
 };
 
-exports.statsQuery = (searchText, country, type, language) => {
-  let whereClause = theWhereClause(country, type, language);
+exports.statsQuery = (searchText, country, type, language, iso3) => {
+  let whereClause = theWhereClause(country, type, language, iso3);
   let searchTextCondition = searchTextConditionFn(searchText);
 
   return {
@@ -150,7 +158,7 @@ exports.statsQuery = (searchText, country, type, language) => {
         WITH search_results AS (
           SELECT id, url, content, country, article_type, title, posted_date, posted_date_str, created_at, has_lab, iso3
           FROM articles
-          WHERE has_lab IS TRUE
+          WHERE TRUE
             ${searchTextCondition}
             ${whereClause}
         ),
@@ -181,8 +189,8 @@ exports.statsQuery = (searchText, country, type, language) => {
   };
 };
 
-exports.extractGeoQuery = (searchText, country, type, language) => {
-  let whereClause = theWhereClause(country, type, language);
+exports.extractGeoQuery = (searchText, country, type, language, iso3) => {
+  let whereClause = theWhereClause(country, type, language, iso3);
   let searchTextCondition = searchTextConditionFn(searchText);
 
   return {
@@ -190,7 +198,7 @@ exports.extractGeoQuery = (searchText, country, type, language) => {
         WITH search_results AS (
           SELECT *
           FROM articles
-          WHERE has_lab IS TRUE
+          WHERE TRUE
           ${searchTextCondition}
           ${whereClause}
         )

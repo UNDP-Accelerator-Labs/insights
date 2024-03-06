@@ -32,6 +32,7 @@ module.exports = async (req, res) => {
       total_records,
       current_page,
       countries: filters?.countries,
+      bureau: filters?.bureau,
       articletype: filters?.articleType,
       geodata: filters?.geoData,
       language: filters?.language

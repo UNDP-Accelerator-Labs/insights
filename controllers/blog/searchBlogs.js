@@ -4,9 +4,9 @@ const { sqlregex } = include("middleware/search");
 
 exports.main = async (kwargs) => {
   const conn = kwargs.connection ? kwargs.connection : DB.conn;
-  const { req, page, page_content_limit } = kwargs || {};
+  const { req, page, page_content_limit, iso3 } = kwargs || {};
 
-  let { search, country, type, language } = req.query || {};
+  let { search, country, type, language, bureau } = req.query || {};
   const searchText = search || "";
   const [formated_search, terms] = sqlregex(searchText);
 
@@ -19,7 +19,8 @@ exports.main = async (kwargs) => {
           country,
           type,
           page_content_limit,
-          language
+          language,
+          iso3
         )
       )
       .then(async (results) => {
