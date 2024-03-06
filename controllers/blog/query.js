@@ -2,7 +2,6 @@ const { sqlregex } = include("middleware/search");
 
 const theWhereClause = (country, type, language, iso3) => {
   let whereClause = "";
-
   if (country) {
     if (Array.isArray(country) && country.length ) {
       whereClause += ` AND iso3 IN ('${country.join("','")}')`;
@@ -46,8 +45,8 @@ const searchTextConditionFn = (searchText) => {
   ) {
     searchTextCondition = `
       AND (title ~* '\\m${search}\\M'
-        OR content ~* '\\m${search}\\M'
-        OR all_html_content ~* '\\m${search}\\M')
+        OR b.content ~* '\\m${search}\\M'
+        OR c.html_content ~* '\\m${search}\\M')
     `;
   }
   return searchTextCondition;
@@ -66,14 +65,16 @@ exports.searchBlogQuery = (
   let values = [page_content_limit, (page - 1) * page_content_limit, +page];
 
   let searchTextCondition = searchTextConditionFn(searchText);
-  let textColumn = "COALESCE(content, all_html_content)";
+  let textColumn = "COALESCE(b.content, c.html_content)";
 
   return {
     text: `
       WITH search_results AS (
-        SELECT id, url, country, article_type, title, posted_date, posted_date_str, parsed_date, language, created_at,
+        SELECT a.url, a.article_type, a.title, a.posted_date, a.posted_date_str, a.parsed_date, a.language, a.created_at,
           regexp_replace(${textColumn}, E'\\n', ' ', 'g') AS content
-        FROM articles
+        FROM articles a
+        JOIN article_content b ON b.article_id = a.id 
+        JOIN article_html_content c ON c.article_id = a.id
         WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
@@ -107,7 +108,9 @@ exports.articleGroup = (searchText, country, type, language, iso3) => {
   return {
     text: `
       SELECT article_type, COUNT(*) AS recordCount
-      FROM articles
+      FROM articles a
+      JOIN article_content b ON b.article_id = a.id 
+      JOIN article_html_content c ON c.article_id = a.id
       WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
@@ -122,13 +125,15 @@ exports.languageGroup = (searchText, country, type, language, iso3) => {
 
   return {
     text: `
-    SELECT articles.language AS iso_lang, iso_languages.Name AS lang, COUNT(*) AS recordCount
-    FROM articles
-    JOIN iso_languages ON articles.language = iso_languages.Set1
+    SELECT a.language AS iso_lang, iso_languages.Name AS lang, COUNT(*) AS recordCount
+    FROM articles a
+    JOIN article_content b ON b.article_id = a.id 
+    JOIN article_html_content c ON c.article_id = a.id
+    JOIN iso_languages ON a.language = iso_languages.Set1
     WHERE TRUE
     ${searchTextCondition}
     ${whereClause}
-    GROUP BY articles.language, iso_languages.Name;   
+    GROUP BY a.language, iso_languages.Name;   
     `,
   };
 };
@@ -139,8 +144,10 @@ exports.countryGroup = (searchText, country, type, language, iso3) => {
 
   return {
     text: `
-      SELECT iso3, COUNT(*) AS recordCount
-      FROM articles
+      SELECT a.iso3, COUNT(*) AS recordCount
+      FROM articles a
+      JOIN article_content b ON b.article_id = a.id 
+      JOIN article_html_content c ON c.article_id = a.id
       WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
@@ -156,16 +163,18 @@ exports.statsQuery = (searchText, country, type, language, iso3) => {
   return {
     text: `
         WITH search_results AS (
-          SELECT id, url, content, country, article_type, title, posted_date, posted_date_str, created_at, has_lab, iso3
-          FROM articles
+          SELECT a.url, a.article_type, a.title, a.posted_date, a.posted_date_str, a.created_at, a.iso3
+          FROM articles a
+          JOIN article_content b ON b.article_id = a.id 
+          JOIN article_html_content c ON c.article_id = a.id
           WHERE TRUE
             ${searchTextCondition}
             ${whereClause}
         ),
         total_country_count AS (
-          SELECT country, COUNT(*) AS count
+          SELECT iso3, COUNT(*) AS count
           FROM search_results
-          GROUP BY country
+          GROUP BY iso3
         ),
         total_null_country_count AS (
           SELECT COUNT(*) AS count
@@ -181,7 +190,7 @@ exports.statsQuery = (searchText, country, type, language, iso3) => {
           FROM search_results
         )
         SELECT 
-          (SELECT COUNT(DISTINCT country) FROM total_country_count) AS distinct_country_count,
+          (SELECT COUNT(DISTINCT iso3) FROM total_country_count) AS distinct_country_count,
           (SELECT count FROM total_null_country_count) AS null_country_count,
           (SELECT COUNT(DISTINCT article_type) FROM total_article_type_count) AS distinct_article_type_count,
           (SELECT total_records FROM total_count) AS total_records;
@@ -196,8 +205,10 @@ exports.extractGeoQuery = (searchText, country, type, language, iso3) => {
   return {
     text: `
         WITH search_results AS (
-          SELECT *
-          FROM articles
+          SELECT lat, lng, url, iso3
+          FROM articles a
+          JOIN article_content b ON b.article_id = a.id 
+          JOIN article_html_content c ON c.article_id = a.id
           WHERE TRUE
           ${searchTextCondition}
           ${whereClause}
@@ -213,7 +224,7 @@ exports.extractGeoQuery = (searchText, country, type, language, iso3) => {
             )::jsonb
           ) AS json
         FROM (
-          SELECT c.iso3 AS cid, c.has_lab, ST_Point(c.lng, c.lat) AS geo
+          SELECT c.iso3 AS cid, ST_Point(c.lng, c.lat) AS geo
           FROM search_results c
         ) AS clusters
         GROUP BY clusters.cid
