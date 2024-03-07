@@ -8,13 +8,7 @@
   <ul>
     <% if (current_page > 1) { %>
       <li>
-        <a href="#" role="button" aria-label="Previous" data-page="<%= current_page - 1 %>">
-          Previous
-        </a>
-      </li>
-    <% } else { %>
-      <li class="disabled" aria-disabled="true">
-        <a href="#" role="button" aria-current="true" aria-label="Previous">
+        <a href="#" role="button"  aria-label="Previous" data-page="<%= current_page - 1 %>">
           Previous
         </a>
       </li>

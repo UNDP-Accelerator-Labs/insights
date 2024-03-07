@@ -10,7 +10,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-function updateSearchQuery() {
+function updateSearchQuery(resetPage) {
   const searchInputValue = document.getElementById("search-input").value;
   const selectedCountries = d3
     .selectAll('input[name="country"]:checked')
@@ -31,7 +31,9 @@ function updateSearchQuery() {
     .nodes()
     .map((node) => node.value);
 
-  const page = d3.select("#current_page").node().value;
+  //RESET PAGE TO 1 IF NEW PARAMETERS ARE ADDED TO QUERY PARAMS
+  let page = d3.select("#current_page").node().value;
+  if (resetPage) page = 1;
 
   const queryParamsArray = [];
 
@@ -125,7 +127,9 @@ async function onLoad() {
   // d3.selectAll('input[name="country"], input[name="article_type"]').on('change', updateSearchQuery);
 
   // Add an event listener to the search input
-  d3.select("#apply-search").on("click", updateSearchQuery);
+  d3.select("#apply-search").on("click", function () {
+    updateSearchQuery(true);
+  });
   d3.select("#search-input").on("keypress", function (event) {
     if (event.key === "Enter") {
       updateSearchQuery();
@@ -228,6 +232,7 @@ async function onLoad() {
       // Add an event listener to remove the chip when clicked
       chip.on("click", function () {
         const updatedQueryParams = new URLSearchParams(window.location.search);
+        updatedQueryParams.set("page", "1");
         updatedQueryParams.delete(key);
         window.location.href = `/browse?${updatedQueryParams.toString()}`;
         isLoading(true);
