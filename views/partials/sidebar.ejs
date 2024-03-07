@@ -35,14 +35,20 @@
     <div class="search-filter">
       <div class="expand-search">
         <button class="expand-button">
-            <img src="https://design.undp.org/static/media/search-black.4642527c.svg" alt="search expand" />
+          <img
+            src="https://design.undp.org/static/media/search-black.4642527c.svg"
+            alt="search expand"
+          />
         </button>
         <input id="search-input" type="text" aria-label="expand-search" />
         <button class="close-button">
-            <img src="https://design.undp.org/static/media/times.cd26ac2e.svg" alt="search close" />
+          <img
+            src="https://design.undp.org/static/media/times.cd26ac2e.svg"
+            alt="search close"
+          />
         </button>
       </div>
-      
+
       <!-- Language filter -->
       <div class="select-wrapper">
         <div class="multi-select" data-multi-select="">
@@ -60,8 +66,8 @@
             <li role="option">
               <div class="form-check">
                 <label for="<%= language[i]?.lang %>"
-                  ><%= language[i]?.label %> (<%=
-                  language[i]?.recordcount || 0 %>)</label
+                  ><%= language[i]?.label %> (<%= language[i]?.recordcount || 0
+                  %>)</label
                 >
                 <input
                   type="checkbox"
@@ -88,51 +94,30 @@
             aria-modal="true"
           >
             <% for (let i = 0; i < bureau.length; i++) { %>
-            <li role="option">
-              <div class="form-check">
-                <label for="<%= bureau[i]?.bureau %>"
-                  ><%= bureau[i]?.bureau %> (<%=
-                  bureau[i]?.recordcount || 0 %>)</label
-                >
-                <input
-                  type="checkbox"
-                  id="<%= bureau[i]?.bureau %>"
-                  name="bureau"
-                  value="<%= bureau[i]?.bureau %>"
-                />
-              </div>
-            </li>
-            <% } %>
-          </ul>
-        </div>
-
-        <!-- Country Filter -->
-        <div class="multi-select" data-multi-select="">
-          <button aria-label="Country" aria-expanded="false" data-id="filter1">
-            Country
-          </button>
-          <ul
-            data-type="country"
-            role="listbox"
-            aria-multiselectable="true"
-            aria-hidden="true"
-            aria-modal="true"
-          >
-            <% for (let i = 0; i < countries.length; i++) { %>
-            <li role="option">
-              <div class="form-check">
-                <label for="<%= countries[i]?.iso3 %>"
-                  ><%= countries[i]?.name %> (<%=
-                  countries[i]?.recordcount || 0 %>)</label
-                >
-                <input
-                  type="checkbox"
-                  id="<%= countries[i]?.iso3 %>"
-                  name="country"
-                  data-bureau="<%= countries[i]?.bureau %>"
-                  value="<%= countries[i]?.iso3 %>"
-                />
-              </div>
+            <li role="option" class="has-submenu">
+              <button class="checkbox-item">
+                <%= bureau[i]?.bureau %> (<%= bureau[i]?.recordcount || 0 %>)
+              </button>
+              <ul role="listbox" class="sub-menu">
+                <% countries.filter(p => bureau[i].bureau ==
+                p.bureau).forEach(country => { %>
+                <li role="option">
+                  <div class="form-check">
+                    <label for="<%= country?.iso3 %>"
+                      ><%= country?.name %> (<%= country?.recordcount || 0
+                      %>)</label
+                    >
+                    <input
+                      type="checkbox"
+                      id="<%= country?.iso3 %>"
+                      name="country"
+                      data-bureau="<%= country?.bureau %>"
+                      value="<%= country?.iso3 %>"
+                    />
+                  </div>
+                </li>
+                <% }); %>
+              </ul>
             </li>
             <% } %>
           </ul>
@@ -154,8 +139,8 @@
             <li role="option">
               <div class="form-check">
                 <label for="<%= articletype[i]?.country %>"
-                  ><%= articletype[i]?.label %> (<%=
-                  articletype[i]?.recordcount || 0 %>)</label
+                  ><%= articletype[i]?.label %> (<%= articletype[i]?.recordcount
+                  || 0 %>)</label
                 >
                 <input
                   type="checkbox"
@@ -168,11 +153,16 @@
             <% } %>
           </ul>
         </div>
-        <br/>
+        <br />
         <div class="cell cta-container">
-            <a id="apply-search" class="button button-primary button-without-arrow" role="button" href="#">
-                Apply 
-            </a>
+          <a
+            id="apply-search"
+            class="button button-primary button-without-arrow"
+            role="button"
+            href="#"
+          >
+            Apply
+          </a>
         </div>
 
         <span class="active-filter">Active Filters:</span>

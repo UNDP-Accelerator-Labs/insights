@@ -175,48 +175,6 @@ async function onLoad() {
     }
   });
 
-  // Get all bureau and country checkboxes
-  const bureauCheckboxes = document.querySelectorAll('input[name="bureau"]');
-  const countryCheckboxing = document.querySelectorAll('input[name="country"]');
-
-  // Add event listener to each bureau checkbox
-  bureauCheckboxes.forEach((bureauCheckbox) => {
-    bureauCheckbox.addEventListener("change", function () {
-      // Get all selected bureaus
-      const selectedBureaus = Array.from(bureauCheckboxes)
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value);
-
-      // Check if any bureau checkbox is checked
-      if (selectedBureaus.length > 0) {
-        // Hide all country checkboxes
-        countryCheckboxing.forEach((countryCheckbox) => {
-          countryCheckbox.closest("li").style.display = "none";
-        });
-
-        // Show country checkboxes associated with the selected bureaus
-        selectedBureaus.forEach((selectedBureau) => {
-          document
-            .querySelectorAll(`input[data-bureau="${selectedBureau}"]`)
-            .forEach((countryCheckbox) => {
-              countryCheckbox.closest("li").style.display = "block";
-            });
-        });
-      } else {
-        // If no bureau checkbox is checked, display all country checkboxes
-        countryCheckboxing.forEach((countryCheckbox) => {
-          countryCheckbox.closest("li").style.display = "block";
-        });
-      }
-    });
-
-    // Check if the bureau checkbox is already checked based on query parameters
-    const documentValue = bureauCheckbox.value;
-    if (queryParams.getAll("bureau").includes(documentValue)) {
-      bureauCheckbox.checked = true;
-    }
-  });
-
   // Create and append chips for query parameters
   const selectedChipsContainer = d3.select(".selected-chips");
   queryParams.forEach((value, key) => {
