@@ -22,14 +22,14 @@ function updateSearchQuery() {
     .map((node) => node.value);
 
   const selectedLanguages = d3
-  .selectAll('input[name="language"]:checked')
-  .nodes()
-  .map((node) => node.value);
+    .selectAll('input[name="language"]:checked')
+    .nodes()
+    .map((node) => node.value);
 
   const selectedBureau = d3
-  .selectAll('input[name="bureau"]:checked')
-  .nodes()
-  .map((node) => node.value);
+    .selectAll('input[name="bureau"]:checked')
+    .nodes()
+    .map((node) => node.value);
 
   const page = d3.select("#current_page").node().value;
 
@@ -51,25 +51,26 @@ function updateSearchQuery() {
     queryParamsArray.push(`type=${articleTypesParam}`);
   }
 
-  if (page) {
-    queryParamsArray.push(`page=${page}`);
-  }
-
-  if(selectedLanguages.length > 0){
+  if (selectedLanguages.length > 0) {
     const languageParams = selectedLanguages
       .map((language) => encodeURIComponent(language))
       .join("&language=");
     queryParamsArray.push(`language=${languageParams}`);
   }
 
-  if(selectedBureau.length > 0){
+  if (selectedBureau.length > 0) {
     const bureauParams = selectedBureau
       .map((bureau) => encodeURIComponent(bureau))
       .join("&bureau=");
     queryParamsArray.push(`bureau=${bureauParams}`);
   }
 
+  if (page) {
+    queryParamsArray.push(`page=${page}`);
+  }
+
   const searchQuery = queryParamsArray.join("&");
+
   if (searchQuery !== "") {
     window.location.href = `/browse?${searchQuery}`;
     isLoading(true);
@@ -158,6 +159,48 @@ async function onLoad() {
     const documentValue = node.value;
     if (queryParams.getAll("type").includes(documentValue)) {
       node.checked = true;
+    }
+  });
+
+  // Autofill language checkboxes
+  const languageCheckboxes = d3.selectAll('input[name="language"]');
+  languageCheckboxes.nodes().forEach((node) => {
+    const documentValue = node.value;
+    if (queryParams.getAll("language").includes(documentValue)) {
+      node.checked = true;
+    }
+  });
+
+  // Get all bureau and country checkboxes
+  const bureauCheckboxes = document.querySelectorAll('input[name="bureau"]');
+  const countryCheckboxing = document.querySelectorAll('input[name="country"]');
+
+  // Add event listener to each bureau checkbox
+  bureauCheckboxes.forEach((bureauCheckbox) => {
+    bureauCheckbox.addEventListener("change", function () {
+      const selectedBureaus = Array.from(bureauCheckboxes)
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.value);
+
+      // Hide all country checkboxes
+      countryCheckboxing.forEach((countryCheckbox) => {
+        countryCheckbox.closest("li").style.display = "none";
+      });
+
+      // Show country checkboxes associated with the selected bureaus
+      selectedBureaus.forEach((selectedBureau) => {
+        document
+          .querySelectorAll(`input[data-bureau="${selectedBureau}"]`)
+          .forEach((countryCheckbox) => {
+            countryCheckbox.closest("li").style.display = "block";
+          });
+      });
+    });
+
+    // Check if the bureau checkbox is already checked based on query parameters
+    const documentValue = bureauCheckbox.value;
+    if (queryParams.getAll("bureau").includes(documentValue)) {
+      bureauCheckbox.checked = true;
     }
   });
 

@@ -75,13 +75,13 @@
           </ul>
         </div>
 
-        <!-- Country Filter -->
+        <!-- Bureau Filter -->
         <div class="multi-select" data-multi-select="">
-          <button aria-label="Region" aria-expanded="false" data-id="filter11">
+          <button aria-label="bureau" aria-expanded="false" data-id="filter11">
             Region
           </button>
           <ul
-            data-type="region"
+            data-type="bureau"
             role="listbox"
             aria-multiselectable="true"
             aria-hidden="true"
@@ -129,6 +129,7 @@
                   type="checkbox"
                   id="<%= countries[i]?.iso3 %>"
                   name="country"
+                  data-bureau="<%= countries[i]?.bureau %>"
                   value="<%= countries[i]?.iso3 %>"
                 />
               </div>
