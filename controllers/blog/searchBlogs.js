@@ -24,8 +24,23 @@ exports.main = async (kwargs) => {
         )
       )
       .then(async (results) => {
+
+        const iso3 = await results.map((p) => p.iso3);
+        const countries = await DB.general.any(
+          `
+              SELECT name,  iso3
+              FROM country_names 
+              WHERE iso3 = ANY($1) 
+          `,
+          [iso3]
+        ).catch(err=>{
+          console.log(err)
+          return []
+        });
+
         const data = await results.map((p) => ({
           ...p,
+          country: countries.find(k=> k.iso3 == p.iso3)?.name || '',
           date: convertToDate(p),
           matched_texts: extractMatchedTexts(p, terms),
         }));

@@ -70,7 +70,7 @@ exports.searchBlogQuery = (
   return {
     text: `
       WITH search_results AS (
-        SELECT a.url, a.article_type, a.title, a.posted_date, a.posted_date_str, a.parsed_date, a.language, a.created_at,
+        SELECT a.url, a.article_type, a.title, a.iso3, a.posted_date, a.posted_date_str, a.parsed_date, a.language, a.created_at,
           regexp_replace(${textColumn}, E'\\n', ' ', 'g') AS content
         FROM articles a
         JOIN article_content b ON b.article_id = a.id 
