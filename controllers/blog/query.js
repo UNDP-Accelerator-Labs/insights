@@ -88,7 +88,9 @@ exports.searchBlogQuery = (
       ),
       total_count AS (
         SELECT COUNT(*) AS total_records
-        FROM articles
+        FROM articles a
+        JOIN article_content b ON b.article_id = a.id 
+        JOIN article_html_content c ON c.article_id = a.id
         WHERE TRUE
         ${searchTextCondition}
         ${whereClause}
