@@ -3,16 +3,20 @@
     const menulist = locals.metadata.site.acclab_suites 
     const title = locals.metadata.site.title 
     const stats = locals?.stats 
-    const countries = locals?.countries?.sort((a, b) => a?.country?.localeCompare(b?.country)) || [];
+    const countries = locals?.countries
+    ?.sort((a, b) => a?.name.localeCompare(b?.name)) || [];
+    const bureau = locals?.bureau
+    ?.sort((a, b) => a?.bureau.localeCompare(b?.bureau)) || [];
+
     const articletype = locals?.articletype?.sort((a, b) => a?.article_type.localeCompare(b?.article_type))
     .map(item => ({
         ...item,
         label: item.article_type ? item.article_type.toUpperCase() : null
       })) || [];
-    const language = locals?.language?.sort((a, b) => a?.language?.localeCompare(b?.language))
+    const language = locals?.language?.sort((a, b) => a?.lang?.localeCompare(b?.lang))
     .map(item => ({
       ...item,
-      label: item.language ? item.language.toUpperCase() : null
+      label: item.lang ? item.lang.toUpperCase() : null
     })) || [];
 
     const geodata = locals?.geodata 
@@ -31,18 +35,24 @@
     <div class="search-filter">
       <div class="expand-search">
         <button class="expand-button">
-            <img src="https://design.undp.org/static/media/search-black.4642527c.svg" alt="search expand" />
+          <img
+            src="https://design.undp.org/static/media/search-black.4642527c.svg"
+            alt="search expand"
+          />
         </button>
         <input id="search-input" type="text" aria-label="expand-search" />
         <button class="close-button">
-            <img src="https://design.undp.org/static/media/times.cd26ac2e.svg" alt="search close" />
+          <img
+            src="https://design.undp.org/static/media/times.cd26ac2e.svg"
+            alt="search close"
+          />
         </button>
       </div>
-      
+
       <!-- Language filter -->
       <div class="select-wrapper">
         <div class="multi-select" data-multi-select="">
-          <button aria-label="Region" aria-expanded="false" data-id="filter0">
+          <button aria-label="language" aria-expanded="false" data-id="filter0">
             Language
           </button>
           <ul
@@ -55,15 +65,15 @@
             <% for (let i = 0; i < language.length; i++) { %>
             <li role="option">
               <div class="form-check">
-                <label for="<%= language[i]?.language %>"
-                  ><%= language[i]?.label %> (<%=
-                  language[i]?.recordcount || 0 %>)</label
+                <label for="<%= language[i]?.lang %>"
+                  ><%= language[i]?.label %> (<%= language[i]?.recordcount || 0
+                  %>)</label
                 >
                 <input
                   type="checkbox"
-                  id="<%= language[i]?.language %>"
+                  id="<%= language[i]?.lang %>"
                   name="language"
-                  value="<%= language[i]?.language %>"
+                  value="<%= language[i]?.iso_lang %>"
                 />
               </div>
             </li>
@@ -71,32 +81,43 @@
           </ul>
         </div>
 
-        <!-- Region Filter -->
+        <!-- Bureau Filter -->
         <div class="multi-select" data-multi-select="">
-          <button aria-label="Region" aria-expanded="false" data-id="filter1">
+          <button aria-label="bureau" aria-expanded="false" data-id="filter11">
             Region
           </button>
           <ul
-            data-type="region"
+            data-type="bureau"
             role="listbox"
             aria-multiselectable="true"
             aria-hidden="true"
             aria-modal="true"
           >
-            <% for (let i = 0; i < countries.length; i++) { %>
-            <li role="option">
-              <div class="form-check">
-                <label for="<%= countries[i]?.country %>"
-                  ><%= countries[i]?.country || countries[i]?.iso3 %> (<%=
-                  countries[i]?.recordcount || 0 %>)</label
-                >
-                <input
-                  type="checkbox"
-                  id="<%= countries[i]?.iso3 %>"
-                  name="country"
-                  value="<%= countries[i]?.country %>"
-                />
-              </div>
+            <% for (let i = 0; i < bureau.length; i++) { %>
+            <li role="option" class="has-submenu">
+              <button class="checkbox-item">
+                <%= bureau[i]?.bureau %> (<%= bureau[i]?.recordcount || 0 %>)
+              </button>
+              <ul role="listbox" class="sub-menu">
+                <% countries.filter(p => bureau[i].bureau ==
+                p.bureau).forEach(country => { %>
+                <li role="option">
+                  <div class="form-check">
+                    <label for="<%= country?.iso3 %>"
+                      ><%= country?.name %> (<%= country?.recordcount || 0
+                      %>)</label
+                    >
+                    <input
+                      type="checkbox"
+                      id="<%= country?.iso3 %>"
+                      name="country"
+                      data-bureau="<%= country?.bureau %>"
+                      value="<%= country?.iso3 %>"
+                    />
+                  </div>
+                </li>
+                <% }); %>
+              </ul>
             </li>
             <% } %>
           </ul>
@@ -118,8 +139,8 @@
             <li role="option">
               <div class="form-check">
                 <label for="<%= articletype[i]?.country %>"
-                  ><%= articletype[i]?.label %> (<%=
-                  articletype[i]?.recordcount || 0 %>)</label
+                  ><%= articletype[i]?.label %> (<%= articletype[i]?.recordcount
+                  || 0 %>)</label
                 >
                 <input
                   type="checkbox"
@@ -132,11 +153,16 @@
             <% } %>
           </ul>
         </div>
-        <br/>
+        <br />
         <div class="cell cta-container">
-            <a id="apply-search" class="button button-primary button-without-arrow" role="button" href="#">
-                Apply 
-            </a>
+          <a
+            id="apply-search"
+            class="button button-primary button-without-arrow"
+            role="button"
+            href="#"
+          >
+            Apply
+          </a>
         </div>
 
         <span class="active-filter">Active Filters:</span>

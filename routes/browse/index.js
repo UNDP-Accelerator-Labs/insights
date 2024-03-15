@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
     data && Array.isArray(data) ? data : [null, null, null];
   const results = searchResults?.searchResults || [];
   const total_pages = results[0]?.total_pages || 0;
-  const current_page = results[0]?.current_page || 1;
+  const current_page = results[0]?.current_page || +page;
   const total_records = results[0]?.total_records || 0;
 
   res.render(
@@ -32,6 +32,7 @@ module.exports = async (req, res) => {
       total_records,
       current_page,
       countries: filters?.countries,
+      bureau: filters?.bureau,
       articletype: filters?.articleType,
       geodata: filters?.geoData,
       language: filters?.language

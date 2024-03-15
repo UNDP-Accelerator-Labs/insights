@@ -10,7 +10,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-function updateSearchQuery() {
+function updateSearchQuery(resetPage) {
   const searchInputValue = document.getElementById("search-input").value;
   const selectedCountries = d3
     .selectAll('input[name="country"]:checked')
@@ -22,11 +22,18 @@ function updateSearchQuery() {
     .map((node) => node.value);
 
   const selectedLanguages = d3
-  .selectAll('input[name="language"]:checked')
-  .nodes()
-  .map((node) => node.value);
+    .selectAll('input[name="language"]:checked')
+    .nodes()
+    .map((node) => node.value);
 
-  const page = d3.select("#current_page").node().value;
+  const selectedBureau = d3
+    .selectAll('input[name="bureau"]:checked')
+    .nodes()
+    .map((node) => node.value);
+
+  //RESET PAGE TO 1 IF NEW PARAMETERS ARE ADDED TO QUERY PARAMS
+  let page = d3.select("#current_page").node().value;
+  if (resetPage) page = 1;
 
   const queryParamsArray = [];
 
@@ -46,18 +53,26 @@ function updateSearchQuery() {
     queryParamsArray.push(`type=${articleTypesParam}`);
   }
 
-  if (page) {
-    queryParamsArray.push(`page=${page}`);
-  }
-
-  if(selectedLanguages.length > 0){
+  if (selectedLanguages.length > 0) {
     const languageParams = selectedLanguages
       .map((language) => encodeURIComponent(language))
       .join("&language=");
     queryParamsArray.push(`language=${languageParams}`);
   }
 
+  if (selectedBureau.length > 0) {
+    const bureauParams = selectedBureau
+      .map((bureau) => encodeURIComponent(bureau))
+      .join("&bureau=");
+    queryParamsArray.push(`bureau=${bureauParams}`);
+  }
+
+  if (page) {
+    queryParamsArray.push(`page=${page}`);
+  }
+
   const searchQuery = queryParamsArray.join("&");
+
   if (searchQuery !== "") {
     window.location.href = `/browse?${searchQuery}`;
     isLoading(true);
@@ -112,7 +127,9 @@ async function onLoad() {
   // d3.selectAll('input[name="country"], input[name="article_type"]').on('change', updateSearchQuery);
 
   // Add an event listener to the search input
-  d3.select("#apply-search").on("click", updateSearchQuery);
+  d3.select("#apply-search").on("click", function () {
+    updateSearchQuery(true);
+  });
   d3.select("#search-input").on("keypress", function (event) {
     if (event.key === "Enter") {
       updateSearchQuery();
@@ -149,6 +166,15 @@ async function onLoad() {
     }
   });
 
+  // Autofill language checkboxes
+  const languageCheckboxes = d3.selectAll('input[name="language"]');
+  languageCheckboxes.nodes().forEach((node) => {
+    const documentValue = node.value;
+    if (queryParams.getAll("language").includes(documentValue)) {
+      node.checked = true;
+    }
+  });
+
   // Create and append chips for query parameters
   const selectedChipsContainer = d3.select(".selected-chips");
   queryParams.forEach((value, key) => {
@@ -164,6 +190,7 @@ async function onLoad() {
       // Add an event listener to remove the chip when clicked
       chip.on("click", function () {
         const updatedQueryParams = new URLSearchParams(window.location.search);
+        updatedQueryParams.set("page", "1");
         updatedQueryParams.delete(key);
         window.location.href = `/browse?${updatedQueryParams.toString()}`;
         isLoading(true);
