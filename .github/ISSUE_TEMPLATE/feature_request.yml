@@ -2,6 +2,7 @@ name: Feature Request
 description: Suggest a new feature for the project.
 title: "[FEATURE]: "
 labels: ["feature request"]
+assignees: ['this-pama']
 body:
   - type: markdown
     attributes:
