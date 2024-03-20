@@ -1,7 +1,14 @@
 <%
 	// CREATE ALIASES
-    const menulist = locals.metadata.site.acclab_suites
+    const acclab_suites = locals.metadata.site.acclab_suites
+    const menu_list = locals.metadata.site.menu_list
     const title = locals.metadata.site.title
+
+    const language = locals?.language?.sort((a, b) => a?.lang?.localeCompare(b?.lang))
+    .map(item => ({
+      ...item,
+      label: item.lang ? item.lang.toUpperCase() : null
+    })) || [];
 %>
 
 <header class="country-header country-load-animation">
@@ -27,33 +34,83 @@
         <div class="cell small-1 large-auto align-content-middle top-center">
           <nav class="menu">
             <ul class="">
-              <% for (let i = 0; i < menulist.length; i++) { %>
+              <li class="has-submenu">
+                <a href="#" class="" tabindex="0" aria-expanded="true">
+                  Platforms
+                </a>
+                <ul class="submenu" data-submenu="true">
+                  <% for (menu of acclab_suites) { %>
+                  <li class="">
+                    <a href="<%- menu.url %>" target="_blank" class="external" tabindex="0">
+                      <%- menu.title %>
+                      <span class="external-link-animated"><i></i></span>
+                    </a>
+                  </li>
+                <% } %>
+                </ul>
+              </li>
+              <% for ( menu of menu_list) { %>
               <li
-                data-menu-id="<%= menulist[i].title.toLowerCase().replace(/\s+/g, '') %>"
+                data-menu-id="<%= menu.title.toLowerCase().replace(/\s+/g, '') %>"
               >
-                <a target="_blank" href="<%= menulist[i].url %>" tabindex="0"
-                  ><%= menulist[i].title %></a
+                <a target="_blank" href="<%= menu.url %>" tabindex="0"
+                  ><%= menu.title %></a
                 >
               </li>
               <% } %>
+
+              <li
+                data-menu-id="toolkit"
+              >
+                <a  href="/browse/toolkit"
+                  >Toolkits</a
+                >
+              </li>
             </ul>
           </nav>
         </div>
+        <% if (language.length) { %>
+        <div class="cell small-3 large-auto top-right">
+          <div class="dropdown-language">
+            <button
+              class="blue"
+              aria-label="English, Select your language"
+              aria-expanded="false"
+            >
+              Select Language
+            </button>
+            <ul role="menu">
+              <% for (lang of language ) {%>
+              <li role="menuitem">
+                <a href="#" lang="<%= lang.iso_lang %>" hreflang="<%= lang.lang %>" tabindex="-1"><%= lang.lang %></a>
+              </li>
+              <% } %>
+            </ul>
+          </div>
+          <button class="menu-hamburger" aria-label="menu-icon">
+            <span class="hamburger-line line-top"></span>
+            <span class="hamburger-line line-middle"></span>
+            <span class="hamburger-line line-bottom"></span>
+            Nav toggle
+          </button>
+          <button class="icon-globe">Global</button>
+        </div>
+        <% } %>
 
         <div class="mobile-nav">
           <div class="grid-x">
             <div class="cell mobile-links">
               <ul>
-                <% for (let i = 0; i < menulist.length; i++) { %>
+                <% for (menu of menu_list) { %>
                 <li
-                  data-menu-id="<%= menulist[i].title.toLowerCase().replace(/\s+/g, '') %>"
+                  data-menu-id="<%= menu.title.toLowerCase().replace(/\s+/g, '') %>"
                 >
                   <a
                     target="_blank"
                     class="cta__link cta--space"
-                    href="<%= menulist[i].url %>"
+                    href="<%= menu.url %>"
                     tabindex="0"
-                    ><%= menulist[i].title %></a
+                    ><%= menu.title %></a
                   >
                 </li>
                 <% } %>

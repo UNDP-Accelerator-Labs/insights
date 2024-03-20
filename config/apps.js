@@ -19,10 +19,6 @@ exports.page_content_limit = 15;
 
 exports.acclab_suites = [
   {
-    title: "SDG Map",
-    url: "https://map.sdg-innovation-commons.org/",
-  },
-  {
     title: "Solution mapping",
     url: "https://solutions.sdg-innovation-commons.org",
   },
@@ -35,7 +31,18 @@ exports.acclab_suites = [
     url: "https://experiments.sdg-innovation-commons.org",
   },
   {
-    title: "Github",
-    url: "https://github.com/UNDP-Accelerator-Labs",
+    title: "Codification",
+    url: "https://practice.sdg-innovation-commons.org",
   },
 ];
+
+exports.menu_list = [
+  {
+    title: "SDG Map",
+    url: "https://map.sdg-innovation-commons.org/",
+  },
+  {
+    title: "Github",
+    url: "https://github.com/orgs/UNDP-Accelerator-Labs/repositories",
+  },
+]

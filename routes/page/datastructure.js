@@ -1,6 +1,7 @@
 const {
   app_title: title,
   acclab_suites,
+  menu_list,
   own_app_url,
   sso_app_url,
   page_content_limit,
@@ -49,6 +50,7 @@ exports.pagemetadata = (_kwargs) => {
       title,
       own_app_url,
       acclab_suites,
+      menu_list,
       login_url: !compareReqDomain(req, currentpage_url, sso_app_url)
         ? `${sso_app_url}?redirect_url=${encodeURIComponent(sso_app_url)}`
         : null,

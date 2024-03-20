@@ -166,14 +166,6 @@ async function onLoad() {
     }
   });
 
-  // Autofill language checkboxes
-  const languageCheckboxes = d3.selectAll('input[name="language"]');
-  languageCheckboxes.nodes().forEach((node) => {
-    const documentValue = node.value;
-    if (queryParams.getAll("language").includes(documentValue)) {
-      node.checked = true;
-    }
-  });
 
   // Create and append chips for query parameters
   const selectedChipsContainer = d3.select(".selected-chips");
@@ -201,6 +193,14 @@ async function onLoad() {
       const clearAllButton = d3.select(".clear-search-filter");
       clearAllButton.style("display", "block");
     }
+  });
+
+  d3.selectAll('.dropdown-language a').on('click', function() {
+      var selectedLanguage = d3.select(this).attr('lang');
+      var url = new URL(window.location.href);
+      url.searchParams.set('language', selectedLanguage);
+      window.location.href = url;
+      isLoading(true);
   });
 
   updatePaginationLinks();
