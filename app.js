@@ -13,7 +13,7 @@ const { xss } = require("express-xss-sanitizer");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 
-const { app_suite, app_base_host, app_suite_secret, csp_links } =
+const { app_suite, app_base_host, app_suite_secret, csp_config } =
   include("config/");
 const { DB } = include("db/");
 const { getVersionString } = include("middleware");
@@ -28,47 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        "img-src": csp_links,
-        "script-src": csp_links.concat([
-          (req, res) => `'nonce-${res.locals.nonce}'`,
-          "sha256-NNiElek2Ktxo4OLn2zGTHHeUR6b91/P618EXWJXzl3s=",
-          "strict-dynamic",
-        ]),
-        "script-src-attr": [
-          "'self'",
-          "*.sdg-innovation-commons.org",
-          "sdg-innovation-commons.org",
-        ],
-        "style-src": csp_links,
-        "connect-src": csp_links,
-        "frame-src": [
-          "'self'",
-          "*.sdg-innovation-commons.org",
-          "sdg-innovation-commons.org",
-          "https://www.youtube.com/",
-          "https://youtube.com/",
-          "https://web.microsoftstream.com",
-        ],
-        "form-action": [
-          "'self'",
-          "*.sdg-innovation-commons.org",
-          "sdg-innovation-commons.org",
-        ],
-      },
-    },
-    referrerPolicy: {
-      policy: ["strict-origin-when-cross-origin", "same-origin"],
-    },
-    xPoweredBy: false,
-    strictTransportSecurity: {
-      maxAge: 123456,
-    },
-  })
-);
+app.use(helmet(csp_config));
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "same-origin");
@@ -120,7 +80,6 @@ app.get("/version", (req, res) => {
       });
     });
 });
-
 
 app.use((req, res, next) => {
   res.status(404).send("<h1>Page not found on the server</h1>");
