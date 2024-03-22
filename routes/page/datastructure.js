@@ -4,8 +4,8 @@ const {
   menu_list,
   own_app_url,
   sso_app_url,
-  page_content_limit,
 } = include("config/");
+const { profile_url } = require('./service')
 
 function compareReqDomain(req, page_url, domain) {
   const referrer = req.get("Referer");
@@ -72,6 +72,8 @@ exports.pagemetadata = (_kwargs) => {
       originalUrl: req.originalUrl,
       query: parsedQuery,
       page_content_limit,
+
+      profile_url: profile_url(req)
     },
   };
   return obj;

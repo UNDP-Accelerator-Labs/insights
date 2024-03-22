@@ -9,6 +9,9 @@
       ...item,
       label: item.lang ? item.lang.toUpperCase() : null
     })) || [];
+
+    const user = locals.metadata?.user 
+    const profile_url = locals?.metadata?.page?.profile_url
 %>
 
 <header class="country-header country-load-animation">
@@ -93,7 +96,13 @@
             <span class="hamburger-line line-bottom"></span>
             Nav toggle
           </button>
-          <button class="icon-globe">Global</button>
+
+          <a id="fa-user" href="<%- profile_url %>" target="_blank">
+            <i class="fa fa-user"></i>
+            <% if (user?.uuid) {%>
+              <span class="help"><% user?.name || '' %></span>
+            <%} %>
+          </a>
         </div>
         <% } %>
 

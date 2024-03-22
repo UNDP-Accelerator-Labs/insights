@@ -11,6 +11,8 @@ exports.app_base_host = base_host;
 exports.app_suite_url = `https://www.${base_host}/`;
 exports.sso_app_url = "https://login.sdg-innovation-commons.org";
 
+exports.nlp_api_url ="https://acclabs-nlpapi.azurewebsites.net/api";
+
 exports.blogapi_url =
   process.env.NODE_ENV === "production"
     ? "blog-api-scrapper.azurewebsites.net/blogs/"

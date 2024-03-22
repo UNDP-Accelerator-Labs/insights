@@ -68,6 +68,10 @@ app.get("/", routes.home.index);
 app.get("/browse", routes.home.browse);
 app.get("/browse/toolkit", routes.browse.toolkit);
 
+//API ENDPOINTS
+app.get('/nlp-browse', routes.nlp_api.nlp_browse)
+app.get('/nlp-stats', routes.nlp_api.nlp_stats)
+
 app.get("/version", (req, res) => {
   getVersionString()
     .then((vo) => res.send(vo))

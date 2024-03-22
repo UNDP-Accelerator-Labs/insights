@@ -14,6 +14,7 @@ const {
   menu_list,
   sso_app_url,
   blogapi_url,
+  nlp_api_url,
   page_content_limit
 } = require("./apps");
 
@@ -33,10 +34,14 @@ exports.app_suite_secret = app_suite_secret;
 exports.app_storage = app_storage;
 exports.own_app_url = own_app_url;
 exports.app_base_host = app_base_host;
+
 exports.app_suite_url = app_suite_url;
 exports.acclab_suites = acclab_suites;
+
 exports.sso_app_url = sso_app_url;
 exports.blogapi_url = blogapi_url;
+exports.nlp_api_url = nlp_api_url;
+
 exports.page_content_limit = page_content_limit
 
 

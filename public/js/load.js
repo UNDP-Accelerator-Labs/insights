@@ -1,5 +1,9 @@
 import { d3 } from "/js/globals.js";
 import { isLoading } from "/js/notification/loader.js";
+import {
+  updateSearchQuery,
+  updatePaginationLinks,
+} from "/js/services/index.js";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
@@ -7,89 +11,6 @@ if ("serviceWorker" in navigator) {
       .register("/app.serviceWorker.js")
       .then((res) => console.log("service worker registered"))
       .catch((err) => console.log("service worker not registered", err));
-  });
-}
-
-function updateSearchQuery(resetPage) {
-  const searchInputValue = document.getElementById("search-input").value;
-  const selectedCountries = d3
-    .selectAll('input[name="country"]:checked')
-    .nodes()
-    .map((node) => node.value);
-  const selectedArticleTypes = d3
-    .selectAll('input[name="article_type"]:checked')
-    .nodes()
-    .map((node) => node.value);
-
-  const selectedLanguages = d3
-    .selectAll('input[name="language"]:checked')
-    .nodes()
-    .map((node) => node.value);
-
-  const selectedBureau = d3
-    .selectAll('input[name="bureau"]:checked')
-    .nodes()
-    .map((node) => node.value);
-
-  //RESET PAGE TO 1 IF NEW PARAMETERS ARE ADDED TO QUERY PARAMS
-  let page = d3.select("#current_page").node().value;
-  if (resetPage) page = 1;
-
-  const queryParamsArray = [];
-
-  queryParamsArray.push(`search=${encodeURIComponent(searchInputValue)}`);
-
-  if (selectedCountries.length > 0) {
-    const countriesParam = selectedCountries
-      .map((country) => encodeURIComponent(country))
-      .join("&country=");
-    queryParamsArray.push(`country=${countriesParam}`);
-  }
-
-  if (selectedArticleTypes.length > 0) {
-    const articleTypesParam = selectedArticleTypes
-      .map((type) => encodeURIComponent(type))
-      .join("&type=");
-    queryParamsArray.push(`type=${articleTypesParam}`);
-  }
-
-  if (selectedLanguages.length > 0) {
-    const languageParams = selectedLanguages
-      .map((language) => encodeURIComponent(language))
-      .join("&language=");
-    queryParamsArray.push(`language=${languageParams}`);
-  }
-
-  if (selectedBureau.length > 0) {
-    const bureauParams = selectedBureau
-      .map((bureau) => encodeURIComponent(bureau))
-      .join("&bureau=");
-    queryParamsArray.push(`bureau=${bureauParams}`);
-  }
-
-  if (page) {
-    queryParamsArray.push(`page=${page}`);
-  }
-
-  const searchQuery = queryParamsArray.join("&");
-
-  if (searchQuery !== "") {
-    window.location.href = `/browse?${searchQuery}`;
-    isLoading(true);
-  }
-}
-
-function updatePaginationLinks() {
-  const paginationLinks = d3.selectAll('.pagination a[role="button"]');
-
-  paginationLinks.on("click", function () {
-    const targetPage = parseInt(this.getAttribute("data-page"), 10);
-
-    // Update the page in the URL and trigger the search query update
-    const queryParams = new URLSearchParams(window.location.search);
-    queryParams.set("page", targetPage);
-    window.location.href = `/browse?${queryParams.toString()}`;
-    isLoading(true);
   });
 }
 
@@ -114,7 +35,7 @@ async function onLoad() {
   multiSelect();
   toggleFilter();
   swiper(".stats-card-slider");
-  // parallaxEffect('.stats-card-slider');
+  parallaxEffect(".stats-card-slider");
 
   //SHOW LOADING ICON WHEN A SUBMIT BUTTON IS CLICKED
   d3.selectAll("form").on("submit", function () {
@@ -123,8 +44,6 @@ async function onLoad() {
 
   isLoading(false);
 
-  // Add event listeners to the checkboxes
-  // d3.selectAll('input[name="country"], input[name="article_type"]').on('change', updateSearchQuery);
 
   // Add an event listener to the search input
   d3.select("#apply-search").on("click", function () {
@@ -166,7 +85,6 @@ async function onLoad() {
     }
   });
 
-
   // Create and append chips for query parameters
   const selectedChipsContainer = d3.select(".selected-chips");
   queryParams.forEach((value, key) => {
@@ -195,12 +113,12 @@ async function onLoad() {
     }
   });
 
-  d3.selectAll('.dropdown-language a').on('click', function() {
-      var selectedLanguage = d3.select(this).attr('lang');
-      var url = new URL(window.location.href);
-      url.searchParams.set('language', selectedLanguage);
-      window.location.href = url;
-      isLoading(true);
+  d3.selectAll(".dropdown-language a").on("click", function () {
+    var selectedLanguage = d3.select(this).attr("lang");
+    var url = new URL(window.location.href);
+    url.searchParams.set("language", selectedLanguage);
+    window.location.href = url;
+    isLoading(true);
   });
 
   updatePaginationLinks();
