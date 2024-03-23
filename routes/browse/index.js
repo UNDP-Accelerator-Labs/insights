@@ -14,28 +14,11 @@ module.exports = async (req, res) => {
     res,
   };
   const metadata = pagemetadata(_kwarq);
-  const data = await browse_data(DB.blog, req, res);
-
-  const [stats, searchResults, filters] =
-    data && Array.isArray(data) ? data : [null, null, null];
-  const results = searchResults?.searchResults || [];
-  const total_pages = results[0]?.total_pages || 0;
-  const current_page = results[0]?.current_page || +page;
-  const total_records = results[0]?.total_records || 0;
 
   res.render(
-    "browse/",
+    "browse/", 
     Object.assign(metadata, {
-      stats: stats?.stats,
-      results,
-      total_pages,
-      total_records,
-      current_page,
-      countries: filters?.countries,
-      bureau: filters?.bureau,
-      articletype: filters?.articleType,
-      geodata: filters?.geoData,
-      language: filters?.language
+      // total_pages,
     })
   );
 };

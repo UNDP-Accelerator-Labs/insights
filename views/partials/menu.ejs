@@ -69,10 +69,18 @@
                   >Toolkits</a
                 >
               </li>
+
+              <li
+                data-menu-id="explore"
+              >
+                <a  href="/browse"
+                  >Explore</a
+                >
+              </li>
             </ul>
           </nav>
         </div>
-        <% if (language.length) { %>
+        
         <div class="cell small-3 large-auto top-right">
           <div class="dropdown-language">
             <button
@@ -82,13 +90,7 @@
             >
               Select Language
             </button>
-            <ul role="menu">
-              <% for (lang of language ) {%>
-              <li role="menuitem">
-                <a href="#" lang="<%= lang.iso_lang %>" hreflang="<%= lang.lang %>" tabindex="-1"><%= lang.lang %></a>
-              </li>
-              <% } %>
-            </ul>
+            <ul role="menu" id="languageMenu"></ul>
           </div>
           <button class="menu-hamburger" aria-label="menu-icon">
             <span class="hamburger-line line-top"></span>
@@ -104,7 +106,7 @@
             <%} %>
           </a>
         </div>
-        <% } %>
+        
 
         <div class="mobile-nav">
           <div class="grid-x">

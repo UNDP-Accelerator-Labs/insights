@@ -1,9 +1,12 @@
 const { nlp_api_url } = include("/config");
 const { p_fetch } = require("./services");
 const { DB } = include("db/");
+const { page_content_limit } = include("/config");
 
 module.exports = async (req, res, json = true) => {
   const url = `${nlp_api_url}/stat_embed`;
+  let { page } = req.query;
+  if (!page && isNaN(page)) page = 1;
 
   const data = await p_fetch(req, url);
 
@@ -17,6 +20,14 @@ module.exports = async (req, res, json = true) => {
     value,
   }));
 
+  const doc_type = Object.entries(data?.fields?.doc_type).map(
+    ([key, value]) => ({
+      label: key.toUpperCase(),
+      key,
+      value,
+    })
+  );
+
   const [countries, languages] = await DB.general
     .tx(async (t) => {
       const batch = [];
@@ -27,6 +38,7 @@ module.exports = async (req, res, json = true) => {
         FROM country_names a
         JOIN countries b ON b.iso3 = a.iso3
         WHERE a.iso3 IN ($1:csv)
+        AND language = 'en'
         GROUP BY a.iso3, a.name, b.bureau
         `,
           [iso3.map((p) => p.label)]
@@ -50,7 +62,6 @@ module.exports = async (req, res, json = true) => {
       console.log(e);
       return [null, null];
     });
-
 
   const m_languages = languages.map((c) => ({
     ...c,
@@ -86,10 +97,16 @@ module.exports = async (req, res, json = true) => {
     return acc;
   }, []);
 
+  const total_r= data?.doc_count || 0;
+
   const m_data = await Object.assign(data, {
     countries: m_countries,
     bureaus,
     languages: m_languages,
+    doc_type,
+    total_r,
+    page,
+    total_pages : Math.ceil(total_r / page_content_limit)
   });
 
   if (json) return res.status(200).json(m_data);
