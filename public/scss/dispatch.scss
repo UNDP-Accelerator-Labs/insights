@@ -42,10 +42,17 @@
   @import '_map.xl';
 }
 
-.fa-user, .fa-sign-in {
+.fa-sign-in {
   margin-inline-start: 1.75rem;
   font-size: 1.7rem;
   color: #006eb5;
+  font-family: FontAwesome !important;
+  background: none !important;
+}
+
+.fa-user {
+  margin-inline-start: 1.75rem;
+  margin-bottom: 0.6rem;
   font-family: FontAwesome !important;
   background: none !important;
 }

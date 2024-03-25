@@ -101,8 +101,8 @@
 
           <a id="fa-user" href="<%- profile_url %>" target="_blank">
             <% if (user?.uuid) {%>
-              <i class="fa fa-user"></i>
-              <span class="help"><%= user?.name  || '' %></span>
+              <span class="help">
+                <i class="fa fa-user"></i> <%= user?.name  || '' %></span>
             <%} else { %>
               <i class="fa fa-sign-in"></i>
             <%} %>
