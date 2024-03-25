@@ -83,7 +83,17 @@
           </ul>
         </div>
 
-        <br />
+        <div class="multi-select" data-multi-select="">
+          <label for="startdate">Start date</label>
+          <input type="date" placeholder="dd/mm/yyyy" name="startdate" id="startdate" />
+
+          <label for="enddate">End date</label>
+          <input type="date" placeholder="dd/mm/yyyy" name="enddate" id="enddate" />
+
+          <p id="date-error" class="help error"></p>
+        </div>
+
+        <br/>
         <div class="cell cta-container">
           <a
             id="apply-search"

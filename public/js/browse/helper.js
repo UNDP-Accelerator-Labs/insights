@@ -1,5 +1,5 @@
 import { fetchStats } from "/js/browse/load.js";
-import { fetchResults } from '/js/browse/cards.js'
+import { fetchResults } from "/js/browse/cards.js";
 
 export function updateQueryParams(key, value, remove = false) {
   const url = new URL(window.location.href);
@@ -18,6 +18,10 @@ export function updateQueryParams(key, value, remove = false) {
     if (filteredValues.length > 0) {
       filteredValues.forEach((v) => queryParams.append(key, v));
     }
+
+    //Remove values for start and end dates
+    if (key == "start") d3.select("#startdate").property("value", "");
+    if (key == "end") d3.select("#enddate").property("value", "");
   } else {
     url.searchParams.set(key, value);
   }
@@ -48,6 +52,9 @@ export function applySearch(resetPage) {
     .nodes()
     .map((node) => node.value);
 
+  const startDate = d3.select("#startdate").property("value");
+  const endDate = d3.select("#enddate").property("value");
+
   //RESET PAGE TO 1 IF NEW PARAMETERS ARE ADDED TO QUERY PARAMS
   let page = d3.select("#current_page").node().value;
   if (resetPage) page = 1;
@@ -67,8 +74,15 @@ export function applySearch(resetPage) {
     const docTypesParam = selectedDocTypes
       .map((type) => encodeURIComponent(type))
       .join("&type=");
-
     queryParamsArray.push(`type=${docTypesParam}`);
+  }
+
+  if (startDate) {
+    queryParamsArray.push(`start=${encodeURIComponent(startDate)}`);
+  }
+
+  if (endDate) {
+    queryParamsArray.push(`end=${encodeURIComponent(endDate)}`);
   }
 
   if (page) {
@@ -81,7 +95,7 @@ export function applySearch(resetPage) {
   if (searchQuery !== "") {
     window.history.replaceState({}, "", url);
     fetchStats();
-    fetchResults()
+    fetchResults();
     appendChips();
   }
 }
@@ -112,6 +126,16 @@ export function autoCheckLists() {
       node.checked = true;
     }
   });
+
+  // Set the value of start date input if present in query parameters
+  if (queryParams.get("start")) {
+    d3.select("#startdate").property("value", queryParams.get("start"));
+  }
+
+  // Set the value of end date input if present in query parameters
+  if (queryParams.get("end")) {
+    d3.select("#enddate").property("value", queryParams.get("end"));
+  }
 }
 
 export function appendChips() {
@@ -121,7 +145,7 @@ export function appendChips() {
 
   // Remove all existing chips before adding new ones
   selectedChipsContainer.selectAll(".chip").remove();
-  
+
   queryParams.forEach((value, key) => {
     if (value && key !== "page") {
       let existingChip;
@@ -153,7 +177,7 @@ export function appendChips() {
           updatedQueryParams.set("page", "1");
           updateQueryParams(key, value, true);
           fetchStats();
-          fetchResults()
+          fetchResults();
         });
       } else {
         // Chip exists, update its text content
@@ -166,4 +190,42 @@ export function appendChips() {
       clearAllButton.style("display", "block");
     }
   });
+}
+
+export function handleDateInputChange() {
+  const startDate = document.getElementById("startdate").value;
+  const endDate = document.getElementById("enddate").value;
+
+  const isValidStartDate =
+    new Date(startDate) instanceof Date && !isNaN(new Date(startDate));
+  const isValidEndDate =
+    new Date(endDate) instanceof Date && !isNaN(new Date(endDate));
+
+  // Check if both start and end dates are valid
+  if (startDate && endDate) {
+    // Check if both start and end dates are valid dates
+    if (isValidStartDate && isValidEndDate) {
+      // Check if end date is greater than or equal to start date
+      if (new Date(endDate) >= new Date(startDate)) {
+        // Update URL with start and end dates
+        updateQueryParams("start", startDate);
+        updateQueryParams("end", endDate);
+        d3.select("#date-error").text("");
+      } else {
+        // Show error message for invalid date range
+        d3.select("#date-error").text(
+          "End date must be greater than or equal to start date"
+        );
+      }
+    } else {
+      // Show error message for invalid dates
+      d3.select("#date-error").text("Please enter valid start and end dates");
+    }
+  } else if (!isValidStartDate && isValidEndDate) {
+    d3.select("#date-error").text("Please enter valid start and end dates");
+  } else if (isValidStartDate && !isValidEndDate) {
+    updateQueryParams("start", startDate);
+    updateQueryParams("end", new Date().toDateString());
+    d3.select("#date-error").text("");
+  }
 }

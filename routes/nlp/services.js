@@ -3,8 +3,9 @@ const fetch = require("node-fetch");
 
 exports.filters = (req) => {
   const { uuid, rights } = req.session;
-  let { page, search, country, type, language, platform } = req.query;
-  if (!page && isNaN(page)) page = 1;
+  let { page, search, country, type, language, platform, start, end } =
+    req.query;
+  if (!page || isNaN(page)) page = 1;
 
   const data = {
     input: "",
@@ -58,8 +59,13 @@ exports.filters = (req) => {
   } else if (rights >= 2)
     data.filters.status = ["public", "preview", "preprint", "private"];
 
+  if (start && this.isValidDate(start))
+    data.filters.start = [this.formatDateToYYYYMMDD(start)];
+  if (end && this.isValidDate(end))
+    data.filters.end = [this.formatDateToYYYYMMDD(end, 1)];
+
   //GET ALL STATS FOR HOMEPAGE
-  if(req.originalUrl == '/') delete data.filters
+  if (req.originalUrl == "/") delete data.filters;
 
   return data;
 };
@@ -75,10 +81,21 @@ exports.p_fetch = (req, url) => {
   })
     .then(async (response) => {
       const data = await response.json();
-      return data
+      return data;
     })
     .catch((err) => {
-        console.log(err)
-        return null
+      console.log(err);
+      return null;
     });
+};
+
+exports.isValidDate = (dateString) => {
+  const dateObject = new Date(dateString);
+  return dateObject instanceof Date && !isNaN(dateObject);
+};
+
+exports.formatDateToYYYYMMDD = (dateString, addADay) => {
+  const date = new Date(dateString);
+  if (addADay) date.setDate(date.getDate() + 1);
+  return date.toISOString().split("T")[0];
 };
