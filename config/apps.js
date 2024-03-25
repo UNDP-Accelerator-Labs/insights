@@ -9,9 +9,12 @@ exports.own_app_url = "https://insights.sdg-innovation-commons.org";
 const base_host = "sdg-innovation-commons.org";
 exports.app_base_host = base_host;
 exports.app_suite_url = `https://www.${base_host}/`;
-exports.sso_app_url = "https://login.sdg-innovation-commons.org";
+exports.sso_app_url =
+  process.env.NODE_ENV === "production"
+    ? "https://login.sdg-innovation-commons.org"
+    : "http://localhost:2000";
 
-exports.nlp_api_url ="https://acclabs-nlpapi.azurewebsites.net/api";
+exports.nlp_api_url = "https://acclabs-nlpapi.azurewebsites.net/api";
 
 exports.blogapi_url =
   process.env.NODE_ENV === "production"
@@ -47,4 +50,4 @@ exports.menu_list = [
     title: "Github",
     url: "https://github.com/orgs/UNDP-Accelerator-Labs/repositories",
   },
-]
+];

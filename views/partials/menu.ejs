@@ -11,7 +11,7 @@
     })) || [];
 
     const user = locals.metadata?.user 
-    const profile_url = locals?.metadata?.page?.profile_url
+    const profile_url = locals?.metadata?.page?.profile_url;
 %>
 
 <header class="country-header country-load-animation">
@@ -102,7 +102,7 @@
           <a id="fa-user" href="<%- profile_url %>" target="_blank">
             <% if (user?.uuid) {%>
               <i class="fa fa-user"></i>
-              <span class="help"><% user?.name || '' %></span>
+              <span class="help"><%= user?.name  || '' %></span>
             <%} else { %>
               <i class="fa fa-sign-in"></i>
             <%} %>
