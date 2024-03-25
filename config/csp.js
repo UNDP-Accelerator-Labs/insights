@@ -29,7 +29,7 @@ exports.csp_config = {
         "*.sdg-innovation-commons.org",
         "sdg-innovation-commons.org",
       ],
-      // "style-src": this.csp_links,
+      "style-src": this.csp_links,
       "connect-src": this.csp_links,
       "frame-src": [
         "'self'",

@@ -1,0 +1,52 @@
+//TOOLKITS
+.swiper-scrollbar-drag {
+  transform: translate3d(0px, 0px, 0px);
+  width: 239px;
+}
+
+//STATS
+.swiper-scrollbar {
+  display: none;
+}
+
+.swiper-scrollbar-drag {
+  width: 203px;
+  transform: translate3d(0px, 0px, 0px);
+}
+
+.swiper-wrapper {
+  cursor: auto;
+}
+
+.stats-card-parallax {
+  translate: none;
+  rotate: none;
+  scale: none;
+  transform: translate(2.5148%, 0%) translate3d(0px, 0px, 0px);
+}
+
+.stats-card-count {
+  white-space: nowrap;
+  display: inline-block;
+  font-size: 70px;
+}
+
+//MENU
+.fa-sign-in {
+  margin-inline-start: 1.75rem;
+  font-size: 1.7rem;
+  color: #006eb5;
+  font-family: FontAwesome !important;
+  background: none !important;
+}
+
+.fa-user {
+  margin-inline-start: 1.75rem;
+  margin-bottom: 0.6rem;
+  font-family: FontAwesome !important;
+  background: none !important;
+}
+
+#fa-user {
+  background: none !important;
+}
