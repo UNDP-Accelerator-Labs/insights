@@ -15,7 +15,7 @@ exports.filters = (req) => {
     score_threshold: 0.2, // TBD
     filters: {},
     fields: ["language", "iso3", "date", "doc_type"],
-    // short_snippets: true,
+    short_snippets: true,
   };
 
   if (search) {

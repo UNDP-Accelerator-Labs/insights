@@ -36,7 +36,7 @@ exports.acclab_suites = [
     url: "https://experiments.sdg-innovation-commons.org",
   },
   {
-    title: "Codification",
+    title: "R&D Practice",
     url: "https://practice.sdg-innovation-commons.org",
   },
 ];

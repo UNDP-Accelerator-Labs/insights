@@ -12,7 +12,7 @@ export function fetchStats(refreshPage) {
   const queryString = queryParams.toString();
   const url = "/nlp-stats" + "?" + queryString;
 
-  if (refreshPage) isLoading(true);
+  d3.select('#list-container').classed('blur-view', true)
 
   fetch(url)
     .then((response) => response.json())
@@ -37,10 +37,11 @@ export function fetchStats(refreshPage) {
       renderDateList(grouped_date, "#start-date");
       renderDateList(grouped_date, "#end-date");
       autoCheckLists();
-      isLoading(false);
+
+      d3.select('#list-container').classed('blur-view', false)
     })
     .catch((error) => {
-      isLoading(false);
+     d3.select('#list-container').classed('blur-view', false)
       console.error("Error fetching data:", error);
       showToast(
         "Error occurred while fetching stats. Please try again.",

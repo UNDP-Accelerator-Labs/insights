@@ -58,7 +58,6 @@ export function applySearch(resetPage) {
     .nodes()
     .map((node) => node.dataset.value);
 
-console.log('selectedDates ', selectedDates)
   //RESET PAGE TO 1 IF NEW PARAMETERS ARE ADDED TO QUERY PARAMS
   let page = d3.select("#current_page").node().value;
   if (resetPage) page = 1;

@@ -6,7 +6,7 @@ export function fetchResults(refreshPage) {
   const queryString = queryParams.toString();
   const url = "/nlp-browse" + "?" + queryString;
 
-  if (refreshPage) isLoading(true);
+  d3.select('#list-container').classed('blur-view', true)
 
   fetch(url)
     .then((response) => response.json())
@@ -18,10 +18,10 @@ export function fetchResults(refreshPage) {
         // Show error message
         showToast("Error occurred. Please try again.", "danger", 5000);
       }
-      isLoading(false);
+      d3.select('#list-container').classed('blur-view', false)
     })
     .catch((error) => {
-      isLoading(false);
+        d3.select('#list-container').classed('blur-view', false)
       showToast("Error occurred while fetching data. Please try again.", "danger", 5000);
     });
 }
