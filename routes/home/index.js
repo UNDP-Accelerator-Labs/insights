@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
       Object.assign(metadata, {
         f_total_record: formatNumberToK(data?.doc_count || 0),
         countries: Object.keys(data?.fields?.iso3)?.length || 0,
-        sources: Object.entries(data?.fields?.base).map(([key, value]) => ({ label: key, value })),
+        sources: Object.entries(data?.fields?.doc_type).map(([key, value]) => ({ label: key, value })),
         lang_count: Object.keys(data?.fields?.language)?.length || 0,
         doc_type: Object.keys(data?.fields?.doc_type)?.length || 0,
       })

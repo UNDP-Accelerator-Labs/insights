@@ -28,6 +28,7 @@ async function onLoad() {
   statsHover();
   expandSearch();
   multiSelect();
+  select();
   toggleFilter();
   swiper(".stats-card-slider");
   parallaxEffect(".stats-card-slider");

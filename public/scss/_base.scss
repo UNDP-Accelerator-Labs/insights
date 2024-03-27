@@ -36,7 +36,6 @@
   margin-inline-start: 1.75rem;
   font-size: 1.7rem;
   color: #006eb5;
-  font-family: FontAwesome !important;
   background: none !important;
 }
 
@@ -49,4 +48,8 @@
 
 #fa-user {
   background: none !important;
+}
+
+.fa {
+  font-family: FontAwesome !important;
 }

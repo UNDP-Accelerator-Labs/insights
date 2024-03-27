@@ -14,7 +14,7 @@ exports.sso_app_url =
     ? "https://login.sdg-innovation-commons.org"
     : "http://localhost:2000";
 
-exports.nlp_api_url = "https://acclabs-nlpapi.azurewebsites.net/api";
+exports.nlp_api_url = "https://nlpapi.sdg-innovation-commons.org/api";
 
 exports.blogapi_url =
   process.env.NODE_ENV === "production"

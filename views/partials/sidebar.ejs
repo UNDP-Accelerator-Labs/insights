@@ -83,18 +83,37 @@
           </ul>
         </div>
 
-        <div class="multi-select" data-multi-select="">
-          <label for="startdate">Start date</label>
-          <input type="date" placeholder="dd/mm/yyyy" name="startdate" id="startdate" />
-
-          <label for="enddate">End date</label>
-          <input type="date" placeholder="dd/mm/yyyy" name="enddate" id="enddate" />
-
-          <p id="date-error" class="help error"></p>
+        <!-- Start Date Filter -->
+        <br/>
+        <div class="select-box" data-select="" id="start-date-dropdown">
+          <button
+            type="button"
+            aria-haspopup="listbox"
+            aria-label="Select"
+            data-select-open=""
+          >
+            Start Dates
+          </button>
+          <ul role="listbox" data-select-options="" id="start-date">
+          </ul>
         </div>
 
+        <!-- End Date Filter -->
         <br/>
-        <div class="cell cta-container">
+        <div class="select-box" data-select="" id="end-date-dropdown">
+          <button
+            type="button"
+            aria-haspopup="listbox"
+            aria-label="Select"
+            data-select-open=""
+          >
+            End Dates
+          </button>
+          <ul role="listbox" data-select-options="" id="end-date">
+          </ul>
+        </div>
+        
+        <!-- <div class="cell cta-container">
           <a
             id="apply-search"
             class="button button-primary button-without-arrow"
@@ -103,7 +122,7 @@
           >
             Apply
           </a>
-        </div>
+        </div> -->
 
         <span class="active-filter">Active Filters:</span>
         <div class="selected-chips"></div>

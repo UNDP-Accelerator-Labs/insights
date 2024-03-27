@@ -3,8 +3,7 @@ const fetch = require("node-fetch");
 
 exports.filters = (req) => {
   const { uuid, rights } = req.session;
-  let { page, search, country, type, language, platform, start, end } =
-    req.query;
+  let { page, search, country, type, language, start, end } = req.query;
   if (!page || isNaN(page)) page = 1;
 
   const data = {
@@ -14,8 +13,9 @@ exports.filters = (req) => {
     limit: page_content_limit,
     db: "main", //process.env.NODE_ENV === "production" ? "main" : "test",
     score_threshold: 0.2, // TBD
-    rights: rights || 0,
     filters: {},
+    fields: ["language", "iso3", "date", "doc_type"],
+    // short_snippets: true,
   };
 
   if (search) {
@@ -46,23 +46,14 @@ exports.filters = (req) => {
     }
   }
 
-  if (platform) {
-    if (Array.isArray(platform)) {
-      data.filters.base = platform;
-    } else {
-      data.filters.base = [platform];
-    }
-  }
-
   if (rights < 2 || !rights) {
     data.filters.status = ["public"];
-  } else if (rights >= 2)
-    data.filters.status = ["public", "preview", "preprint", "private"];
+  } else if (rights >= 2) data.filters.status = ["public", "preview"];
 
-  if (start && this.isValidDate(start))
-    data.filters.start = [this.formatDateToYYYYMMDD(start)];
-  if (end && this.isValidDate(end))
-    data.filters.end = [this.formatDateToYYYYMMDD(end, 1)];
+  if ((start && this.isValidDate(start)) || (end && this.isValidDate(end))) {
+    const [d1, d2] = this.getFirstAndLastDayOfMonth(start, end);
+    data.filters.date = [d1, d2];
+  }
 
   //GET ALL STATS FOR HOMEPAGE
   if (req.originalUrl == "/") delete data.filters;
@@ -72,6 +63,7 @@ exports.filters = (req) => {
 
 exports.p_fetch = (req, url) => {
   const body = this.filters(req);
+  console.log("body ", body);
   return fetch(url, {
     method: "POST",
     headers: {
@@ -99,3 +91,70 @@ exports.formatDateToYYYYMMDD = (dateString, addADay) => {
   if (addADay) date.setDate(date.getDate() + 1);
   return date.toISOString().split("T")[0];
 };
+
+exports.getYMD = (date) => {
+  const dateObj = new Date(date);
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth() + 1;
+  const day = dateObj.getDate();
+  return [year, month, day];
+};
+
+exports.groupDates = (datesObject) => {
+  const groupedDates = Object.entries(datesObject).reduce(
+    (acc, [dateStr, count]) => {
+      const [year, month] = dateStr.split("-");
+      const groupDate = `${year}-${month}`;
+      const formattedDate = `${months[parseInt(month) - 1]}, ${year}`;
+
+      if (!acc[groupDate]) {
+        acc[groupDate] = {
+          date: dateStr,
+          group_date: groupDate,
+          year: year,
+          month: month,
+          count: 0,
+          formattedDate,
+        };
+      }
+      acc[groupDate].count += count;
+      return acc;
+    },
+    {}
+  );
+
+  return Object.values(groupedDates).filter((p) => p.count > 0);
+};
+
+exports.getFirstAndLastDayOfMonth = (start, end) => {
+  const [startYear, startMonth, startDay] = this.getYMD(start);
+  const [endYear, endMonth, endDay] = this.getYMD(end);
+  const startDate = `1-${startMonth}-${startYear}`;
+
+  let endDate;
+  if (end && this.isValidDate(end)) {
+    endDate = `1-${+endMonth + 1}-${endYear}`;
+  } else {
+    // If no end date is supplied or it's invalid, set end date to start of next month
+    endDate = `1-${+startMonth + 1}-${startYear}`;
+  }
+  const formattedStartDate = this.formatDateToYYYYMMDD(startDate, false);
+  const formattedEndDate = this.formatDateToYYYYMMDD(endDate, false);
+
+  return [formattedStartDate, formattedEndDate];
+};
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];

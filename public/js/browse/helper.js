@@ -18,10 +18,6 @@ export function updateQueryParams(key, value, remove = false) {
     if (filteredValues.length > 0) {
       filteredValues.forEach((v) => queryParams.append(key, v));
     }
-
-    //Remove values for start and end dates
-    if (key == "start") d3.select("#startdate").property("value", "");
-    if (key == "end") d3.select("#enddate").property("value", "");
   } else {
     url.searchParams.set(key, value);
   }
@@ -52,9 +48,17 @@ export function applySearch(resetPage) {
     .nodes()
     .map((node) => node.value);
 
-  const startDate = d3.select("#startdate").property("value");
-  const endDate = d3.select("#enddate").property("value");
+    const selectedStartDates = d3
+    .selectAll('#start-date li.selected')
+    .nodes()
+    .map((node) => node.dataset.value);
 
+    const selectedEndDates = d3
+    .selectAll('#end-date li.selected')
+    .nodes()
+    .map((node) => node.dataset.value);
+
+console.log('selectedDates ', selectedDates)
   //RESET PAGE TO 1 IF NEW PARAMETERS ARE ADDED TO QUERY PARAMS
   let page = d3.select("#current_page").node().value;
   if (resetPage) page = 1;
@@ -77,12 +81,18 @@ export function applySearch(resetPage) {
     queryParamsArray.push(`type=${docTypesParam}`);
   }
 
-  if (startDate) {
-    queryParamsArray.push(`start=${encodeURIComponent(startDate)}`);
+  if (selectedStartDates.length > 0) {
+    const dateParam = selectedStartDates
+      .map((d) => encodeURIComponent(d))
+      .join("&start=");
+    queryParamsArray.push(`start=${dateParam}`);
   }
 
-  if (endDate) {
-    queryParamsArray.push(`end=${encodeURIComponent(endDate)}`);
+  if (selectedEndDates.length > 0) {
+    const dateParam = selectedEndDates
+      .map((d) => encodeURIComponent(d))
+      .join("&end=");
+    queryParamsArray.push(`end=${dateParam}`);
   }
 
   if (page) {
@@ -94,8 +104,8 @@ export function applySearch(resetPage) {
 
   if (searchQuery !== "") {
     window.history.replaceState({}, "", url);
-    fetchStats();
-    fetchResults();
+    fetchStats(false);
+    fetchResults(false);
     appendChips();
   }
 }
@@ -126,16 +136,6 @@ export function autoCheckLists() {
       node.checked = true;
     }
   });
-
-  // Set the value of start date input if present in query parameters
-  if (queryParams.get("start")) {
-    d3.select("#startdate").property("value", queryParams.get("start"));
-  }
-
-  // Set the value of end date input if present in query parameters
-  if (queryParams.get("end")) {
-    d3.select("#enddate").property("value", queryParams.get("end"));
-  }
 }
 
 export function appendChips() {

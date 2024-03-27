@@ -1,36 +1,52 @@
-import { isLoading } from "/js/notification/loader.js";
+import { isLoading, showToast } from "/js/notification/index.js";
 import {
   updateQueryParams,
   autoCheckLists,
   appendChips,
+  applySearch,
 } from "/js/browse/helper.js";
 import { fetchResults } from "/js/browse/cards.js";
 
-export function fetchStats() {
+export function fetchStats(refreshPage) {
   const queryParams = new URL(window.location.href).searchParams;
   const queryString = queryParams.toString();
   const url = "/nlp-stats" + "?" + queryString;
 
-  isLoading(true);
+  if (refreshPage) isLoading(true);
+
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      const { bureaus, countries, doc_type, languages, page, total_pages, total_r } = data;
-      d3.select("#result-total").text(
-        `Showing ${total_r} results.`
-      );
+      const {
+        bureaus,
+        countries,
+        doc_type,
+        languages,
+        page,
+        total_pages,
+        total_r,
+        grouped_date,
+      } = data;
+      d3.select("#result-total").text(`Showing ${total_r} results.`);
       renderBureauList(bureaus, countries);
       renderLanguageMenu(languages);
 
       renderDocumentTypeList(doc_type);
-      renderPagination(page, total_pages)
+      renderPagination(page, total_pages);
 
+      renderDateList(grouped_date, "#start-date");
+      renderDateList(grouped_date, "#end-date");
       autoCheckLists();
       isLoading(false);
     })
     .catch((error) => {
       isLoading(false);
       console.error("Error fetching data:", error);
+      showToast(
+        "Error occurred while fetching stats. Please try again.",
+        "danger",
+        5000
+      );
     });
 }
 
@@ -61,14 +77,22 @@ function renderBureauList(bureau, country) {
       countries.forEach((country) => {
         const subLi = subUl.append("li").attr("role", "option");
 
-        subLi.append("div").attr("class", "form-check").html(`<label for="${
-          country.iso3
-        }">${country.name} (${country.recordcount || 0})</label>
+        subLi
+          .append("div")
+          .attr("class", "form-check")
+          .html(
+            `<label for="${country.iso3}">${country.name} (${
+              country.recordcount || 0
+            })</label>
                   <input type="checkbox" id="${
                     country.iso3
                   }" name="country" data-bureau="${country.bureau}" value="${
-          country.iso3
-        }">`);
+              country.iso3
+            }">`
+          )
+          .on("click", function (e, d) {
+            applySearch();
+          });
       });
     });
 }
@@ -91,7 +115,10 @@ function renderDocumentTypeList(data) {
                  <input type="checkbox" id="${d.key}" name="doc_type" value="${
         d.key
       }">`
-    );
+    )
+    .on("click", function (e, d) {
+      applySearch();
+    });
 }
 
 // Function to render the language menu
@@ -127,54 +154,84 @@ function renderLanguageMenu(data) {
 }
 
 export function renderPagination(currentPage, totalPages) {
-    const paginationContainer = d3.select(".pagination");
+  const paginationContainer = d3.select(".pagination");
 
-    // Clear existing pagination
-    paginationContainer.selectAll("*").remove();
+  // Clear existing pagination
+  paginationContainer.selectAll("*").remove();
 
-    // Render new pagination
-    const paginationList = paginationContainer.append("ul");
+  // Render new pagination
+  const paginationList = paginationContainer.append("ul");
 
-    if (currentPage > 1) {
-        paginationList.append("li")
-            .append("a")
-            .attr("href", "#")
-            .attr("role", "button")
-            .attr("aria-label", "Previous")
-            .attr("data-page", currentPage - 1)
-            .text("Previous")
-            .on("click", function(e,d) {
-                e.preventDefault();
-                const url = new URL(window.location.href);
-                url.searchParams.set('page', +currentPage - 1);
-                window.history.replaceState({}, "", url);
+  if (currentPage > 1) {
+    paginationList
+      .append("li")
+      .append("a")
+      .attr("href", "#")
+      .attr("role", "button")
+      .attr("aria-label", "Previous")
+      .attr("data-page", currentPage - 1)
+      .text("Previous")
+      .on("click", function (e, d) {
+        e.preventDefault();
+        const url = new URL(window.location.href);
+        url.searchParams.set("page", +currentPage - 1);
+        window.history.replaceState({}, "", url);
 
-                fetchStats();
-                fetchResults()
-            });
-    }
+        fetchStats();
+        fetchResults();
+      });
+  }
 
-    d3.select('#current_page').property('value', currentPage);
-    paginationList.append("li")
-        .text(`Page ${currentPage} of ${totalPages}`);
+  d3.select("#current_page").property("value", currentPage);
+  paginationList.append("li").text(`Page ${currentPage} of ${totalPages}`);
 
-    if (currentPage < totalPages) {
-        paginationList.append("li")
-            .append("a")
-            .attr("href", "#")
-            .attr("role", "button")
-            .attr("aria-label", "Next")
-            .attr("data-page", currentPage + 1)
-            .text("Next")
-            .on("click", function(e,d) {
-                e.preventDefault();
-                const url = new URL(window.location.href);
-                url.searchParams.set('page', +currentPage + 1);
-                window.history.replaceState({}, "", url);
+  if (currentPage < totalPages) {
+    paginationList
+      .append("li")
+      .append("a")
+      .attr("href", "#")
+      .attr("role", "button")
+      .attr("aria-label", "Next")
+      .attr("data-page", currentPage + 1)
+      .text("Next")
+      .on("click", function (e, d) {
+        e.preventDefault();
+        const url = new URL(window.location.href);
+        url.searchParams.set("page", +currentPage + 1);
+        window.history.replaceState({}, "", url);
 
-                fetchStats();
-                fetchResults()
-            });
-    }
+        fetchStats();
+        fetchResults();
+      });
+  }
 }
 
+// Function to render the date list
+function renderDateList(data, id) {
+  const ul = d3.select(id);
+
+  // Clear existing list items
+  ul.selectAll("*").remove();
+
+  ul.append("li")
+    .attr("role", "option")
+    .attr("tabindex", "0")
+    .attr("data-value", "default")
+    .html("<span>Select date</span>");
+
+  // Append list items for each data item
+  ul.selectAll("li")
+    .data(data)
+    .enter()
+    .append("li")
+    .attr("role", "option")
+    .attr("tabindex", "0")
+    .attr("data-value", (d) => d.formattedDate)
+    .html((d) => `<span>${d.formattedDate} (${d.count || 0})</span>`)
+    .on("click", function (e, d) {
+      if (id == "#start-date") {
+        updateQueryParams("start", d.formattedDate);
+      } else updateQueryParams("end", d.formattedDate);
+      applySearch();
+    });
+}

@@ -64,6 +64,9 @@ const sessionMiddleware = session({
 app.use(sessionMiddleware);
 app.use(cookieParser(`${app_suite}-${app_suite_secret}-pass`));
 
+//LOAD AND SET GLOBAL VARIABLE
+global.db_cache = routes.load_db_data()
+
 app.get("/", routes.home.index);
 app.get("/browse", routes.home.browse);
 app.get("/browse/toolkit", routes.browse.toolkit);
