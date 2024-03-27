@@ -64,9 +64,6 @@ const sessionMiddleware = session({
 app.use(sessionMiddleware);
 app.use(cookieParser(`${app_suite}-${app_suite_secret}-pass`));
 
-//LOAD AND SET GLOBAL VARIABLE
-global.db_cache = routes.load_db_data()
-
 app.get("/", routes.home.index);
 app.get("/browse", routes.home.browse);
 app.get("/browse/toolkit", routes.browse.toolkit);
@@ -96,6 +93,42 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
 });
+
+
+DB.general
+.tx(async (t) => {
+  const batch = [];
+    batch.push(
+      t.any(
+        `
+        SELECT a.iso3, a.name, b.bureau
+        FROM country_names a
+        JOIN countries b ON b.iso3 = a.iso3
+        WHERE language = 'en'
+        GROUP BY a.iso3, a.name, b.bureau
+        `,
+      )
+    );
+
+    batch.push(
+      t.any(
+        `
+        SELECT set1 AS iso_lang, name AS lang
+        FROM iso_languages
+        `,
+      )
+    );
+
+  return t.batch(batch).catch((err) => console.log(err));
+})
+.then(d=> {
+  global.db_cache = d
+})
+.catch((e) => {
+  console.log(e);
+  return [null, null];
+});
+
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);

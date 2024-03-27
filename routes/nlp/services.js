@@ -63,7 +63,6 @@ exports.filters = (req) => {
 
 exports.p_fetch = (req, url) => {
   const body = this.filters(req);
-  console.log("body ", body);
   return fetch(url, {
     method: "POST",
     headers: {

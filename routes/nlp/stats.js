@@ -1,12 +1,13 @@
 const { nlp_api_url } = include("/config");
 const { p_fetch, groupDates } = require("./services");
-const { DB } = include("db/");
 const { page_content_limit } = include("/config");
 
 module.exports = async (req, res, json = true) => {
   const url = `${nlp_api_url}/stat_embed`;
   let { page } = req.query;
   if (!page && isNaN(page)) page = 1;
+
+  const [countries, languages] = db_cache || [null, null];
 
   const data = await p_fetch(req, url);
 
@@ -29,8 +30,6 @@ module.exports = async (req, res, json = true) => {
       key,
       value,
     })) || [];
-
-  const [countries, languages] = db_cache;
 
   const m_languages = languages?.map((c) => ({
     ...c,
