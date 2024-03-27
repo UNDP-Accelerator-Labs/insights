@@ -12,7 +12,7 @@ export function fetchStats(refreshPage) {
   const queryString = queryParams.toString();
   const url = "/nlp-stats" + "?" + queryString;
 
-  d3.select('#list-container').classed('blur-view', true)
+//   d3.select('#list-container').classed('blur-view', true)
 
   fetch(url)
     .then((response) => response.json())
@@ -38,7 +38,7 @@ export function fetchStats(refreshPage) {
       renderDateList(grouped_date, "#end-date");
       autoCheckLists();
 
-      d3.select('#list-container').classed('blur-view', false)
+    //   d3.select('#list-container').classed('blur-view', false)
     })
     .catch((error) => {
      d3.select('#list-container').classed('blur-view', false)
