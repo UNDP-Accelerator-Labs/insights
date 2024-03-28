@@ -86,9 +86,10 @@ exports.isValidDate = (dateString) => {
 };
 
 exports.formatDateToYYYYMMDD = (dateString, addADay) => {
+  if (!this.isValidDate(dateString)) return;
   const date = new Date(dateString);
   if (addADay) date.setDate(date.getDate() + 1);
-  return date.toISOString().split("T")[0];
+  return date.toISOString();
 };
 
 exports.getYMD = (date) => {
@@ -128,15 +129,16 @@ exports.groupDates = (datesObject) => {
 exports.getFirstAndLastDayOfMonth = (start, end) => {
   const [startYear, startMonth, startDay] = this.getYMD(start);
   const [endYear, endMonth, endDay] = this.getYMD(end);
-  const startDate = `1-${startMonth}-${startYear}`;
+  const startDate = `${startMonth}/1/${startYear}`; //MM/DD/YYYY
 
   let endDate;
   if (end && this.isValidDate(end)) {
-    endDate = `1-${+endMonth + 1}-${endYear}`;
+    endDate = `${+endMonth + 1}/1/${endYear}`;
   } else {
-    // If no end date is supplied or it's invalid, set end date to start of next month
-    endDate = `1-${+startMonth + 1}-${startYear}`;
+    // If no end date is supplied or it's invalid, set end date to today's date
+    endDate = new Date();
   }
+
   const formattedStartDate = this.formatDateToYYYYMMDD(startDate, false);
   const formattedEndDate = this.formatDateToYYYYMMDD(endDate, false);
 

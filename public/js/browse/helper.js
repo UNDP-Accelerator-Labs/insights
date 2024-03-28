@@ -1,5 +1,6 @@
 import { fetchStats } from "/js/browse/load.js";
 import { fetchResults } from "/js/browse/cards.js";
+import { showToast } from "/js/notification/index.js";
 
 export function updateQueryParams(key, value, remove = false) {
   const url = new URL(window.location.href);
@@ -48,15 +49,10 @@ export function applySearch(resetPage) {
     .nodes()
     .map((node) => node.value);
 
-    const selectedStartDates = d3
-    .selectAll('#start-date li.selected')
-    .nodes()
-    .map((node) => node.dataset.value);
-
-    const selectedEndDates = d3
-    .selectAll('#end-date li.selected')
-    .nodes()
-    .map((node) => node.dataset.value);
+  const startMonth = d3.select("#start-month").text();
+  const startYear = d3.select("#start-year").text();
+  const endMonth = d3.select("#end-month").text();
+  const endYear = d3.select("#end-year").text();
 
   //RESET PAGE TO 1 IF NEW PARAMETERS ARE ADDED TO QUERY PARAMS
   let page = d3.select("#current_page").node().value;
@@ -80,18 +76,12 @@ export function applySearch(resetPage) {
     queryParamsArray.push(`type=${docTypesParam}`);
   }
 
-  if (selectedStartDates.length > 0) {
-    const dateParam = selectedStartDates
-      .map((d) => encodeURIComponent(d))
-      .join("&start=");
-    queryParamsArray.push(`start=${dateParam}`);
+  if (startMonth && startMonth != "Month" && startYear && startYear != "Year") {
+    queryParamsArray.push(`start=${startMonth},${startYear}`);
   }
 
-  if (selectedEndDates.length > 0) {
-    const dateParam = selectedEndDates
-      .map((d) => encodeURIComponent(d))
-      .join("&end=");
-    queryParamsArray.push(`end=${dateParam}`);
+  if (endMonth && endMonth != "Month" && endYear && endYear != "Year") {
+    queryParamsArray.push(`end=${endMonth},${endYear}`);
   }
 
   if (page) {
@@ -135,6 +125,34 @@ export function autoCheckLists() {
       node.checked = true;
     }
   });
+
+  const [startmonth, startyear] = queryParams.get("start")?.split(",") || [
+    null,
+    null,
+  ];
+  const [endmonth, endyear] = queryParams.get("end")?.split(",") || [
+    null,
+    null,
+  ];
+
+  if (startmonth && startyear) {
+    d3.select("#start-month").text(startmonth);
+    d3.select("#start-year").text(startyear);
+  }
+  if (endmonth && endyear) {
+    const d1 = new Date(`${startmonth},${startyear}`)
+    const d2 = new Date(`${endmonth},${endyear}`)
+
+    if(d2 < d1 ) showToast(
+        "Invalid date input. The end date cannot be before the start date.",
+        "danger",
+        5000
+      );
+    else {
+        d3.select("#end-month").text(endmonth);
+        d3.select("#end-year").text(endyear);   
+    }
+  }
 }
 
 export function appendChips() {

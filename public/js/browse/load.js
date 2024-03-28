@@ -6,13 +6,15 @@ import {
   applySearch,
 } from "/js/browse/helper.js";
 import { fetchResults } from "/js/browse/cards.js";
+import { years, months } from "/js/variables.js";
 
 export function fetchStats(refreshPage) {
   const queryParams = new URL(window.location.href).searchParams;
   const queryString = queryParams.toString();
   const url = "/nlp-stats" + "?" + queryString;
 
-//   d3.select('#list-container').classed('blur-view', true)
+  renderDateDropdowns(years, months, "#start-date", "start");
+  renderDateDropdowns(years, months, "#end-date", "end");
 
   fetch(url)
     .then((response) => response.json())
@@ -33,21 +35,19 @@ export function fetchStats(refreshPage) {
 
       renderDocumentTypeList(doc_type);
       renderPagination(page, total_pages);
-
-      renderDateList(grouped_date, "#start-date");
-      renderDateList(grouped_date, "#end-date");
       autoCheckLists();
 
-    //   d3.select('#list-container').classed('blur-view', false)
+      //   d3.select('#list-container').classed('blur-view', false)
     })
     .catch((error) => {
-     d3.select('#list-container').classed('blur-view', false)
+      d3.select("#list-container").classed("blur-view", false);
       console.error("Error fetching data:", error);
       showToast(
         "Error occurred while fetching stats. Please try again.",
         "danger",
         5000
       );
+      d3.select(".toast").remove();
     });
 }
 
@@ -208,31 +208,111 @@ export function renderPagination(currentPage, totalPages) {
 }
 
 // Function to render the date list
-function renderDateList(data, id) {
-  const ul = d3.select(id);
+function renderDateDropdowns(years, months, id, prefix = "start") {
+  const container = d3.select(id);
 
-  // Clear existing list items
-  ul.selectAll("*").remove();
+  // Clear existing content
+  container.selectAll("*").remove();
 
-  ul.append("li")
-    .attr("role", "option")
-    .attr("tabindex", "0")
-    .attr("data-value", "default")
-    .html("<span>Select date</span>");
+  if (id == "#start-date") container.append("h6").text("Start Date");
+  else container.append("h6").text("End Date");
 
-  // Append list items for each data item
-  ul.selectAll("li")
-    .data(data)
-    .enter()
-    .append("li")
-    .attr("role", "option")
-    .attr("tabindex", "0")
-    .attr("data-value", (d) => d.formattedDate)
-    .html((d) => `<span>${d.formattedDate} (${d.count || 0})</span>`)
-    .on("click", function (e, d) {
-      if (id == "#start-date") {
-        updateQueryParams("start", d.formattedDate);
-      } else updateQueryParams("end", d.formattedDate);
-      applySearch();
+  // Append select-box div for month
+  const monthSelectBoxDiv = container
+    .append("div")
+    .attr("class", "select-box block-inline")
+    .attr("data-select", "")
+    .on("click", function () {
+      const expanded = !d3.select(this).classed("expanded");
+      d3.select(this).classed("expanded", expanded);
+      d3.select(this).select("ul").classed("active", expanded);
     });
+
+  // Append button element for month selection
+  monthSelectBoxDiv
+    .append("button")
+    .attr("type", "button")
+    .attr("aria-haspopup", "listbox")
+    .attr("aria-label", "Select")
+    .attr("data-select-open", "")
+    .attr("id", `${prefix}-month`)
+    .text("Month");
+
+  // Append ul element for month options
+  const monthUl = monthSelectBoxDiv
+    .append("ul")
+    .attr("role", "listbox")
+    .attr("data-select-options", "")
+    .attr("id", `${prefix}-month-ul`)
+    .attr("class", "h-3");
+
+  // Add options for months
+  months.forEach((month) => {
+    monthUl
+      .append("li")
+      .attr("role", "option")
+      .attr("tabindex", "0")
+      .attr("data-value", month)
+      .append("span")
+      .text(month)
+      .on("click", function () {
+        d3.select(`#${prefix}-month`).text(month);
+        checkSelectionValidity(prefix);
+      });
+  });
+
+  // Append select-box div for year
+  const yearSelectBoxDiv = container
+    .append("div")
+    .attr("class", "select-box block-inline")
+    .attr("data-select", "")
+    .on("click", function () {
+      const expanded = !d3.select(this).classed("expanded");
+      d3.select(this).classed("expanded", expanded);
+      d3.select(this).select("ul").classed("active", expanded);
+    });
+
+  // Append button element for year selection
+  yearSelectBoxDiv
+    .append("button")
+    .attr("type", "button")
+    .attr("aria-haspopup", "listbox")
+    .attr("aria-label", "Select")
+    .attr("data-select-open", "")
+    .attr("id", `${prefix}-year`)
+    .text("Year");
+
+  // Append ul element for year options
+  const yearUl = yearSelectBoxDiv
+    .append("ul")
+    .attr("role", "listbox")
+    .attr("data-select-options", "")
+    .attr("id", `${prefix}-year-ul`)
+    .attr("class", "h-3");
+
+  // Add options for years
+  years.forEach((year) => {
+    yearUl
+      .append("li")
+      .attr("role", "option")
+      .attr("tabindex", "0")
+      .attr("data-value", year)
+      .append("span")
+      .text(year)
+      .on("click", function () {
+        d3.select(`#${prefix}-year`).text(year);
+        checkSelectionValidity(prefix);
+      });
+  });
+
+  // Function to check if both month and year have been selected
+  function checkSelectionValidity(prefix) {
+    const month = d3.select(`#${prefix}-month`).text();
+    const year = d3.select(`#${prefix}-year`).text();
+
+    // Check if both month and year have been selected
+    if (month !== "Month" && year !== "Year") {
+      applySearch();
+    }
+  }
 }

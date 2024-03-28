@@ -36,4 +36,9 @@ export function showToast(message = "", toastType = "info", duration = 5000) {
   }
 
   document.body.appendChild(box);
+
+  // Schedule removal of the toast after the specified duration
+  setTimeout(() => {
+    box.remove();
+  }, duration);
 }
