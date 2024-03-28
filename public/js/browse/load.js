@@ -16,6 +16,9 @@ export function fetchStats(refreshPage) {
   renderDateDropdowns(years, months, "#start-date", "start");
   renderDateDropdowns(years, months, "#end-date", "end");
 
+  d3.select('#languageMenu').classed('blur-view', true)
+  d3.select('#result-total').classed('blur-view', true)
+
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -37,7 +40,8 @@ export function fetchStats(refreshPage) {
       renderPagination(page, total_pages);
       autoCheckLists();
 
-      //   d3.select('#list-container').classed('blur-view', false)
+     d3.select('#languageMenu').classed('blur-view', false)
+     d3.select('#result-total').classed('blur-view', false)
     })
     .catch((error) => {
       d3.select("#list-container").classed("blur-view", false);
@@ -48,6 +52,8 @@ export function fetchStats(refreshPage) {
         5000
       );
       d3.select(".toast").remove();
+      d3.select('#languageMenu').classed('blur-view', false)
+      d3.select('#result-total').classed('blur-view', false)
     });
 }
 
