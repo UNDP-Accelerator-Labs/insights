@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<%
+    // CREATE ALIASES
+    const toolkits = locals.toolkits;
+%>
+<html>
+<head>
+
+<%- include ('../partials/head.ejs') %>
+<%- include ('../partials/menu.ejs') %>
+
+<div class="grid-container fluid content-bottom">
+    <div class="grid-x margin-top-72">
+
+        <div class="pagehero-cards">
+            <div class="grid-x pagehero-cards-top">
+                <div class="cell large-5 medium-12">
+                    <h2 class="" tabindex="0" data-viewport="true">
+                        Toolkit Showcase
+                    </h2>
+                </div>
+                <div class="cell large-4 medium-12">
+                    <h3 class="" tabindex="0" data-viewport="true">
+                        Empower Change with Actionable Insights.
+                    </h3>
+                </div>
+            </div>
+            <div class="pagehero-cards-items swiper-slider-0 swiper-initialized swiper-horizontal swiper-backface-hidden"
+                data-swiper-tablet="true" data-swiper-slides-view-tablet="2" data-swiper-mobile="true" dir="ltr">
+                <div class="swiper-scrollbar swiper-scrollbar-horizontal">
+                    <div class="swiper-scrollbar-drag"></div>
+                </div>
+                <div class="grid-x grid-margin-x content-data">
+                    <% for (tool of toolkits ) { %>
+                    <div class="cell medium-4">
+                        <div class="content-card card">
+                            <a href="<%= tool.url %>" target="_blank">
+                                <h6 class="" tabindex="0" data-viewport="false"><%= tool.owner %></h6>
+                                <div class="content-caption">
+                                    <h5 class="" tabindex="0" data-viewport="false">
+                                        <%= tool.title %>
+                                    </h5>
+                                    <p>
+                                        <%= tool.description %>
+                                    </p>
+                                    <span class="cta__link cta--arrow">
+                                        READ MORE
+                                        <i></i>
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <% } %>
+
+                </div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../partials/footer.ejs') %>
+</body>
+</html>

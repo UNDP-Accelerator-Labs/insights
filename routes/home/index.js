@@ -1,18 +1,12 @@
 const { pagemetadata } = require("../page");
 const { page_content_limit } = include("/config");
 const stats_r = include("controllers/blog/stats");
+const { nlp_stats } = require("../nlp");
 const { DB } = include("db/");
 
 module.exports = async (req, res) => {
   let { page } = req.query;
   if (!page && isNaN(page)) page = 1;
-
-  const statistics = await stats_r.main({
-    connection: DB.blog,
-    req,
-    res,
-    page,
-  });
 
   const _kwarq = {
     page,
@@ -22,17 +16,20 @@ module.exports = async (req, res) => {
     res,
   };
   const metadata = pagemetadata(_kwarq);
+  const data = await nlp_stats(req, res, false);
 
-  const [counts] = statistics?.stats || [null, null];
-
-  res.render(
-    "home/",
-    Object.assign(metadata, {
-      f_total_record: formatNumberToK(counts?.total_records || 0),
-      countries: counts?.distinct_country_count || 0,
-      articletype: counts?.distinct_article_type_count || 0,
-    })
-  );
+  if (data) {
+    res.render(
+      "home/",
+      Object.assign(metadata, {
+        f_total_record: formatNumberToK(data?.doc_count || 0),
+        countries: Object.keys(data?.fields?.iso3)?.length || 0,
+        sources: Object.entries(data?.fields?.doc_type).map(([key, value]) => ({ label: key, value })),
+        lang_count: Object.keys(data?.fields?.language)?.length || 0,
+        doc_type: Object.keys(data?.fields?.doc_type)?.length || 0,
+      })
+    );
+  } else res.status(500).send("Error occurred. Please try again.");
 };
 
 function formatNumberToK(number) {

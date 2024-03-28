@@ -8,7 +8,6 @@ const {
 	DB_NAME,
 	DB_PASS,
 	DB_PORT,
-	production,
   
 	L_DB_USER,
 	L_DB_HOST,

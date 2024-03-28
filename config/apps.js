@@ -9,7 +9,12 @@ exports.own_app_url = "https://insights.sdg-innovation-commons.org";
 const base_host = "sdg-innovation-commons.org";
 exports.app_base_host = base_host;
 exports.app_suite_url = `https://www.${base_host}/`;
-exports.sso_app_url = "https://login.sdg-innovation-commons.org";
+exports.sso_app_url =
+  process.env.NODE_ENV === "production"
+    ? "https://login.sdg-innovation-commons.org"
+    : "http://localhost:2000";
+
+exports.nlp_api_url = "https://nlpapi.sdg-innovation-commons.org/api";
 
 exports.blogapi_url =
   process.env.NODE_ENV === "production"
@@ -18,10 +23,6 @@ exports.blogapi_url =
 exports.page_content_limit = 15;
 
 exports.acclab_suites = [
-  {
-    title: "SDG Map",
-    url: "https://map.sdg-innovation-commons.org/",
-  },
   {
     title: "Solution mapping",
     url: "https://solutions.sdg-innovation-commons.org",
@@ -35,7 +36,18 @@ exports.acclab_suites = [
     url: "https://experiments.sdg-innovation-commons.org",
   },
   {
+    title: "R&D Practice",
+    url: "https://practice.sdg-innovation-commons.org",
+  },
+];
+
+exports.menu_list = [
+  {
+    title: "SDG Map",
+    url: "https://map.sdg-innovation-commons.org/",
+  },
+  {
     title: "Github",
-    url: "https://github.com/UNDP-Accelerator-Labs",
+    url: "https://github.com/orgs/UNDP-Accelerator-Labs/repositories",
   },
 ];
