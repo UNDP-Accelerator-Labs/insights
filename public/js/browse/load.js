@@ -51,7 +51,6 @@ export function fetchStats(refreshPage) {
         "danger",
         5000
       );
-      d3.select(".toast").remove();
       d3.select('#languageMenu').classed('blur-view', false)
       d3.select('#result-total').classed('blur-view', false)
     });
@@ -319,6 +318,7 @@ function renderDateDropdowns(years, months, id, prefix = "start") {
     // Check if both month and year have been selected
     if (month !== "Month" && year !== "Year") {
       applySearch();
+      autoCheckLists()
     }
   }
 }
