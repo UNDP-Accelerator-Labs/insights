@@ -49,37 +49,7 @@
         </button>
       </div>
 
-      <!-- Language filter -->
       <div class="select-wrapper">
-        <div class="multi-select" data-multi-select="">
-          <button aria-label="language" aria-expanded="false" data-id="filter0">
-            Language
-          </button>
-          <ul
-            data-type="language"
-            role="listbox"
-            aria-multiselectable="true"
-            aria-hidden="true"
-            aria-modal="true"
-          >
-            <% for (let i = 0; i < language.length; i++) { %>
-            <li role="option">
-              <div class="form-check">
-                <label for="<%= language[i]?.lang %>"
-                  ><%= language[i]?.label %> (<%= language[i]?.recordcount || 0
-                  %>)</label
-                >
-                <input
-                  type="checkbox"
-                  id="<%= language[i]?.lang %>"
-                  name="language"
-                  value="<%= language[i]?.iso_lang %>"
-                />
-              </div>
-            </li>
-            <% } %>
-          </ul>
-        </div>
 
         <!-- Bureau Filter -->
         <div class="multi-select" data-multi-select="">
@@ -92,78 +62,32 @@
             aria-multiselectable="true"
             aria-hidden="true"
             aria-modal="true"
+            id="regionList" 
+            class="h-3"
           >
-            <% for (let i = 0; i < bureau.length; i++) { %>
-            <li role="option" class="has-submenu">
-              <button class="checkbox-item">
-                <%= bureau[i]?.bureau %> (<%= bureau[i]?.recordcount || 0 %>)
-              </button>
-              <ul role="listbox" class="sub-menu">
-                <% countries.filter(p => bureau[i].bureau ==
-                p.bureau).forEach(country => { %>
-                <li role="option">
-                  <div class="form-check">
-                    <label for="<%= country?.iso3 %>"
-                      ><%= country?.name %> (<%= country?.recordcount || 0
-                      %>)</label
-                    >
-                    <input
-                      type="checkbox"
-                      id="<%= country?.iso3 %>"
-                      name="country"
-                      data-bureau="<%= country?.bureau %>"
-                      value="<%= country?.iso3 %>"
-                    />
-                  </div>
-                </li>
-                <% }); %>
-              </ul>
-            </li>
-            <% } %>
           </ul>
         </div>
 
         <!-- Document Filter -->
         <div class="multi-select" data-multi-select="">
-          <button aria-label="Region" aria-expanded="false" data-id="filter2">
+          <button aria-label="Document" aria-expanded="false" data-id="filter2">
             Document
           </button>
           <ul
-            data-type="region"
+            data-type="document"
             role="listbox"
             aria-multiselectable="true"
             aria-hidden="true"
             aria-modal="true"
+            id="documentList"
+            class="h-3"
           >
-            <% for (let i = 0; i < articletype.length; i++) { %>
-            <li role="option">
-              <div class="form-check">
-                <label for="<%= articletype[i]?.country %>"
-                  ><%= articletype[i]?.label %> (<%= articletype[i]?.recordcount
-                  || 0 %>)</label
-                >
-                <input
-                  type="checkbox"
-                  id="<%= articletype[i]?.article_type %>"
-                  name="article_type"
-                  value="<%= articletype[i]?.article_type %>"
-                />
-              </div>
-            </li>
-            <% } %>
           </ul>
         </div>
-        <br />
-        <div class="cell cta-container">
-          <a
-            id="apply-search"
-            class="button button-primary button-without-arrow"
-            role="button"
-            href="#"
-          >
-            Apply
-          </a>
-        </div>
+
+        <!-- Date Filter -->
+        <div class="pt-5" id="start-date"></div>
+        <div class="pt-5" id="end-date"></div>
 
         <span class="active-filter">Active Filters:</span>
         <div class="selected-chips"></div>

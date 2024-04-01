@@ -4,6 +4,7 @@
 @import '_vars';
 @import '_toast';
 @import '_loader';
+@import '_base';
 
 /* Extra small devices */
 @media screen and (max-width: 767px) {
@@ -41,6 +42,7 @@
   @import '_map';
   @import '_map.xl';
 }
+
 
 // IMPORT CSS LIBRARIES FROM UNDP DESIGN SYSTEM
 @import url('https://cdn.jsdelivr.net/npm/@undp/design-system/docs/css/base-minimal.min.css');
@@ -81,3 +83,7 @@
 @import url('https://cdn.jsdelivr.net/npm/@undp/design-system/docs/css/components/chips.min.css');
 @import url('https://cdn.jsdelivr.net/npm/@undp/design-system/docs/css/templates/generic-page.min.css');
 @import url('https://cdn.jsdelivr.net/npm/@undp/design-system/docs/css/components/homepagehero.min.css');
+
+@import url('https://cdn.jsdelivr.net/npm/@undp/design-system/docs/css/components/menu-multi-level.min.css');
+@import url('https://cdn.jsdelivr.net/npm/@undp/design-system/docs/css/components/pagehero-cards.min.css');
+@import url("https://cdn.jsdelivr.net/npm/@undp/design-system/docs/css/components/custom-select.min.css");

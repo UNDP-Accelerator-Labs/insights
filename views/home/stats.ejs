@@ -2,103 +2,132 @@
     // CREATE ALIASES 
     const f_total_record = locals?.f_total_record || 0;
     const countries = locals?.countries || 0;
-    const articles = locals?.articletype || 0;
+    const doc_type = locals?.doc_type || 0;
+    const lang_count = locals?.lang_count || 0;
+    const sources = locals?.sources || [];
 %>
-<div class="grid-x stats-grid">
-    <div class="cell medium-3 delay-2 inviewport" data-viewport="true">
-      <div class="stats-panel">
-        <div class="stats-card medium">
-          <a href="/browse">
+
+<div class="featured-card-container">
+<div
+  class="stats-card-slider swiper-slider-0 swiper-backface-hidden"
+  data-swiper-mobile="true"
+>
+  <div class="swiper-scrollbar">
+    <div
+      class="swiper-scrollbar-drag"
+    ></div>
+  </div>
+  <div
+    class="swiper-wrapper"
+    id="swiper-wrapper-e3f24eeeea467d6c"
+    aria-live="polite"
+  >
+    <div
+      class="stats-card-parallax parallax-slide"
+    >
+      <div class="swiper-slide" aria-label="1 / 6" role="group">
+        <div class="stats-card small">
           <div>
             <div>
               <h2
-                class=""
+                class="stats-card-count"
                 tabindex="0"
                 data-viewport="false"
-                style="white-space: nowrap; display: inline-block; font-size: 110px;"
               >
                 <%= f_total_record %>
               </h2>
             </div>
           </div>
           <div>
-            <h4 class="" tabindex="0" data-viewport="false">Articles</h4>
-            <p>Explore a rich collection of insightful articles covering diverse topics and achievements within the organization.</p>
+            <h4 class="" tabindex="0" data-viewport="false">Records</h4>
+            <p>Explore a collection of insightful records covering various topics and achievements.</p>
           </div>
-        </a>
         </div>
       </div>
-    </div>
-    <div class="cell medium-3 delay-3 inviewport" data-viewport="true">
-      <div class="stats-panel">
-        <div class="stats-card medium">
-          <a href="/browse">
+      <div class="swiper-slide" aria-label="2 / 6" role="group">
+        <div class="stats-card small">
           <div>
             <div>
               <h2
-                class=""
+                class="stats-card-count"
                 tabindex="0"
                 data-viewport="false"
-                style="white-space: nowrap; display: inline-block; font-size: 110px;"
               >
-                <%= articles %>
+                91 
               </h2>
             </div>
           </div>
           <div>
-            <h4 class="" tabindex="0" data-viewport="false">Document Types</h4>
-            <p>Dive into a variety of articles showcasing innovative approaches and achievements across different domains.</p>
+            <h4 class="" tabindex="0" data-viewport="false">Locations</h4>
+            <p>Discover content contributed from a diverse range of about <%= countries %> countries, providing a global perspective.</p>
           </div>
-        </a>
         </div>
       </div>
-    </div>
-    <div class="cell medium-3 delay-4 inviewport" data-viewport="true">
-      <div class="stats-panel">
-        <div class="stats-card medium">
-          <a href="/browse">
+      <div class="swiper-slide" aria-label="3 / 6" role="group">
+        <div class="stats-card small">
           <div>
             <div>
               <h2
-                class=""
+                class="stats-card-count"
                 tabindex="0"
                 data-viewport="false"
-                style="white-space: nowrap; display: inline-block; font-size: 110px;"
               >
-                <%= countries %>
+                <%= doc_type %> 
               </h2>
             </div>
           </div>
           <div>
-            <h4 class="" tabindex="0" data-viewport="false">Countries</h4>
-            <p>Discover content contributed from <%= countries %> different countries, fostering a global perspective.</p>
+            <h4 class="" tabindex="0" data-viewport="false">Document types</h4>
+            <p>Delve into a variety of document types showcasing innovative approaches and achievements across different domains.</p>
           </div>
-        </a>
         </div>
       </div>
     </div>
-    <div class="cell medium-3 delay-5 inviewport" data-viewport="true">
-      <div class="stats-panel">
-        <div class="stats-card medium">
-          <a href="/browse">
+    <div
+      class="stats-card-parallax parallax-slide"
+    >
+      <div class="swiper-slide" aria-label="4 / 6" role="group">
+        <div class="stats-card small">
           <div>
             <div>
               <h2
-                class=""
+                class="stats-card-count"
                 tabindex="0"
                 data-viewport="false"
-                style="white-space: nowrap; display: inline-block; font-size: 110px;"
               >
-                4
+                <%= lang_count %>
               </h2>
             </div>
           </div>
           <div>
-            <h4 class="" tabindex="0" data-viewport="false">Years</h4>
-            <p>Embark on a journey spanning more than 5 years of accumulated knowledge and insights within the Accelerator labs network.</p>
+            <h4 class="" tabindex="0" data-viewport="false">Document Languages</h4>
+            <p>Explore documents available in different languages, facilitating accessibility and understanding.</p>
           </div>
-        </a>
         </div>
       </div>
+      <% for (source of sources){ %>
+        <div class="swiper-slide" aria-label="5 / 6" role="group">
+          <div class="stats-card small">
+            <div>
+              <div>
+                <h2
+                  class="stats-card-count"
+                  tabindex="0"
+                  data-viewport="false"
+                >
+                  <%= source.value %>
+                </h2>
+              </div>
+            </div>
+            <div>
+              <h4 class="" tabindex="0" data-viewport="false"><%= source.label %></h4>
+              <p>Explore documents sourced from <%= source.label %> and gain insights into specific topics.</p>
+            </div>
+          </div>
+        </div>
+      <%}%>
+    
     </div>
+  </div>
+</div>
 </div>

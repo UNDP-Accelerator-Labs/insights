@@ -13,7 +13,7 @@ const { xss } = require("express-xss-sanitizer");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 
-const { app_suite, app_base_host, app_suite_secret, csp_links } =
+const { app_suite, app_base_host, app_suite_secret, csp_config } =
   include("config/");
 const { DB } = include("db/");
 const { getVersionString } = include("middleware");
@@ -28,47 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        "img-src": csp_links,
-        "script-src": csp_links.concat([
-          (req, res) => `'nonce-${res.locals.nonce}'`,
-          "sha256-NNiElek2Ktxo4OLn2zGTHHeUR6b91/P618EXWJXzl3s=",
-          "strict-dynamic",
-        ]),
-        "script-src-attr": [
-          "'self'",
-          "*.sdg-innovation-commons.org",
-          "sdg-innovation-commons.org",
-        ],
-        "style-src": csp_links,
-        "connect-src": csp_links,
-        "frame-src": [
-          "'self'",
-          "*.sdg-innovation-commons.org",
-          "sdg-innovation-commons.org",
-          "https://www.youtube.com/",
-          "https://youtube.com/",
-          "https://web.microsoftstream.com",
-        ],
-        "form-action": [
-          "'self'",
-          "*.sdg-innovation-commons.org",
-          "sdg-innovation-commons.org",
-        ],
-      },
-    },
-    referrerPolicy: {
-      policy: ["strict-origin-when-cross-origin", "same-origin"],
-    },
-    xPoweredBy: false,
-    strictTransportSecurity: {
-      maxAge: 123456,
-    },
-  })
-);
+app.use(helmet(csp_config));
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "same-origin");
@@ -106,6 +66,11 @@ app.use(cookieParser(`${app_suite}-${app_suite_secret}-pass`));
 
 app.get("/", routes.home.index);
 app.get("/browse", routes.home.browse);
+app.get("/browse/toolkit", routes.browse.toolkit);
+
+//API ENDPOINTS
+app.get('/nlp-browse', routes.nlp_api.nlp_browse)
+app.get('/nlp-stats', routes.nlp_api.nlp_stats)
 
 app.get("/version", (req, res) => {
   getVersionString()
@@ -120,7 +85,6 @@ app.get("/version", (req, res) => {
     });
 });
 
-
 app.use((req, res, next) => {
   res.status(404).send("<h1>Page not found on the server</h1>");
 });
@@ -129,6 +93,42 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");
 });
+
+
+DB.general
+.tx(async (t) => {
+  const batch = [];
+    batch.push(
+      t.any(
+        `
+        SELECT a.iso3, a.name, b.bureau
+        FROM country_names a
+        JOIN countries b ON b.iso3 = a.iso3
+        WHERE language = 'en'
+        GROUP BY a.iso3, a.name, b.bureau
+        `,
+      )
+    );
+
+    batch.push(
+      t.any(
+        `
+        SELECT set1 AS iso_lang, name AS lang
+        FROM iso_languages
+        `,
+      )
+    );
+
+  return t.batch(batch).catch((err) => console.log(err));
+})
+.then(d=> {
+  global.db_cache = d
+})
+.catch((e) => {
+  console.log(e);
+  return [null, null];
+});
+
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);

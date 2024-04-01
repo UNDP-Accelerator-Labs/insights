@@ -1,0 +1,140 @@
+//TOOLKITS
+.swiper-scrollbar-drag {
+  transform: translate3d(0px, 0px, 0px);
+  width: 239px;
+}
+
+//STATS
+.swiper-scrollbar {
+  display: none;
+}
+
+.swiper-scrollbar-drag {
+  width: 203px;
+  transform: translate3d(0px, 0px, 0px);
+}
+
+.swiper-wrapper {
+  cursor: auto;
+}
+
+.stats-card-parallax {
+  translate: none;
+  rotate: none;
+  scale: none;
+  transform: translate(2.5148%, 0%) translate3d(0px, 0px, 0px);
+}
+
+.stats-card-count {
+  white-space: nowrap;
+  display: inline-block;
+  font-size: 70px;
+}
+
+//MENU
+.fa-sign-in {
+  margin-inline-start: 1.75rem;
+  font-size: 1.7rem;
+  color: #006eb5;
+  background: none !important;
+}
+
+.fa-user {
+  margin-inline-start: 1.75rem;
+  margin-bottom: 0.6rem;
+  font-family: FontAwesome !important;
+  background: none !important;
+}
+
+#fa-user {
+  background: none !important;
+}
+
+.fa {
+  font-family: FontAwesome !important;
+}
+
+#language-dropdown  button {
+    background: none !important;
+    color: #006eb5 !important;
+    border: 0 !important;
+    font-size: .875rem;
+}
+#language-dropdown  ul {
+    border: 0 !important;
+    padding: 0 !important;
+    height: 300px !important;
+}
+#language-dropdown .select-box ul {
+    border: none !important;
+    padding: none !important;
+}
+
+//BLOG VIEW
+.blur-view {
+  filter: brightness(0.8) blur(5px);
+}
+
+.block {
+  display: block;
+}
+.block-inline {
+  display: inline-block;
+}
+
+@for $i from 0 through 20 {
+  .m-#{$i} {
+    margin: $i * 0.25rem !important;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i * 0.25rem !important;
+  }
+
+  .mt-#{$i} {
+    margin-top: $i * 0.25rem !important;
+  }
+  .ms-#{$i} {
+    margin-left: $i * 0.25rem !important;
+  }
+  .me-#{$i} {
+    margin-right: $i * 0.25rem !important;
+  }
+
+  .my-#{$i} {
+    margin-top: $i * 0.25rem !important;
+    margin-bottom: $i * 0.25rem !important;
+  }
+  .mx-#{$i} {
+    margin-right: $i * 0.25rem !important;
+    margin-left: $i * 0.25rem !important;
+  }
+
+  .p-#{$i} {
+    padding: $i * 0.25rem !important;
+  }
+  .pb-#{$i} {
+    padding-bottom: $i * 0.25rem !important;
+  }
+  .pt-#{$i} {
+    padding-top: $i * 0.25rem !important;
+  }
+  .ps-#{$i} {
+    padding-left: $i * 0.25rem !important;
+  }
+  .pe-#{$i} {
+    padding-right: $i * 0.25rem !important;
+  }
+
+  .px-#{$i} {
+    padding-right: $i * 0.25rem !important;
+    padding-left: $i * 0.25rem !important;
+  }
+
+  .py-#{$i} {
+    padding-top: $i * 0.25rem !important;
+    padding-bottom: $i * 0.25rem !important;
+  }
+  .h-#{$i} {
+    height: $i * 100px !important;
+  }
+}

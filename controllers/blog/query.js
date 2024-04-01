@@ -127,7 +127,7 @@ exports.languageGroup = (searchText, country, type, language, iso3) => {
 
   return {
     text: `
-    SELECT a.language AS iso_lang, iso_languages.Name AS lang, COUNT(*) AS recordCount
+    SELECT a.language AS iso_lang, iso_languages.Name AS lang
     FROM articles a
     JOIN article_content b ON b.article_id = a.id 
     JOIN article_html_content c ON c.article_id = a.id

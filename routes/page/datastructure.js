@@ -1,10 +1,11 @@
 const {
   app_title: title,
   acclab_suites,
+  menu_list,
   own_app_url,
   sso_app_url,
-  page_content_limit,
 } = include("config/");
+const { profile_url } = require('./service')
 
 function compareReqDomain(req, page_url, domain) {
   const referrer = req.get("Referer");
@@ -49,6 +50,7 @@ exports.pagemetadata = (_kwargs) => {
       title,
       own_app_url,
       acclab_suites,
+      menu_list,
       login_url: !compareReqDomain(req, currentpage_url, sso_app_url)
         ? `${sso_app_url}?redirect_url=${encodeURIComponent(sso_app_url)}`
         : null,
@@ -70,6 +72,8 @@ exports.pagemetadata = (_kwargs) => {
       originalUrl: req.originalUrl,
       query: parsedQuery,
       page_content_limit,
+
+      profile_url: profile_url(req)
     },
   };
   return obj;
