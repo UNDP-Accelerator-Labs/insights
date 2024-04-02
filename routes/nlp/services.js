@@ -130,10 +130,10 @@ exports.getFirstAndLastDayOfMonth = (start, end) => {
   const [startYear, startMonth, startDay] = this.getYMD(start);
   const [endYear, endMonth, endDay] = this.getYMD(end);
   const startDate = `${startMonth}/1/${startYear}`; //MM/DD/YYYY
-
   let endDate;
   if (end && this.isValidDate(end)) {
-    endDate = `${+endMonth + 1}/1/${endYear}`;
+    let [endM, endD, endY] = +endMonth >= 12 ? [1, 1, endYear + 1] : [+endMonth + 1, 1, endYear];
+    endDate = `${endM}/${endD}/${endY}`;
   } else {
     // If no end date is supplied or it's invalid, set end date to today's date
     endDate = new Date();
