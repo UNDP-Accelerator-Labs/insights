@@ -20,7 +20,7 @@ exports.blogapi_url =
   process.env.NODE_ENV === "production"
     ? "blog-api-scrapper.azurewebsites.net/blogs/"
     : "http://localhost:4000/blogs/";
-exports.page_content_limit = 15;
+exports.page_content_limit = 12;
 
 exports.acclab_suites = [
   {
