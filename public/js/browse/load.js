@@ -38,8 +38,6 @@ export function fetchStats() {
         grouped_date,
       } = data;
 
-      d3.select("#error-page").selectAll("*").remove();
-
       d3.select("#result-total").text(`Showing ${total_r} results.`);
       renderBureauList(bureaus, countries);
       renderLanguageMenu(languages);
@@ -53,8 +51,6 @@ export function fetchStats() {
     })
     .catch((error) => {
       d3.select("#list-container").classed("blur-view", false);
-      console.error("Error fetching data:", error);
-      renderErrorPage();
       if(!error.message.includes('The user aborted a request')){
         renderErrorPage();
       }
@@ -76,7 +72,7 @@ function renderBureauList(bureau, country) {
 
   li.append("button")
     .attr("class", "checkbox-item")
-    .text((d) => `${d.bureau} (${d.recordcount || 0})`);
+    .text((d) => `${d.bureau}`);
 
   li.append("ul")
     .attr("role", "listbox")

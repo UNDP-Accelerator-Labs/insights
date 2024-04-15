@@ -28,12 +28,11 @@ export function fetchResults() {
       d3.select("#list-container").classed("blur-view", false);
     })
     .catch((error) => {
-      console.log('error ', error.message)
+      console.log("error ", error.message);
       d3.select("#list-container").classed("blur-view", false);
-      if(error.message.includes('The user aborted a request')){
+      if (error.message.includes("The user aborted a request")) {
         d3.select("#list-container").classed("blur-view", true);
-      }
-      else renderErrorPage();
+      } else renderErrorPage();
     });
 }
 
@@ -62,18 +61,37 @@ export function renderCards(data) {
       (blog) => `
       <a href="${blog.url}" target="_blank">
         <h6 tabindex="0" data-viewport="false">${blog.meta.doc_type}</h6>
-        <p><small class="content-caption">${formatDate(
+        <p class="ly-2"><small class="content-caption">${formatDate(
           blog.meta.date
         )}</small></p>
+        <p class="ly-4"><small class="content-caption">${
+          blog.countries[0] || ""
+        }</small></p>
         <div class="content-caption">
           <h5 tabindex="0" data-viewport="false">${blog.title}</h5>
           <p>${blog.snippets || ""}</p>
-          ${blog.countries.length ? `<div class='block pt-2'>
+          ${
+            blog.countries.length
+              ? `<div class='block pt-2 ly-3'>
             <hr/>
             <span class='article-country'>Mentioned countries: </span>
-            <span class='fs-10'>${blog.countries?.join(', ') || ''} </span>
+            <span class='fs-10'>${
+              blog.countries?.slice(0, 3)?.join(", ") || ""
+            } </span>
+            ${
+              blog.countries.length > 3
+                ? `<span class="tooltip fs-10">...
+              <i class='fa fa-info-circle fs-12'> </i>
+              <span class="tooltiptext">${
+                blog.countries?.join(", ") || ""
+              }</span>
+            </span>`
+                : ""
+            }
             <br/>
-          </div>` : ''}
+          </div>`
+              : ""
+          }
           <span class="cta__link cta--arrow">READ MORE <i></i></span>
         </div>
       </a>

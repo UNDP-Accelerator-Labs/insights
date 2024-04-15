@@ -96,11 +96,9 @@ DB.general
     batch.push(
       t.any(
         `
-        SELECT a.iso3, a.name, b.bureau
-        FROM country_names a
-        JOIN countries b ON b.iso3 = a.iso3
-        WHERE language = 'en'
-        GROUP BY a.iso3, a.name, b.bureau
+        SELECT adm0_a3 AS iso3, name_en AS name, undp_bureau AS bureau
+        FROM adm0
+        GROUP BY adm0_a3, name_en, undp_bureau;
         `,
       )
     );

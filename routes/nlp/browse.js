@@ -11,7 +11,7 @@ module.exports = async (req, res, json = true) => {
   });
 
   let data = await p_fetch(req, url);
-  if(data.status == 'ok' && data.hits.length){
+  if(data?.status == 'ok' && data?.hits?.length){
     data.hits = data.hits.map(p=>({
       ...p,
       countries: p?.meta?.iso3?.map(iso3 => iso3ToNameMap[iso3]).filter(Boolean)

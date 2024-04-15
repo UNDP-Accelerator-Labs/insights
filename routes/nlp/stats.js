@@ -37,14 +37,15 @@ module.exports = async (req, res, json = true) => {
   }));
 
   const m_countries = iso3
-    ?.map((itemA) => {
-      const matchingItemB = countries?.find(
-        (itemB) => itemB?.iso3 === itemA?.label
+    ?.map((iso) => {
+      const matching = countries?.find(
+        (ctry) => ctry?.iso3 === iso?.label
       );
-      if (matchingItemB) {
+      if (matching) {
         return {
-          ...matchingItemB,
-          recordcount: parseInt(itemA?.value),
+          ...matching,
+          bureau: matching?.bureau == null ? 'Others' : matching.bureau,
+          recordcount: parseInt(iso?.value),
         };
       }
       return null;
@@ -64,6 +65,15 @@ module.exports = async (req, res, json = true) => {
     }
     return acc;
   }, []);
+
+  // Find the index of the element with bureau name "Others"
+  const othersIndex = bureaus.findIndex(item => item.bureau === 'Others');
+
+  // If "Others" exists in the array, remove it and push it to the end
+  if (othersIndex !== -1) {
+      const others = bureaus.splice(othersIndex, 1)[0];
+      bureaus.push(others);
+  }
 
   const total_r = data?.doc_count || 0;
 

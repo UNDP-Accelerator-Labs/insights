@@ -158,11 +158,16 @@
     padding-top: $i * 0.25rem !important;
     padding-bottom: $i * 0.25rem !important;
   }
+  //HEIGHT
   .h-#{$i} {
     height: $i * 100px !important;
   }
-
+  //FONT SIZE
   .fs-#{$i} {
     font-size: $i * 1px !important;
+  }
+  //LINE HEIGHTS
+  .ly-#{$i} {
+    line-height: $i * 0.25rem !important;
   }
 }
