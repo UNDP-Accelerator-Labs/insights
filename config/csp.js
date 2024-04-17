@@ -13,6 +13,7 @@ exports.csp_links = [
     'https://cdnjs.cloudflare.com',
     'https://design.undp.org',
     'https://blog-api-scrapper.azurewebsites.net/',
+    'http://www.w3.org',
   ];
 
 exports.csp_config = {
@@ -22,14 +23,16 @@ exports.csp_config = {
       "script-src": this.csp_links.concat([
         (req, res) => `'nonce-${res.locals.nonce}'`,
         "sha256-NNiElek2Ktxo4OLn2zGTHHeUR6b91/P618EXWJXzl3s=",
-        "strict-dynamic",
+        "strict-dynamic"
       ]),
       "script-src-attr": [
         "'self'",
         "*.sdg-innovation-commons.org",
         "sdg-innovation-commons.org",
       ],
-      "style-src": this.csp_links,
+      "style-src": this.csp_links.concat([
+        (req,res)=> req.originalUrl.includes('/api-docs/') ? "'unsafe-inline'" : ''
+      ]),
       "connect-src": this.csp_links,
       "frame-src": [
         "'self'",

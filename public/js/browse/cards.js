@@ -10,7 +10,7 @@ export function fetchResults() {
 
   const queryParams = new URL(window.location.href).searchParams;
   const queryString = queryParams.toString();
-  const url = "/nlp-browse" + "?" + queryString;
+  const url = "/semantic/search" + "?" + queryString;
 
   d3.select("#list-container").classed("blur-view", true);
 

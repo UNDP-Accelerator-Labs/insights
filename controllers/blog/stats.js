@@ -2,7 +2,7 @@ const { statsQuery } = require("./query");
 const { DB } = include("db/");
 
 exports.main = async (kwargs) => {
-  const conn = kwargs.connection ? kwargs.connection : DB.conn;
+  const conn = kwargs.connection ? kwargs.connection : DB.blog;
   const { req, iso3 } = kwargs || {};
   let { search, country, type, language } = req.query || {};
 

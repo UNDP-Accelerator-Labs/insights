@@ -1,6 +1,5 @@
 const { pagemetadata } = require("../page");
 const { page_content_limit } = include("/config");
-const { browse_data } = include("controllers/");
 const { DB } = include("db/");
 
 module.exports = async (req, res) => {
@@ -17,8 +16,6 @@ module.exports = async (req, res) => {
 
   res.render(
     "browse/", 
-    Object.assign(metadata, {
-      // total_pages,
-    })
+    metadata
   );
 };

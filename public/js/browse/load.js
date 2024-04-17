@@ -16,7 +16,7 @@ export function fetchStats() {
 
   const queryParams = new URL(window.location.href).searchParams;
   const queryString = queryParams.toString();
-  const url = "/nlp-stats" + "?" + queryString;
+  const url = "/semantic/stats" + "?" + queryString;
 
   renderDateDropdowns(years, months, "#start-date", "start");
   renderDateDropdowns(years, months, "#end-date", "end");

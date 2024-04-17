@@ -38,6 +38,7 @@
     "pg-promise": "^11.4.3",
     "request": "^2.88.2",
     "sass": "^1.70.0",
-    "selenium-webdriver": "^4.9.0"
+    "selenium-webdriver": "^4.9.0",
+    "swagger-ui-express": "^5.0.0"
   }
 }

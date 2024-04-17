@@ -12,6 +12,8 @@ const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/index.json'); 
 
 const { app_suite, app_base_host, app_suite_secret, csp_config } =
   include("config/");
@@ -69,8 +71,10 @@ app.get("/browse", routes.home.browse);
 app.get("/browse/toolkit", routes.browse.toolkit);
 
 //API ENDPOINTS
-app.get('/nlp-browse', routes.nlp_api.nlp_browse)
-app.get('/nlp-stats', routes.nlp_api.nlp_stats)
+app.get('/semantic/search', routes.nlp_api.nlp_browse)
+app.get('/semantic/stats', routes.nlp_api.nlp_stats)
+
+app.get('/scrapper/search', routes.blogs.browse)
 
 app.get("/version", (req, res) => {
   getVersionString()
@@ -85,8 +89,10 @@ app.get("/version", (req, res) => {
     });
 });
 
-app.use(routes.err.err404);
+// Serve Swagger UI at /api-docs route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use(routes.err.err404);
 app.use(routes.err.err500);
 
 
