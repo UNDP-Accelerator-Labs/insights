@@ -11,6 +11,7 @@ exports.browse.toolkit = require('./toolkit')
 
 exports.nlp_api.nlp_browse = require('./nlp').nlp_browse
 exports.nlp_api.nlp_stats = require('./nlp').nlp_stats;
+exports.nlp_api.document_metadata = require('./nlp').document_metadata;
 
 exports.blogs.browse = require('./blogs');
 

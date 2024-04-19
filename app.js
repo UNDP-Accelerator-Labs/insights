@@ -73,6 +73,7 @@ app.get("/browse/toolkit", routes.browse.toolkit);
 //API ENDPOINTS
 app.get('/semantic/search', routes.nlp_api.nlp_browse)
 app.get('/semantic/stats', routes.nlp_api.nlp_stats)
+app.post('/semantic/document/meta', routes.nlp_api.document_metadata)
 
 app.get('/scrapper/search', routes.blogs.browse)
 

@@ -1,8 +1,9 @@
 const { nlp_api_url } = include("/config");
-const { p_fetch, groupDates } = require("./services");
+const { p_fetch, groupDates, veriyToken } = require("./services");
 const { page_content_limit } = include("/config");
 
 module.exports = async (req, res, json = true) => {
+  const { apikey } = req.headers;
   const url = `${nlp_api_url}/stat_embed`;
   let { page } = req.query;
   if (!page && isNaN(page)) page = 1;
@@ -88,6 +89,10 @@ module.exports = async (req, res, json = true) => {
     page,
     total_pages: Math.ceil(total_r / page_content_limit),
   });
+
+  if (apikey && !veriyToken(apikey)) {
+    m_data.message = "Invalid API Key";
+  }
 
   if (json) return res.status(200).json(m_data);
   return m_data;
