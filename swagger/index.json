@@ -1,313 +1,393 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "API Documentation",
-      "description": "This is the documentation for NLP Semantic Search and Article Scrapper APIs."
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Documentation",
+    "description": "This is the documentation for NLP Semantic Search and Article Scrapper APIs."
+  },
+  "tags": [
+    {
+      "name": "Semantic Search",
+      "description": "Endpoints related to Semantic Search using the NLP API"
     },
-    "tags": [
-      {
-        "name": "Semantic Search",
-        "description": "Endpoints related to Semantic Search using the NLP API"
-      },
-      {
-        "name": "Scrapper",
-        "description": "Endpoints related to article scrapping"
+    {
+      "name": "Scrapper",
+      "description": "Endpoints related to article scrapping"
+    }
+  ],
+  "paths": {
+    "/semantic/search": {
+      "get": {
+        "summary": "Get Semantic Search Documents",
+        "tags": ["Semantic Search"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "name": "page_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "The number of results to return per page."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search term used to filter the results."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the country used to filter the results."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Array of types of documents. Available document types include: action plan, solution, experiment, blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2
+            },
+            "description": "The language code (ISO 639-1) used to filter the results."
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The start date for filtering the results (format: Month, Year)."
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The end date for filtering the results (format: Month, Year)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
       }
-    ],
-    "paths": {
-      "/semantic/search": {
-        "get": {
-          "summary": "Get Semantic Search Documents",
-          "tags": ["Semantic Search"],
-          "parameters": [
-            {
-              "name": "page",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "default": 1
-              },
-              "description": "The page number for pagination."
+    },
+    "/semantic/stats": {
+      "get": {
+        "summary": "Get Semantic Search Stats",
+        "tags": ["Semantic Search"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
             },
-            {
-              "name": "page_limit",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "default": 10
-              },
-              "description": "The number of results to return per page."
-            },
-            {
-              "name": "search",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string"
-              },
-              "description": "The search term used to filter the results."
-            },
-            {
-              "name": "country",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 3
-                }
-              },
-              "description": "The ISO 3 code of the country used to filter the results."
-            },
-            {
-              "name": "type",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "description": "Array of types of documents. Available document types include: action plan, solution, experiment, blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
-            },
-            {
-              "name": "language",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "maxLength": 2
-              },
-              "description": "The language code (ISO 639-1) used to filter the results."
-            },
-            {
-              "name": "start",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string"
-              },
-              "description": "The start date for filtering the results (format: Month, Year)."
-            },
-            {
-              "name": "end",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string"
-              },
-              "description": "The end date for filtering the results (format: Month, Year)."
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful operation"
-            }
+            "description": "The page number for pagination."
           },
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ]
-        }
-      },
-      "/semantic/stats": {
-        "get": {
-          "summary": "Get Semantic Search Stats",
-          "tags": ["Semantic Search"],
-          "parameters": [
-            {
-              "name": "page",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "default": 1
-              },
-              "description": "The page number for pagination."
+          {
+            "name": "page_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
             },
-            {
-              "name": "page_limit",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "default": 10
-              },
-              "description": "The number of results to return per page."
-            },
-            {
-              "name": "search",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string"
-              },
-              "description": "The search term used to filter the results."
-            },
-            {
-              "name": "country",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 3
-                }
-              },
-              "description": "The ISO 3 code of the country used to filter the results."
-            },
-            {
-              "name": "type",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "description": "Array of types of documents. Available document types include: action plan, solution, experiment, blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
-            },
-            {
-              "name": "language",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "maxLength": 2
-              },
-              "description": "The language code (ISO 639-1) used to filter the results."
-            },
-            {
-              "name": "start",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string"
-              },
-              "description": "The start date for filtering the results (format: Month, Year)."
-            },
-            {
-              "name": "end",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string"
-              },
-              "description": "The end date for filtering the results (format: Month, Year)."
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful operation"
-            }
+            "description": "The number of results to return per page."
           },
-          "security": [
-            {
-              "ApiKeyAuth": []
-            }
-          ]
-        }
-      },              
-      "/scrapper/search": {
-        "get": {
-          "summary": "Search for Articles from the Scrapper",
-          "tags": ["Scrapper"],
-          "parameters": [
-            {
-              "name": "page",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "default": 1
-              },
-              "description": "The page number for pagination."
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             },
-            {
-              "name": "page_content_limit",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "default": 10
-              },
-              "description": "The number of results to return per page."
+            "description": "The search term used to filter the results."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
             },
-            {
-              "name": "search",
-              "in": "query",
-              "required": false,
-              "schema": {
+            "description": "The ISO 3 code of the country used to filter the results."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
                 "type": "string"
-              },
-              "description": "The search term used to filter the results."
+              }
             },
-            {
-              "name": "country",
-              "in": "query",
-              "required": false,
+            "description": "Array of types of documents. Available document types include: action plan, solution, experiment, blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2
+            },
+            "description": "The language code (ISO 639-1) used to filter the results."
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The start date for filtering the results (format: Month, Year)."
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The end date for filtering the results (format: Month, Year)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/semantic/document/meta": {
+      "post": {
+        "summary": "Get Document Metadata (Language and Locations)",
+        "tags": ["Semantic Search"],
+        "parameters": [
+          {
+            "name": "modules",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "default": ["location", "language"]
+            },
+            "description": "Select which metadata to return as an array. Available modules are 'language' and 'location'"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Select your preferred method of sending the document: application/json, text/plain or multipart/form-data",
+          "content": {
+            "multipart/form-data": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "maxLength": 3
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Upload a file containing the content to be processed by the NLP API."
+                  }
                 }
               },
-              "description": "The ISO 3 code of the country used to filter the results."
-            },
-            {
-              "name": "type",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+              "examples": {
+                "file_example": {
+                  "value": "Your file content here"
                 }
-              },
-              "description": "Array of types of documents. Available document types include: blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
+              }
             },
-            {
-              "name": "language",
-              "in": "query",
-              "required": false,
+            "text/plain": {
               "schema": {
                 "type": "string",
-                "maxLength": 2
+                "description": "Plain text content to be processed by the NLP API."
               },
-              "description": "The language code (ISO 639-1) used to filter the results."
+              "examples": {
+                "text_example": {
+                  "value": "Your plain text content here"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "textarea",
+                    "description": "The content to be processed by the NLP API."
+                  }
+                }
+              },
+              "examples": {
+                "json_example": {
+                  "value": {
+                    "document": "Your JSON string here"
+                  }
+                }
+              }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful operation"
-            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/scrapper/search": {
+      "get": {
+        "summary": "Search for Articles from the Scrapper",
+        "tags": ["Scrapper"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "name": "page_content_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "The number of results to return per page."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search term used to filter the results."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the country used to filter the results."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Array of types of documents. Available document types include: blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2
+            },
+            "description": "The language code (ISO 639-1) used to filter the results."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           }
         }
       }
-    },
-    "components": {
-      "securitySchemes": {
-        "ApiKeyAuth": {
-          "type": "apiKey",
-          "in": "header",
-          "name": "apikey",
-          "description": "API key for accessing protected endpoints and documents with elevated privilege that are not public by default. Please get API token from your SDG Innovation Commons profile page."
-        }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "apikey",
+        "description": "API key for accessing protected endpoints and documents with elevated privilege that are not public by default. Please get API token from your SDG Innovation Commons profile page."
       }
-    },
-    "security": [
-      {
-        "ApiKeyAuth": []
-      }
-    ]
-  }
-  
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
+}

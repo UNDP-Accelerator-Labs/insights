@@ -14,6 +14,8 @@ const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/index.json'); 
+const multer = require('multer');
+const upload = multer();
 
 const { app_suite, app_base_host, app_suite_secret, csp_config } =
   include("config/");
@@ -44,6 +46,7 @@ app.use("/scripts", express.static(path.join(__dirname, "./node_modules")));
 app.use("/config", express.static(path.join(__dirname, "./config")));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.text({ type: 'text/plain' }));
 app.use(xss());
 
 const cookie = {
@@ -73,7 +76,7 @@ app.get("/browse/toolkit", routes.browse.toolkit);
 //API ENDPOINTS
 app.get('/semantic/search', routes.nlp_api.nlp_browse)
 app.get('/semantic/stats', routes.nlp_api.nlp_stats)
-app.post('/semantic/document/meta', routes.nlp_api.document_metadata)
+app.post('/semantic/document/meta', routes.service.authenticate, upload.single('file'), routes.nlp_api.document_metadata)
 
 app.get('/scrapper/search', routes.blogs.browse)
 

@@ -4,6 +4,9 @@ if (!exports.browse) { exports.browse = {} }
 if (!exports.nlp_api) { exports.nlp_api = {}}
 if (!exports.blogs) { exports.blogs = {}}
 if (!exports.err) { exports.err = {}}
+if(!exports.service) { exports.service = {}}
+
+exports.service.authenticate = require('./nlp').authenticate
 
 exports.home.index = require('./home')
 exports.home.browse = require('./browse')

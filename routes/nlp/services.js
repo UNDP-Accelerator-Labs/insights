@@ -53,7 +53,7 @@ exports.filters = (req) => {
     data.filters.status = ["public"];
   } else if (rights >= 2) data.filters.status = ["public", "preview"];
   else if (apikey) {
-    if (veriyToken(apikey)) {
+    if (this.veriyToken(apikey)) {
       data.filters.status = ["public", "preview"];
     } else {
       data.filters.status = ["public"];
@@ -171,7 +171,7 @@ const months = [
   "December",
 ];
 
-exports.veriyToken = (token) => {
+exports.veriyToken = async (token) => {
   jwt.verify(token, process.env.APP_SECRET, async function (err, decoded) {
     if (decoded) {
       const { uuid, rights } = decoded;
@@ -184,3 +184,11 @@ exports.veriyToken = (token) => {
     }
   });
 };
+
+exports.authenticate = async (req, res, next)=>{
+  const { apikey } = req.headers;
+  if (this.veriyToken(apikey)) {
+   return  next()
+  }
+  return res.status(401).send('Please provide a valid API token.')
+}
