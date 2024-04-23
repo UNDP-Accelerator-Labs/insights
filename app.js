@@ -12,9 +12,9 @@ const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger/index.json'); 
-const multer = require('multer');
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger/index.json");
+const multer = require("multer");
 const upload = multer();
 
 const { app_suite, app_base_host, app_suite_secret, csp_config } =
@@ -46,7 +46,7 @@ app.use("/scripts", express.static(path.join(__dirname, "./node_modules")));
 app.use("/config", express.static(path.join(__dirname, "./config")));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-app.use(bodyParser.text({ type: 'text/plain' }));
+app.use(bodyParser.text({ type: "text/plain" }));
 app.use(xss());
 
 const cookie = {
@@ -74,11 +74,16 @@ app.get("/browse", routes.home.browse);
 app.get("/browse/toolkit", routes.browse.toolkit);
 
 //API ENDPOINTS
-app.get('/semantic/search', routes.nlp_api.nlp_browse)
-app.get('/semantic/stats', routes.nlp_api.nlp_stats)
-app.post('/semantic/document/meta', routes.service.authenticate, upload.single('file'), routes.nlp_api.document_metadata)
+app.get("/semantic/search", routes.nlp_api.nlp_browse);
+app.get("/semantic/stats", routes.nlp_api.nlp_stats);
+app.post(
+  "/semantic/document/meta",
+  routes.service.authenticate,
+  upload.single("file"),
+  routes.nlp_api.document_metadata
+);
 
-app.get('/scrapper/search', routes.blogs.browse)
+app.get("/scrapper/search", routes.blogs.browse);
 
 app.get("/version", (req, res) => {
   getVersionString()
@@ -94,22 +99,21 @@ app.get("/version", (req, res) => {
 });
 
 // Serve Swagger UI at /api-docs route
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(routes.err.err404);
 app.use(routes.err.err500);
 
-
 DB.general
-.tx(async (t) => {
-  const batch = [];
+  .tx(async (t) => {
+    const batch = [];
     batch.push(
       t.any(
         `
         SELECT adm0_a3 AS iso3, name_en AS name, undp_bureau AS bureau
         FROM adm0
         GROUP BY adm0_a3, name_en, undp_bureau;
-        `,
+        `
       )
     );
 
@@ -118,20 +122,19 @@ DB.general
         `
         SELECT set1 AS iso_lang, name AS lang
         FROM iso_languages
-        `,
+        `
       )
     );
 
-  return t.batch(batch).catch((err) => console.log(err));
-})
-.then(d=> {
-  global.db_cache = d
-})
-.catch((e) => {
-  console.log(e);
-  return [null, null];
-});
-
+    return t.batch(batch).catch((err) => console.log(err));
+  })
+  .then((d) => {
+    global.db_cache = d;
+  })
+  .catch((e) => {
+    console.log(e);
+    return [null, null];
+  });
 
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
