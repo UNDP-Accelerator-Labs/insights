@@ -18,8 +18,8 @@ exports.nlp_api_url = "https://nlpapi.sdg-innovation-commons.org/api";
 
 exports.blogapi_url =
   process.env.NODE_ENV === "production"
-    ? "blog-api-scrapper.azurewebsites.net/blogs/"
-    : "http://localhost:4000/blogs/";
+    ? "blog-api-scrapper.azurewebsites.net"
+    : "http://localhost:4000";
 exports.page_content_limit = 12;
 
 exports.acclab_suites = [

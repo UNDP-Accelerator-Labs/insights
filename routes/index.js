@@ -17,6 +17,7 @@ exports.nlp_api.nlp_stats = require('./nlp').nlp_stats;
 exports.nlp_api.document_metadata = require('./nlp').document_metadata;
 
 exports.blogs.browse = require('./blogs');
+exports.blogs.get_webpage_content = require('./blogs/scapper');
 
 exports.err.err404 = require('./error').err404
 exports.err.err500 = require('./error').err500;

@@ -172,7 +172,7 @@ const months = [
 ];
 
 exports.veriyToken = async (token) => {
-  jwt.verify(token, process.env.APP_SECRET, async function (err, decoded) {
+  return jwt.verify(token, process.env.APP_SECRET, async function (err, decoded) {
     if (decoded) {
       const { uuid, rights } = decoded;
       if (!uuid || !rights) {
@@ -187,7 +187,7 @@ exports.veriyToken = async (token) => {
 
 exports.authenticate = async (req, res, next)=>{
   const { apikey } = req.headers;
-  if (this.veriyToken(apikey)) {
+  if (await this.veriyToken(apikey)) {
    return  next()
   }
   return res.status(401).send('Please provide a valid API token.')
