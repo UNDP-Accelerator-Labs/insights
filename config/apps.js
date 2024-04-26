@@ -41,7 +41,7 @@ exports.acclab_suites = [
   {
     title: "R&D Practice",
     url: "https://practice.sdg-innovation-commons.org",
-    value: "r&d_practice"
+    value: "rd_practice"
   },
 ];
 

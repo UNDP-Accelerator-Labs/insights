@@ -448,7 +448,7 @@
                 "solution_mapping",
                 "learningplan",
                 "experiments",
-                "r&d_practice"
+                "rd_practice"
               ]
             },
             "description": "Specify the platform from which you want to retrieve data."
