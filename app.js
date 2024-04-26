@@ -83,12 +83,17 @@ app.post(
   routes.nlp_api.document_metadata
 );
 
-
 app.get("/scrapper/search", routes.blogs.browse);
 app.post(
   "/scrapper/webpage-content",
   routes.service.authenticate,
-  routes.blogs.get_webpage_content 
+  routes.blogs.get_webpage_content
+);
+
+app.get(
+  "/platforms/api/fetch",
+  routes.service.authenticate,
+  routes.platform.api
 );
 
 app.get("/version", (req, res) => {

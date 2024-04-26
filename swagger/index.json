@@ -13,6 +13,10 @@
     {
       "name": "Scrapper",
       "description": "Endpoints related to article scrapping"
+    },
+    {
+      "name": "Platforms",
+      "description": "SDG Innovation Commons platform specific endpoints. "
     }
   ],
   "paths": {
@@ -418,6 +422,148 @@
         "responses": {
           "200": {
             "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/platforms/api/fetch": {
+      "get": {
+        "summary": "Retrieve data from SDG Innovation Commons platforms",
+        "description": "This endpoint allows you to retrieve data from the suite of SDG Innovation Commons platform's available API endpoints. You must specify the platform from which you wish to retrieve data and the properties you want to fetch.",
+        "tags": ["Platforms"],
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "solution_mapping",
+              "enum": [
+                "solution_mapping",
+                "learningplan",
+                "experiments",
+                "r&d_practice"
+              ]
+            },
+            "description": "Specify the platform from which you want to retrieve data."
+          },
+          {
+            "name": "object",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "pads",
+              "enum": [
+                "pads",
+                "contributors",
+                "tags",
+                "statistics",
+                "countries",
+                "regions"
+              ]
+            },
+            "description": "Specify the property you wish to retrieve from the platform endpoints."
+          },
+          {
+            "name": "output",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "json",
+              "enum": ["json", "geojson", "csv"]
+            },
+            "description": "Specify your desired output format of the returned data from the platform API endpoints. Note: `csv` is only available for pads."
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the country used to filter the results. This is only available when `object` is `tags`, `countries` or `region`."
+          },
+          {
+            "name": "regions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the regions used to filter the results. This is only available when `object` is `tags`, `countries` or `region`."
+          },
+          {
+            "name": "optional_parameters",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "render",
+                  "use_templates",
+                  "include_data",
+                  "include_imgs",
+                  "include_tags",
+                  "include_locations",
+                  "include_metafields",
+                  "include_engagement",
+                  "include_comments",
+                  "transpose_locations",
+                  "include_teams",
+                  "include_contributions",
+                  "has_lab"
+                ]
+              }
+            },
+            "description": "Select multiple optional parameters based on the 'object' value. Optional parameters provide additional functionalities or data in the response.",
+            "x-examples": {
+              "pads": "Options: render, use_templates, include_data, include_imgs, include_tags, include_locations, include_metafields, include_engagement, include_comments, transpose_locations",
+              "contributors": "Options: render, include_data, include_teams, include_contributions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/zip": {
+                "schema": {
+                  "type": "file",
+                  "format": "binary"
+                },
+                "headers": {
+                  "content-disposition": {
+                    "type": "string",
+                    "description": "Specifies whether the file should be displayed inline or downloaded as an attachment.",
+                    "enum": ["attachment"],
+                    "default": "attachment"
+                  }
+                }
+              }
+            }
           }
         },
         "security": [

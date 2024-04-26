@@ -26,18 +26,22 @@ exports.acclab_suites = [
   {
     title: "Solution mapping",
     url: "https://solutions.sdg-innovation-commons.org",
+    value: "solution_mapping"
   },
   {
     title: "Action plans",
     url: "https://learningplans.sdg-innovation-commons.org",
+    value: "learningplan"
   },
   {
     title: "Experiments",
     url: "https://experiments.sdg-innovation-commons.org",
+    value: "experiments"
   },
   {
     title: "R&D Practice",
     url: "https://practice.sdg-innovation-commons.org",
+    value: "r&d_practice"
   },
 ];
 

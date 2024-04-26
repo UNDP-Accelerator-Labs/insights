@@ -5,6 +5,7 @@ if (!exports.nlp_api) { exports.nlp_api = {}}
 if (!exports.blogs) { exports.blogs = {}}
 if (!exports.err) { exports.err = {}}
 if(!exports.service) { exports.service = {}}
+if(!exports.platform) { exports.platform = {}}
 
 exports.service.authenticate = require('./nlp').authenticate
 
@@ -18,6 +19,8 @@ exports.nlp_api.document_metadata = require('./nlp').document_metadata;
 
 exports.blogs.browse = require('./blogs');
 exports.blogs.get_webpage_content = require('./blogs/scapper');
+
+exports.platform.api = require('./platforms');
 
 exports.err.err404 = require('./error').err404
 exports.err.err500 = require('./error').err500;
