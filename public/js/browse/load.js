@@ -1,17 +1,22 @@
-import { isLoading, showToast } from "/js/notification/index.js";
 import {
   updateQueryParams,
   autoCheckLists,
   appendChips,
   applySearch,
 } from "/js/browse/helper.js";
-import { fetchResults } from "/js/browse/cards.js";
+import { fetchResults, renderErrorPage } from "/js/browse/cards.js";
 import { years, months } from "/js/variables.js";
 
-export function fetchStats(refreshPage) {
+let controller = new AbortController();
+
+export function fetchStats() {
+  // Abort previous fetch request
+  controller.abort();
+  controller = new AbortController();
+
   const queryParams = new URL(window.location.href).searchParams;
   const queryString = queryParams.toString();
-  const url = "/nlp-stats" + "?" + queryString;
+  const url = "/semantic/stats" + "?" + queryString;
 
   renderDateDropdowns(years, months, "#start-date", "start");
   renderDateDropdowns(years, months, "#end-date", "end");
@@ -19,7 +24,7 @@ export function fetchStats(refreshPage) {
   d3.select('#languageMenu').classed('blur-view', true)
   d3.select('#result-total').classed('blur-view', true)
 
-  fetch(url)
+  fetch(url, { signal: controller.signal })
     .then((response) => response.json())
     .then((data) => {
       const {
@@ -32,6 +37,7 @@ export function fetchStats(refreshPage) {
         total_r,
         grouped_date,
       } = data;
+
       d3.select("#result-total").text(`Showing ${total_r} results.`);
       renderBureauList(bureaus, countries);
       renderLanguageMenu(languages);
@@ -45,12 +51,9 @@ export function fetchStats(refreshPage) {
     })
     .catch((error) => {
       d3.select("#list-container").classed("blur-view", false);
-      console.error("Error fetching data:", error);
-      showToast(
-        "Error occurred while fetching stats. Please try again.",
-        "danger",
-        5000
-      );
+      if(!error.message.includes('The user aborted a request')){
+        renderErrorPage();
+      }
       d3.select('#languageMenu').classed('blur-view', false)
       d3.select('#result-total').classed('blur-view', false)
     });
@@ -69,7 +72,7 @@ function renderBureauList(bureau, country) {
 
   li.append("button")
     .attr("class", "checkbox-item")
-    .text((d) => `${d.bureau} (${d.recordcount || 0})`);
+    .text((d) => `${d.bureau}`);
 
   li.append("ul")
     .attr("role", "listbox")

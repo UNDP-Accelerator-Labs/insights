@@ -1,8 +1,9 @@
 const { nlp_api_url } = include("/config");
-const { p_fetch, groupDates } = require("./services");
+const { p_fetch, groupDates, veriyToken } = require("./services");
 const { page_content_limit } = include("/config");
 
 module.exports = async (req, res, json = true) => {
+  const { apikey } = req.headers;
   const url = `${nlp_api_url}/stat_embed`;
   let { page } = req.query;
   if (!page && isNaN(page)) page = 1;
@@ -37,14 +38,15 @@ module.exports = async (req, res, json = true) => {
   }));
 
   const m_countries = iso3
-    ?.map((itemA) => {
-      const matchingItemB = countries?.find(
-        (itemB) => itemB?.iso3 === itemA?.label
+    ?.map((iso) => {
+      const matching = countries?.find(
+        (ctry) => ctry?.iso3 === iso?.label
       );
-      if (matchingItemB) {
+      if (matching) {
         return {
-          ...matchingItemB,
-          recordcount: parseInt(itemA?.value),
+          ...matching,
+          bureau: matching?.bureau == null ? 'Others' : matching.bureau,
+          recordcount: parseInt(iso?.value),
         };
       }
       return null;
@@ -65,6 +67,15 @@ module.exports = async (req, res, json = true) => {
     return acc;
   }, []);
 
+  // Find the index of the element with bureau name "Others"
+  const othersIndex = bureaus.findIndex(item => item.bureau === 'Others');
+
+  // If "Others" exists in the array, remove it and push it to the end
+  if (othersIndex !== -1) {
+      const others = bureaus.splice(othersIndex, 1)[0];
+      bureaus.push(others);
+  }
+
   const total_r = data?.doc_count || 0;
 
   const m_data = await Object.assign(data, {
@@ -78,6 +89,10 @@ module.exports = async (req, res, json = true) => {
     page,
     total_pages: Math.ceil(total_r / page_content_limit),
   });
+
+  if (apikey && !veriyToken(apikey)) {
+    m_data.message = "Invalid API Key";
+  }
 
   if (json) return res.status(200).json(m_data);
   return m_data;

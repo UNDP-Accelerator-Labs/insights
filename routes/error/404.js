@@ -1,12 +1,8 @@
 const { pagemetadata } = require("../page");
 const { page_content_limit } = include("/config");
-const { DB } = include("db/");
 
 module.exports = async (req, res) => {
-  let { page } = req.query;
-  if (!page && isNaN(page)) page = 1;
   const _kwarq = {
-    page,
     pagecount: page_content_limit,
     page_content_limit,
     req,
@@ -14,8 +10,8 @@ module.exports = async (req, res) => {
   };
   const metadata = pagemetadata(_kwarq);
 
-  res.render(
-    "browse/", 
+  res.status(404).render(
+    "errors/404", 
     metadata
   );
 };

@@ -1,16 +1,19 @@
 const { page_content_limit } = include("/config");
 const fetch = require("node-fetch");
+const jwt = require("jsonwebtoken");
 
 exports.filters = (req) => {
   const { uuid, rights } = req.session;
-  let { page, search, country, type, language, start, end } = req.query;
+  const { apikey } = req.headers;
+  let { page, search, country, type, language, start, end, page_limit } =
+    req.query;
   if (!page || isNaN(page)) page = 1;
 
   const data = {
     input: "",
     token: process.env.NLP_TOKEN,
-    offset: (page - 1) * page_content_limit,
-    limit: page_content_limit,
+    offset: (page - 1) * (+page_limit ? +page_limit : page_content_limit),
+    limit: +page_limit ? +page_limit : page_content_limit,
     db: "main", //process.env.NODE_ENV === "production" ? "main" : "test",
     score_threshold: 0.2, // TBD
     filters: {},
@@ -49,6 +52,13 @@ exports.filters = (req) => {
   if (rights < 2 || !rights) {
     data.filters.status = ["public"];
   } else if (rights >= 2) data.filters.status = ["public", "preview"];
+  else if (apikey) {
+    if (this.veriyToken(apikey)) {
+      data.filters.status = ["public", "preview"];
+    } else {
+      data.filters.status = ["public"];
+    }
+  }
 
   if ((start && this.isValidDate(start)) || (end && this.isValidDate(end))) {
     const [d1, d2] = this.getFirstAndLastDayOfMonth(start, end);
@@ -132,7 +142,8 @@ exports.getFirstAndLastDayOfMonth = (start, end) => {
   const startDate = `${startMonth}/1/${startYear}`; //MM/DD/YYYY
   let endDate;
   if (end && this.isValidDate(end)) {
-    let [endM, endD, endY] = +endMonth >= 12 ? [1, 1, endYear + 1] : [+endMonth + 1, 1, endYear];
+    let [endM, endD, endY] =
+      +endMonth >= 12 ? [1, 1, endYear + 1] : [+endMonth + 1, 1, endYear];
     endDate = `${endM}/${endD}/${endY}`;
   } else {
     // If no end date is supplied or it's invalid, set end date to today's date
@@ -159,3 +170,25 @@ const months = [
   "November",
   "December",
 ];
+
+exports.veriyToken = async (token) => {
+  return jwt.verify(token, process.env.APP_SECRET, async function (err, decoded) {
+    if (decoded) {
+      const { uuid, rights } = decoded;
+      if (!uuid || !rights) {
+        return false;
+      }
+      return true;
+    } else {
+      return false;
+    }
+  });
+};
+
+exports.authenticate = async (req, res, next)=>{
+  const { apikey } = req.headers;
+  if (await this.veriyToken(apikey)) {
+   return  next()
+  }
+  return res.status(401).send('Please provide a valid API token.')
+}

@@ -30,6 +30,8 @@
     "express-xss-sanitizer": "^1.1.8",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mammoth": "^1.7.1",
+    "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.2",
     "node-fetch": "^2.7.0",
     "nodemon": "^2.0.22",
@@ -38,6 +40,7 @@
     "pg-promise": "^11.4.3",
     "request": "^2.88.2",
     "sass": "^1.70.0",
-    "selenium-webdriver": "^4.9.0"
+    "selenium-webdriver": "^4.9.0",
+    "swagger-ui-express": "^5.0.0"
   }
 }

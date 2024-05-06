@@ -12,9 +12,9 @@ exports.toolkits = [
         owner: 'Accelerator Labs'
     },
     {
-        title: 'UNDP Signature Solutions Toolkit',
+        title: 'UNDP RBLAC Signature Solutions Toolkit',
         url: 'https://undp-accelerator-labs.github.io/Innovation-Toolkit-for-UNDP-Signature-Solutions/',
-        description: 'The toolkit is aiming to gather and organize the work of our region to share concrete tools that can be used and replicated by other country offices.',
+        description: 'This toolkit compiles the tested tools developed by the Accelerator Labs of RBLAC to achieve sustainable development. Organized according to the six UNDP signature solutions, it enables other country offices to easily navigate best practices, learn about them, and aim to utilize and replicate them in various contexts.',
         owner: 'Accelerator Labs'
     },
 ]

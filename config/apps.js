@@ -18,26 +18,30 @@ exports.nlp_api_url = "https://nlpapi.sdg-innovation-commons.org/api";
 
 exports.blogapi_url =
   process.env.NODE_ENV === "production"
-    ? "blog-api-scrapper.azurewebsites.net/blogs/"
-    : "http://localhost:4000/blogs/";
-exports.page_content_limit = 15;
+    ? "blog-api-scrapper.azurewebsites.net"
+    : "http://localhost:4000";
+exports.page_content_limit = 12;
 
 exports.acclab_suites = [
   {
     title: "Solution mapping",
     url: "https://solutions.sdg-innovation-commons.org",
+    value: "solution_mapping"
   },
   {
     title: "Action plans",
     url: "https://learningplans.sdg-innovation-commons.org",
+    value: "learningplan"
   },
   {
     title: "Experiments",
     url: "https://experiments.sdg-innovation-commons.org",
+    value: "experiments"
   },
   {
     title: "R&D Practice",
     url: "https://practice.sdg-innovation-commons.org",
+    value: "rd_practice"
   },
 ];
 

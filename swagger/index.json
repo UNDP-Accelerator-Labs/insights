@@ -1,0 +1,592 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Documentation",
+    "description": "This is the documentation for NLP Semantic Search and Article Scrapper APIs."
+  },
+  "tags": [
+    {
+      "name": "Semantic Search",
+      "description": "Endpoints related to Semantic Search using the NLP API"
+    },
+    {
+      "name": "Scrapper",
+      "description": "Endpoints related to article scrapping"
+    },
+    {
+      "name": "Platforms",
+      "description": "SDG Innovation Commons platform specific endpoints. "
+    }
+  ],
+  "paths": {
+    "/semantic/search": {
+      "get": {
+        "summary": "Get Semantic Search Documents",
+        "description": "This endpoint retrieves documents based on semantic search criteria. You can filter the results using various parameters such as page number, page limit, search term, country, document type, language, start date, and end date.",
+        "tags": ["Semantic Search"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "name": "page_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "The number of results to return per page."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search term used to filter the results."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the country used to filter the results."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Array of types of documents. Available document types include: action plan, solution, experiment, blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2
+            },
+            "description": "The language code (ISO 639-1) used to filter the results."
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The start date for filtering the results (format: Month, Year)."
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The end date for filtering the results (format: Month, Year)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/semantic/stats": {
+      "get": {
+        "summary": "Get Semantic Search Statistics",
+        "description": "This endpoint retrieves statistics related to Semantic Search. You can filter the statistics based on various parameters such as page number, page limit, search term, country, document type, language, start date, and end date.",
+        "tags": ["Semantic Search"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "name": "page_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "The number of results to return per page."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search term used to filter the results."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the country used to filter the results."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Array of types of documents. Available document types include: action plan, solution, experiment, blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2
+            },
+            "description": "The language code (ISO 639-1) used to filter the results."
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The start date for filtering the results (format: Month, Year)."
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The end date for filtering the results (format: Month, Year)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/semantic/document/meta": {
+      "post": {
+        "summary": "Get Document Metadata (Language and Locations)",
+        "description": "This endpoint allows you to retrieve metadata such as language and locations from a document using the Semantic Search API. You can select which metadata modules to return as an array.",
+        "tags": ["Semantic Search"],
+        "parameters": [
+          {
+            "name": "modules",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "default": ["location", "language"],
+              "items": {
+                "type": "string",
+                "enum": ["location", "language"]
+              }
+            },
+            "description": "Select which metadata to return as an array. Available modules are 'language' and 'location'."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Select your preferred method of sending the document: application/json, text/plain, or multipart/form-data.",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Upload a file containing the content to be processed by the NLP API."
+                  }
+                }
+              },
+              "examples": {
+                "file_example": {
+                  "value": "Your file content here"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "description": "Plain text content to be processed by the NLP API."
+              },
+              "examples": {
+                "text_example": {
+                  "value": "Your plain text content here"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "textarea",
+                    "description": "The content to be processed by the NLP API."
+                  }
+                }
+              },
+              "examples": {
+                "json_example": {
+                  "value": {
+                    "document": "Your JSON string here"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/scrapper/search": {
+      "get": {
+        "summary": "Search for Articles from the Scrapper",
+        "description": "This endpoint allows you to search for articles from the Scrapper database. You can filter the results based on various parameters such as page number, search term, country, document type, language, etc.",
+        "tags": ["Scrapper"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "name": "page_content_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "The number of results to return per page."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search term used to filter the results."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the country used to filter the results."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Array of types of documents. Available document types include: blogs, publications, document, news, stories, speeches, webpage, toolkit, event, project."
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 2
+            },
+            "description": "The language code (ISO 639-1) used to filter the results."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/scrapper/webpage-content": {
+      "post": {
+        "summary": "Retrieve Content of a Webpage",
+        "description": "This endpoint allows you to retrieve the content of a webpage. Optionally, you can embed the web content into the NLP module by setting `embed_data` to true. To access this endpoint, you need an authorization key provided by the system admin. Additionally, an authentication token must be included in the request, which can be retrieved from the user's profile on the SDG Commons Innovation platform.",
+        "tags": ["Scrapper"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "The URL of the webpage to process",
+                    "example": "https://example.com/page"
+                  },
+                  "embed_data": {
+                    "type": "boolean",
+                    "description": "Set to true to embed data using the NLP API",
+                    "default": false
+                  },
+                  "auth_key": {
+                    "type": "string",
+                    "description": "Authorization key provided by the system admin",
+                    "example": "your_auth_key"
+                  }
+                },
+                "required": ["url", "auth_key"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/platforms/api/fetch": {
+      "get": {
+        "summary": "Retrieve data from SDG Innovation Commons platforms",
+        "description": "This endpoint allows you to retrieve data from the suite of SDG Innovation Commons platform's available API endpoints. You must specify the platform from which you wish to retrieve data and the properties you want to fetch.",
+        "tags": ["Platforms"],
+        "parameters": [
+          {
+            "name": "platform",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "solution_mapping",
+              "enum": [
+                "solution_mapping",
+                "learningplan",
+                "experiments",
+                "rd_practice"
+              ]
+            },
+            "description": "Specify the platform from which you want to retrieve data."
+          },
+          {
+            "name": "object",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "pads",
+              "enum": [
+                "pads",
+                "contributors",
+                "tags",
+                "statistics",
+                "countries",
+                "regions"
+              ]
+            },
+            "description": "Specify the property you wish to retrieve from the platform endpoints."
+          },
+          {
+            "name": "output",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "json",
+              "enum": ["json", "geojson", "csv"]
+            },
+            "description": "Specify your desired output format of the returned data from the platform API endpoints. Note: `csv` is only available for pads."
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the country used to filter the results. This is only available when `object` is `tags`, `countries` or `region`."
+          },
+          {
+            "name": "regions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 3
+              }
+            },
+            "description": "The ISO 3 code of the regions used to filter the results. This is only available when `object` is `tags`, `countries` or `region`."
+          },
+          {
+            "name": "optional_parameters",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "render",
+                  "use_templates",
+                  "include_data",
+                  "include_imgs",
+                  "include_tags",
+                  "include_locations",
+                  "include_metafields",
+                  "include_engagement",
+                  "include_comments",
+                  "transpose_locations",
+                  "include_teams",
+                  "include_contributions",
+                  "has_lab"
+                ]
+              }
+            },
+            "description": "Select multiple optional parameters based on the 'object' value. Optional parameters provide additional functionalities or data in the response.",
+            "x-examples": {
+              "pads": "Options: render, use_templates, include_data, include_imgs, include_tags, include_locations, include_metafields, include_engagement, include_comments, transpose_locations",
+              "contributors": "Options: render, include_data, include_teams, include_contributions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/zip": {
+                "schema": {
+                  "type": "file",
+                  "format": "binary"
+                },
+                "headers": {
+                  "content-disposition": {
+                    "type": "string",
+                    "description": "Specifies whether the file should be displayed inline or downloaded as an attachment.",
+                    "enum": ["attachment"],
+                    "default": "attachment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "apikey",
+        "description": "API key for accessing protected endpoints and documents with elevated privilege that are not public by default. Please get API token from your SDG Innovation Commons profile page."
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
+}
