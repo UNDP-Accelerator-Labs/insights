@@ -98,7 +98,7 @@
             <% for (let i = 0; i < bureau.length; i++) { %>
             <li role="option" class="has-submenu">
               <button class="checkbox-item">
-                <%= bureau[i]?.bureau %> (<%= bureau[i]?.recordcount || 0 %>)
+                <%- bureau[i]?.bureau === 'HQ' ? 'GLOBAL': bureau[i]?.bureau %> (<%= bureau[i]?.recordcount || 0 %>)
               </button>
               <ul role="listbox" class="sub-menu">
                 <% countries.filter(p => bureau[i].bureau ==

@@ -35,7 +35,7 @@ exports.acclab_suites = [
     url: "https://experiments.sdg-innovation-commons.org",
   },
   {
-    title: "Github",
-    url: "https://github.com/UNDP-Accelerator-Labs",
+    title: "Insights",
+    url: "https://sdg-innovation-commons.org/",
   },
 ];
