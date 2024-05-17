@@ -24,13 +24,14 @@ module.exports = async (req, res) => {
   const metadata = pagemetadata(_kwarq);
 
   const [counts] = statistics?.stats || [null, null];
-
   res.render(
     "home/",
     Object.assign(metadata, {
       f_total_record: formatNumberToK(counts?.total_records || 0),
       countries: counts?.distinct_country_count || 0,
       articletype: counts?.distinct_article_type_count || 0,
+      total_blogs: formatNumberToK(counts?.total_blogs || 0),
+      total_publications: formatNumberToK(counts?.total_publications || 0)
     })
   );
 };
