@@ -49,12 +49,33 @@ exports.browse_data = async (conn, req, res) => {
           iso3,
         })
       );
-
       //LOAD filter results
       batch.push(filter.main({ connection: t, req, res, iso3 }));
 
       return t.batch(batch).catch((err) => console.log(err));
     })
+    .then(async (results) =>{
+      const result = results;
+      const [a, b, c] = results
+      const transform_bureau = await c?.bureau?.map(item => {
+          const nameObj = b_names.find(b => b.bureau === item.bureau);
+          return { ...item, full_name: nameObj ? nameObj.full_name : '' };
+      });
+      if(transform_bureau?.length){
+        result[2]['bureau'] = transform_bureau
+      }
+      return result
+    })
     .then(async (results) => results)
-    .catch((err) => null);
+    .catch((err) => console.log(err));
 };
+
+
+const b_names = [
+  { bureau: 'RBA', full_name: 'Africa'},
+  { bureau: 'RBLAC', full_name: 'Latin America and the Caribbean'},
+  { bureau: 'RBEC', full_name: 'Europe and Central Asia'},
+  { bureau: 'RBAP', full_name: 'Asia and the Pacific'},
+  { bureau: 'HQ', full_name: 'Headquarters' },
+  { bureau: 'RBAS', full_name: 'Arab States' }
+]

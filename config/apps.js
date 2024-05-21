@@ -18,12 +18,8 @@ exports.blogapi_url =
 exports.page_content_limit = 15;
 
 exports.acclab_suites = [
-  // {
-  //   title: "SDG Map",
-  //   url: "https://map.sdg-innovation-commons.org/",
-  // },
   {
-    title: "Solution mapping",
+    title: "Solutions mapping",
     url: "https://solutions.sdg-innovation-commons.org",
   },
   {

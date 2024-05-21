@@ -2,11 +2,17 @@ const { sqlregex } = include("middleware/search");
 
 const theWhereClause = (country, type, language, iso3) => {
   let whereClause = "";
+  const hq = ["USA", "NUL", "CAN", "GBR"];
   if (country) {
     if (Array.isArray(country) && country.length) {
+      if (country.find((p) => p == "HQ")) {
+        country = country.flatMap((item) => (item === "HQ" ? hq : item));
+      }
       whereClause += ` AND iso3 IN ('${country.join("','")}')`;
-    } else if (typeof country === "string") {
+    } else if (typeof country === "string" && country !== "HQ") {
       whereClause += ` AND iso3 = '${country}'`;
+    } else if (country === "HQ") {
+      whereClause += ` AND iso3 IN ('${hq.join("','")}')`;
     }
   }
 

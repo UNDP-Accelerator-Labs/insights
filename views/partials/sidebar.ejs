@@ -6,7 +6,7 @@
     const countries = locals?.countries
     ?.sort((a, b) => a?.name.localeCompare(b?.name)) || [];
     const bureau = locals?.bureau
-    ?.sort((a, b) => a?.bureau.localeCompare(b?.bureau)) || [];
+    ?.sort((a, b) => a?.bureau?.localeCompare(b?.bureau)) || [];
 
     const articletype = locals?.articletype?.sort((a, b) => a?.article_type.localeCompare(b?.article_type))
     .map(item => ({
@@ -93,12 +93,13 @@
             aria-multiselectable="true"
             aria-hidden="true"
             aria-modal="true"
-            class="h-3"
+            class="h-4"
           >
             <% for (let i = 0; i < bureau.length; i++) { %>
+              <% if(bureau[i]?.bureau !== 'HQ') { %>
             <li role="option" class="has-submenu">
               <button class="checkbox-item">
-                <%- bureau[i]?.bureau === 'HQ' ? 'GLOBAL': bureau[i]?.bureau %> (<%= bureau[i]?.recordcount || 0 %>)
+                <%- bureau[i]?.full_name %> (<%= bureau[i]?.recordcount || 0 %>)
               </button>
               <ul role="listbox" class="sub-menu">
                 <% countries.filter(p => bureau[i].bureau ==
@@ -121,6 +122,21 @@
                 <% }); %>
               </ul>
             </li>
+            <% } else if(bureau[i]?.bureau === 'HQ') { %>
+              <li role="option">
+                <div class="form-check">
+                  <label for="hq"
+                    ><%- bureau[i]?.full_name %> (<%= bureau[i]?.recordcount || 0 %>)</label
+                  >
+                  <input
+                    type="checkbox"
+                    id="hq"
+                    name="country"
+                    value="HQ"
+                  />
+                </div>
+              </li>
+            <% } %>
             <% } %>
           </ul>
         </div>
@@ -136,7 +152,6 @@
             aria-multiselectable="true"
             aria-hidden="true"
             aria-modal="true"
-            class="h-3"
           >
             <% for (let i = 0; i < articletype.length; i++) { %>
             <li role="option">
