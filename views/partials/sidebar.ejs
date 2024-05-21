@@ -8,15 +8,19 @@
     const bureau = locals?.bureau
     ?.sort((a, b) => a?.bureau?.localeCompare(b?.bureau)) || [];
 
+    const capitalizeFirstLetter = (str) => {
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
     const articletype = locals?.articletype?.sort((a, b) => a?.article_type.localeCompare(b?.article_type))
     .map(item => ({
         ...item,
-        label: item.article_type ? item.article_type.toUpperCase() : null
+        label: item.article_type ? capitalizeFirstLetter(item.article_type) : null
       })) || [];
     const language = locals?.language?.sort((a, b) => a?.lang?.localeCompare(b?.lang))
     .map(item => ({
       ...item,
-      label: item.lang ? item.lang.toUpperCase() : null
+      label: item.lang ? item.lang : null
     })) || [];
 
     const geodata = locals?.geodata 
