@@ -104,8 +104,8 @@ const sessionMiddleware = session({
 app.use(sessionMiddleware);
 app.use(cookieParser(`${app_suite}-${app_suite_secret}-pass`));
 
-// app.get("/", routes.home.index);
-app.get("/", routes.home.browse);
+app.get("/", routes.home.index);
+// app.get("/", routes.home.browse);
 app.get("/browse", routes.home.browse);
 
 app.get("/version", (req, res) => {

@@ -19,7 +19,7 @@ exports.page_content_limit = 15;
 
 exports.acclab_suites = [
   {
-    title: "Solutions mapping",
+    title: "Solutions",
     url: "https://solutions.sdg-innovation-commons.org",
   },
   {
