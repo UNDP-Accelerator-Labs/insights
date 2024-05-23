@@ -15,7 +15,7 @@
           <a href="<%= blog.url %>" target="_blank">
             <h6 class="" tabindex="0" data-viewport="false"><%- blog.article_type %></h6>
             <p><small class="content-caption"><%= blog.date ?? '' %></small></p>
-            <h6><%= blog.country ?? '' %></h6>
+            <h6><%- blog.country.toLowerCase() == 'null island' ? 'Global' : blog.country ?? '' %></h6>
             <div class="content-caption">
               <h5 class="" tabindex="0" data-viewport="false">
                 <%= blog.title %>

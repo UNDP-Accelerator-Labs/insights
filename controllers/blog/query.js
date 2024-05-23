@@ -36,7 +36,11 @@ const theWhereClause = (country, type, language, iso3) => {
     whereClause += ` AND iso3 IN ('${iso3.join("','")}')`;
   }
 
-  whereClause += ` AND ( article_type = 'blog' OR article_type = 'publications')  AND relevance > 1`;
+  whereClause += `
+    AND (article_type = 'blog' OR article_type = 'publications')
+    AND iso3 IS NOT NULL
+    AND relevance > 1
+  `;
 
   return whereClause;
 };

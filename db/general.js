@@ -8,5 +8,5 @@ exports.connection = {
 	host: process.env.LOGIN_DB_HOST,
 	user: process.env.LOGIN_DB_USERNAME,
 	password: process.env.LOGIN_DB_PASSWORD,
-	ssl: false
+	ssl: isProd
 }
