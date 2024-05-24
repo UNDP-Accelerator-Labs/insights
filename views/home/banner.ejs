@@ -1,3 +1,8 @@
+<%
+	// CREATE ALIASES
+    const menulist = locals.metadata.site.acclab_suites
+%>
+
 <div class="homepage-hero-tall">
   <div class="grid-x">
     <div class="cell medium-5 medium-offset-1">
@@ -28,7 +33,7 @@
             </div>
             <div class="cell medium-4">
               <div class="content-card">
-                <a href="#">
+                <a href="<%- menulist.filter(p=> p.title == 'Solutions')[0]?.url %>" target="_blank">
                   <h6 class="title">Solutions</h6>
                   <div class="content-caption">
                     <p class="fs-14">
@@ -44,7 +49,7 @@
             </div>
             <div class="cell medium-4">
               <div class="content-card">
-                <a href="#">
+                <a href="<%- menulist.filter(p=> p.title == 'Action plans')[0]?.url %>" target="_blank">
                   <h6 class="title">Action Plans</h6>
                   <div class="content-caption">
                     <p class="fs-14">
@@ -60,7 +65,7 @@
             </div>
             <div class="cell medium-4">
               <div class="content-card">
-                <a href="#">
+                <a href="<%- menulist.filter(p=> p.title == 'Experiments')[0]?.url %>" target="_blank">
                   <h6 class="title">Experiments</h6>
                   <div class="content-caption">
                     <p class="fs-14">

@@ -20,15 +20,15 @@ exports.page_content_limit = 15;
 exports.acclab_suites = [
   {
     title: "Solutions",
-    url: "https://solutions.sdg-innovation-commons.org",
+    url: "https://solutions.sdg-innovation-commons.org/en/browse/pads/public",
   },
   {
     title: "Action plans",
-    url: "https://learningplans.sdg-innovation-commons.org",
+    url: "https://learningplans.sdg-innovation-commons.org/en/browse/pads/public",
   },
   {
     title: "Experiments",
-    url: "https://experiments.sdg-innovation-commons.org",
+    url: "https://experiments.sdg-innovation-commons.org/en/browse/pads/public",
   },
   {
     title: "Insights",
