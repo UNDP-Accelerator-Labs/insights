@@ -69,7 +69,8 @@ const extractMatchedTexts = (searchResults, searchWords) => {
     const startWordIndex = textToSearch.substring(100, 200).split(/\s+/).length;
     const endWordIndex = startWordIndex + 50;
     const words = textToSearch.split(/\s+/).slice(startWordIndex, endWordIndex);
-    return words.join(" ");
+    // return words.join(" ");
+    return ''
   }
 
   const matchedTexts = [];
