@@ -5,34 +5,55 @@
 
 <div class="homepage-hero-tall">
   <div class="grid-x">
-    <div class="cell medium-5 medium-offset-1">
-      <div class="homepage-hero-tall-content">
-        <h2 class="" tabindex="0" data-viewport="true">Insights Hub</h2>
-        <h5 class=" fs-22" tabindex="0" data-viewport="true">
-          Explore our curated collection of blogs and publications that foster collaboration, innovation, and continuous learning within the Accelerator Lab networks.
+    <div class="cell medium-5">
+      <div class="homepage-hero-tall-content px-5">
+        <h3 class="" tabindex="0" data-viewport="true">Exchange Suite</h3>
+        <h5 class=" fs-19" tabindex="0" data-viewport="true">
+          A vital part of the SDG Innovation Commons, used across the Accelerator Lab network for development and experimental activities. This suite acts as a central hub for collaboration, innovation, and continuous learning, offering access to a curated collection of learning plans, solution field and desk notes, experiments, reflections, blogs, publications, and many more behind-the-scenes activities of the network.
         </h5>
-        <div class="show-large">
-          <a
-            class="button button-primary button-arrow"
-            role="button"
-            href="/browse"
-          >
-            Discover More
-          </a>
-        </div>
       </div>
     </div>
-    <div class="cell medium-6">
+    <div class="cell medium-7">
       <div class="content-card-container inviewport" data-viewport="true">
-        <div class="background-img">
-          <div class="grid-x grid-margin-x content-card-wrapper p-5">
-            <div class="cell medium-12">
-              <h6 class="content" tabindex="0" data-viewport="true">
+        <div class="homepage-hero-full">
+          <div class="overlay-grey">
+            <img
+              src="https://design.undp.org/static/media/field.1727a494.jpg"
+              alt="Image"
+            />
+          </div>
+          <div class="grid-x homepage-hero-content p-5">
+            <div class="cell large-11 medium-11 pt-12">
+              <h5 class="color-white fs-20" tabindex="0" data-viewport="true">
+                Explore our curated collection of blogs and publications that foster collaboration, innovation, and continuous learning within the Accelerator Lab networks.
+              </h5>
+              <a class="button button-primary button-arrow" role="button" href="/browse">
+                Discover More
+              </a>
+            </div>
+            <div class="cell medium-12 pt-0 pb-5 mnt-5">
+              <h6 class="content color-white" tabindex="0" data-viewport="true">
                 Get an inside look at our behind-the-scenes activities.
               </h6>
             </div>
-            <div class="cell medium-4">
-              <div class="content-card">
+            <div class="cell medium-4 pt-0">
+              <div class="content-card me-1">
+                <a href="<%- menulist.filter(p=> p.title == 'Learning plans')[0]?.url %>" target="_blank">
+                  <h6 class="title">Learning Plans</h6>
+                  <div class="content-caption">
+                    <p class="fs-14">
+                      Discover what sustainable development challenges the Accelerator Labs have been working on with partners.
+                    </p>
+                    <span class="cta__link cta--space">
+                      Find Out More
+                      <i></i>
+                    </span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="cell medium-4 pt-0">
+              <div class="content-card me-1">
                 <a href="<%- menulist.filter(p=> p.title == 'Solutions')[0]?.url %>" target="_blank">
                   <h6 class="title">Solutions</h6>
                   <div class="content-caption">
@@ -47,29 +68,13 @@
                 </a>
               </div>
             </div>
-            <div class="cell medium-4">
-              <div class="content-card">
-                <a href="<%- menulist.filter(p=> p.title == 'Action plans')[0]?.url %>" target="_blank">
-                  <h6 class="title">Learning Plans</h6>
-                  <div class="content-caption">
-                    <p class="fs-14">
-                      Discover what sustainable development challenges the Accelerator Labs have been working on with partners.
-                    </p>
-                    <span class="cta__link cta--space">
-                      Find Out More
-                      <i></i>
-                    </span>
-                  </div>
-                </a>
-              </div>
-            </div>
-            <div class="cell medium-4">
+            <div class="cell medium-4 pt-0 ">
               <div class="content-card">
                 <a href="<%- menulist.filter(p=> p.title == 'Experiments')[0]?.url %>" target="_blank">
                   <h6 class="title">Experiments</h6>
                   <div class="content-caption">
                     <p class="fs-14">
-                      Discover and learn through our experimentation platform how many small experiments conducted by the Accelerator Labs Network.
+                      Discover and learn through our experimentation platform the many small experiments conducted by the Accelerator Labs Network.
                     </p>
                     <span class="cta__link cta--space">
                       Explore

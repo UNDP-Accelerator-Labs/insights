@@ -1,4 +1,4 @@
-exports.app_title = "Insights Hub";
+exports.app_title = "Exchange Suite";
 exports.app_title_short = "sdg-commons-blogs";
 exports.app_suite = "acclab_platform";
 exports.app_suite_secret = process.env.APP_SUITE_SECRET || "secret";
@@ -19,19 +19,19 @@ exports.page_content_limit = 15;
 
 exports.acclab_suites = [
   {
-    title: "Solutions",
-    url: "https://solutions.sdg-innovation-commons.org/en/browse/pads/public",
+    title: "Learning plans",
+    url: "https://learningplans.sdg-innovation-commons.org/en/browse/pads/published",
   },
   {
-    title: "Learning plans",
-    url: "https://learningplans.sdg-innovation-commons.org/en/browse/pads/public",
+    title: "Solutions",
+    url: "https://solutions.sdg-innovation-commons.org/en/browse/pads/published",
   },
   {
     title: "Experiments",
-    url: "https://experiments.sdg-innovation-commons.org/en/browse/pads/public",
+    url: "https://experiments.sdg-innovation-commons.org/en/browse/pads/published",
   },
   {
     title: "Insights",
-    url: "https://sdg-innovation-commons.org/",
+    url: "https://sdg-innovation-commons.org/browse",
   },
 ];

@@ -9,8 +9,23 @@
 <%- include ('../partials/head.ejs') %>
 <%- include ('../partials/menu.ejs') %>
 
-<div class="grid-container fluid content-bottom">
-    <div class="grid-x margin-top-72">
+<div class="grid-container fluid content-bottom px-20">
+    <div class="grid-x mt-5">
+        <div class="cell large-12 medium-12">
+            <nav aria-label="breadcrumbs" data-viewport="true" class="breadcrumb">
+                <ul>
+                <li><a href="/" aria-label="Home">Home</a></li>
+                <li aria-current="Insights">Insights</li>
+                </ul>
+            </nav>
+            <div class="post-wrapper" data-viewport="true">
+                <h5 class="fs-19" tabindex="0" data-viewport="false">
+                    Browse our curated collection of blogs and publications that foster collaboration, innovation, and continuous learning within the Accelerator Lab networks.
+                </h5>
+            </div>
+        </div>
+    </div>
+    <div class="grid-x mt-10">
         <%- include ('../partials/sidebar.ejs') %>
         <%- include ('../partials/blogs.ejs') %>
     </div>
