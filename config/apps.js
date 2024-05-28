@@ -23,7 +23,7 @@ exports.acclab_suites = [
     url: "https://solutions.sdg-innovation-commons.org/en/browse/pads/public",
   },
   {
-    title: "Action plans",
+    title: "Learning plans",
     url: "https://learningplans.sdg-innovation-commons.org/en/browse/pads/public",
   },
   {
