@@ -1,4 +1,4 @@
-exports.app_title = "Exchange Suite";
+exports.app_title = "The SDG Innovation Commons";
 exports.app_title_short = "sdg-commons-blogs";
 exports.app_suite = "acclab_platform";
 exports.app_suite_secret = process.env.APP_SUITE_SECRET || "secret";
