@@ -1,5 +1,5 @@
 
-@for $i from 0 through 20 {
+@for $i from 0 through 100 {
   .m-#{$i} {
     margin: $i * 0.25rem !important;
   }
