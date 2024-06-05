@@ -106,7 +106,7 @@
   height: 100%;
 }
 
-@for $i from 0 through 20 {
+@for $i from 0 through 100 {
   .m-#{$i} {
     margin: $i * 0.25rem !important;
   }
@@ -169,5 +169,9 @@
   //LINE HEIGHTS
   .ly-#{$i} {
     line-height: $i * 0.25rem !important;
+  }
+
+  .w-#{$i} {
+    width: $i * 1% !important;
   }
 }

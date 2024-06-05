@@ -1,5 +1,6 @@
 import { formatDate } from "/js/services/index.js";
 import { applySearch } from "/js/browse/helper.js";
+import { isLoading } from '/js/notification/index.js'
 
 let controller = new AbortController();
 
@@ -26,6 +27,7 @@ export function fetchResults() {
         renderErrorPage();
       }
       d3.select("#list-container").classed("blur-view", false);
+      isLoading(false)
     })
     .catch((error) => {
       console.log("error ", error.message);
@@ -33,6 +35,7 @@ export function fetchResults() {
       if (error.message.includes("The user aborted a request")) {
         d3.select("#list-container").classed("blur-view", true);
       } else renderErrorPage();
+      isLoading(false)
     });
 }
 
@@ -121,5 +124,6 @@ export function renderErrorPage() {
     .on("click", function (e, d) {
       e.preventDefault();
       applySearch();
+      isLoading(true)
     });
 }
