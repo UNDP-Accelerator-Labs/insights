@@ -166,6 +166,10 @@
   .fs-#{$i} {
     font-size: $i * 1px !important;
   }
+  .fw-#{$i} {
+    font-weight: $i * 100 !important;
+  }
+
   //LINE HEIGHTS
   .ly-#{$i} {
     line-height: $i * 0.25rem !important;
