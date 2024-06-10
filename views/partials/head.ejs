@@ -1,3 +1,7 @@
+<%
+	// CREATE ALIASES
+  const title = locals.metadata?.page?.title
+%>
 <meta charset="utf-8" />
 <meta
   name="viewport"
@@ -9,6 +13,8 @@
   content="black-translucent"
 />
 <meta name="theme-color" content="#16a0d6e7" />
+
+<title><%- title %></title>
 
 <script type="text/javascript" src="/scripts/d3/dist/d3.min.js"></script>
 <script
