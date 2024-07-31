@@ -20,7 +20,7 @@ exports.pagemetadata = (_kwargs) => {
     req.originalUrl
   }`;
 
-  let add_web_analytics = process.env.NODE_ENV == 'production' && !req.get('host').include('azurewebsites.net')
+  let add_web_analytics = process.env.NODE_ENV == 'production' && !req.get('host').includes('azurewebsites.net')
 
   if (session.uuid) {
     // USER IS LOGGED IN
