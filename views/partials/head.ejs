@@ -1,6 +1,7 @@
 <%
 	// CREATE ALIASES
   const title = locals.metadata?.page?.title
+  const add_web_analytics = locals.metadata.site.add_web_analytics
 %>
 <meta charset="utf-8" />
 <meta
@@ -45,6 +46,11 @@
 
 <script type="module" src="/js/packages.js"></script>
 <script type="module" src="/js/load.js"></script>
+
+<!-- ADD WEB ANALYTICS SCRIPT -->
+<% if (add_web_analytics) { %>
+	<script data-goatcounter="https://sdg-innovation-commons.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<% } %>
 
 <link
   rel="stylesheet"

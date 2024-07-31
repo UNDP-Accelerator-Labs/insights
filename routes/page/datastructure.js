@@ -20,6 +20,8 @@ exports.pagemetadata = (_kwargs) => {
     req.originalUrl
   }`;
 
+  let add_web_analytics = process.env.NODE_ENV == 'production' && !req.get('host').include('azurewebsites.net')
+
   if (session.uuid) {
     // USER IS LOGGED IN
     var { uuid, username: name, country, rights, sessions } = session || {};
@@ -49,6 +51,7 @@ exports.pagemetadata = (_kwargs) => {
       title,
       own_app_url,
       acclab_suites,
+      add_web_analytics,
       login_url: !compareReqDomain(req, currentpage_url, sso_app_url)
         ? `${sso_app_url}?redirect_url=${encodeURIComponent(sso_app_url)}`
         : null,
