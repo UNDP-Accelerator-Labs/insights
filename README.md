@@ -76,3 +76,7 @@ Run
 ```
 make -s deploy
 ```
+
+### Monitoring usage
+
+As of 2024-07-31, we have added a simple pageviews counter. We chose [Goat Counter](https://www.goatcounter.com) because it's completely open source, independent, and free for small sites. Usage statistics are visible here: https://sdg-innovation-commons.goatcounter.com/. 
