@@ -37,6 +37,7 @@ app.use(
           (req, res) => `'nonce-${res.locals.nonce}'`,
           "sha256-NNiElek2Ktxo4OLn2zGTHHeUR6b91/P618EXWJXzl3s=",
           "strict-dynamic",
+          "https://gc.zgo.at",
         ]),
         "script-src-attr": [
           "'self'",
@@ -44,7 +45,9 @@ app.use(
           "sdg-innovation-commons.org",
         ],
         "style-src": csp_links,
-        "connect-src": csp_links,
+        "connect-src": csp_links.concat([
+          "https://sdg-innovation-commons.goatcounter.com/count",
+        ]),
         "frame-src": [
           "'self'",
           "*.sdg-innovation-commons.org",
