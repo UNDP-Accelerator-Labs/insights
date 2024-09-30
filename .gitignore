@@ -10,3 +10,4 @@ version.txt
 public/css/
 .DS_Store
 .env
+.prettierignore

@@ -110,7 +110,7 @@ async function onLoad() {
   swiper(".fluid-carousel", ".slide-content");
   statsHover();
 
-  expandSearch();
+  // expandSearch();
   multiSelect();
   toggleFilter();
   swiper(".stats-card-slider");
