@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 <%
 	// CREATE ALIASES
     const acclab_suites = locals.metadata.site.acclab_suites
@@ -27,9 +28,7 @@
           </a>
           <div class="site-title">
             <span
-              ><a href="/" title="UNDP homepage link"
-                >Accelerator Labs</a
-              ></span
+              ><a href="/" title="UNDP homepage link">Accelerator Labs</a></span
             >
             <span><a href="/" title="UNDP homepage link"><%= title %></a></span>
           </div>
@@ -44,12 +43,17 @@
                 <ul class="submenu" data-submenu="true">
                   <% for (menu of acclab_suites) { %>
                   <li class="">
-                    <a href="<%- menu.url %>" target="_blank" class="external" tabindex="0">
+                    <a
+                      href="<%- menu.url %>"
+                      target="_blank"
+                      class="external"
+                      tabindex="0"
+                    >
                       <%- menu.title %>
                       <span class="external-link-animated"><i></i></span>
                     </a>
                   </li>
-                <% } %>
+                  <% } %>
                 </ul>
               </li>
               <% for ( menu of menu_list) { %>
@@ -62,33 +66,25 @@
               </li>
               <% } %>
 
-              <li
-                data-menu-id="toolkit"
-              >
-                <a  href="/browse/toolkit"
-                  >Toolkits</a
-                >
+              <li data-menu-id="toolkit">
+                <a href="/browse/toolkit">Toolkits</a>
               </li>
 
-              <li
-                data-menu-id="explore"
-              >
-                <a  href="/browse"
-                  >Explore</a
-                >
+              <li data-menu-id="explore">
+                <a href="/browse">Explore</a>
               </li>
 
-              <li
-                data-menu-id="explore"
-              >
-                <a  href="/api-docs/" target="_blank"
+              <li data-menu-id="explore">
+                <a
+                  href="https://apis.sdg-innovation-commons.org/"
+                  target="_blank"
                   >API Doc</a
                 >
               </li>
             </ul>
           </nav>
         </div>
-        
+
         <div class="cell small-3 large-auto top-right">
           <div class="dropdown-language select-box" id="language-dropdown">
             <button
@@ -109,14 +105,14 @@
 
           <a id="fa-user" href="<%- profile_url %>" target="_blank">
             <% if (user?.uuid) {%>
-              <span class="help">
-                <i class="fa fa-user"></i> <%= user?.name  || '' %></span>
+            <span class="help">
+              <i class="fa fa-user"></i> <%= user?.name || '' %></span
+            >
             <%} else { %>
-              <i class="fa fa-sign-in"></i>
+            <i class="fa fa-sign-in"></i>
             <%} %>
           </a>
         </div>
-        
 
         <div class="mobile-nav">
           <div class="grid-x">

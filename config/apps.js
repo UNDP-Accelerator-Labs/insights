@@ -24,25 +24,30 @@ exports.page_content_limit = 12;
 
 exports.acclab_suites = [
   {
+    title: "SDG Commons",
+    url: "https://sdg-innovation-commons.org",
+    value: "sdg_commons",
+  },
+  {
     title: "Solution mapping",
     url: "https://solutions.sdg-innovation-commons.org",
-    value: "solution_mapping"
+    value: "solution_mapping",
   },
   {
     title: "Action plans",
     url: "https://learningplans.sdg-innovation-commons.org",
-    value: "learningplan"
+    value: "learningplan",
   },
   {
     title: "Experiments",
     url: "https://experiments.sdg-innovation-commons.org",
-    value: "experiments"
+    value: "experiments",
   },
-  {
-    title: "R&D Practice",
-    url: "https://practice.sdg-innovation-commons.org",
-    value: "rd_practice"
-  },
+  // {
+  //   title: "R&D Practice",
+  //   url: "https://practice.sdg-innovation-commons.org",
+  //   value: "rd_practice"
+  // },
 ];
 
 exports.menu_list = [
