@@ -26,7 +26,7 @@ async function onLoad() {
   expandToSize(".homepage-hero-full");
   swiper(".fluid-carousel", ".slide-content");
   statsHover();
-  expandSearch();
+  // expandSearch();
   multiSelect();
   select();
   toggleFilter();

@@ -54,20 +54,20 @@
   font-family: FontAwesome !important;
 }
 
-#language-dropdown  button {
-    background: none !important;
-    color: #006eb5 !important;
-    border: 0 !important;
-    font-size: .875rem;
+#language-dropdown button {
+  background: none !important;
+  color: #006eb5 !important;
+  border: 0 !important;
+  font-size: 0.875rem;
 }
-#language-dropdown  ul {
-    border: 0 !important;
-    padding: 0 !important;
-    height: 300px !important;
+#language-dropdown ul {
+  border: 0 !important;
+  padding: 0 !important;
+  height: 300px !important;
 }
 #language-dropdown .select-box ul {
-    border: none !important;
-    padding: none !important;
+  border: none !important;
+  padding: none !important;
 }
 
 //BLOG VIEW
@@ -178,4 +178,14 @@
   .w-#{$i} {
     width: $i * 1% !important;
   }
+}
+
+.img-35 {
+  max-width: 35% !important;
+}
+.search-icon {
+  padding-left: 30px !important;
+  background: url("https://design.undp.org/static/media/search-black.4642527c.svg")
+    no-repeat left;
+  background-size: 25px;
 }

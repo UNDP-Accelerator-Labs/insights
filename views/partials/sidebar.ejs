@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 <% 
     // CREATE ALIASES 
     const menulist = locals.metadata.site.acclab_suites 
@@ -33,24 +34,14 @@
       <span>Close</span>
     </button>
     <div class="search-filter">
-      <div class="expand-search">
-        <button class="expand-button">
-          <img
-            src="https://design.undp.org/static/media/search-black.4642527c.svg"
-            alt="search expand"
-          />
-        </button>
-        <input id="search-input" type="text" aria-label="expand-search" />
-        <button class="close-button">
-          <img
-            src="https://design.undp.org/static/media/times.cd26ac2e.svg"
-            alt="search close"
-          />
-        </button>
-      </div>
-
+      <input
+        id="search-input"
+        class="multi-select search-icon"
+        placeholder="Looking for something?"
+        type="text"
+        aria-label="expand-search"
+      />
       <div class="select-wrapper">
-
         <!-- Bureau Filter -->
         <div class="multi-select" data-multi-select="">
           <button aria-label="bureau" aria-expanded="false" data-id="filter11">
@@ -62,10 +53,9 @@
             aria-multiselectable="true"
             aria-hidden="true"
             aria-modal="true"
-            id="regionList" 
+            id="regionList"
             class="h-3"
-          >
-          </ul>
+          ></ul>
         </div>
 
         <!-- Document Filter -->
@@ -81,8 +71,7 @@
             aria-modal="true"
             id="documentList"
             class="h-3"
-          >
-          </ul>
+          ></ul>
         </div>
 
         <!-- Date Filter -->
