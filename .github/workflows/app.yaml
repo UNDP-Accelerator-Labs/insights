@@ -11,7 +11,7 @@ on:
 jobs:
   deploy_pipeline:
     name: Deploy
-    if: startsWith(github.ref, 'refs/tags/v')
+    # if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
 
     steps:
